@@ -255,3 +255,9 @@ resource "aws_route_table" "example" {
 ## ディレクトリ構成
 
 推奨は以下の通り。
+
+## 参考資料
+
+* [Terraform設計ガイドライン | フューチャー株式会社](https://future-architect.github.io/arch-guidelines/documents/forTerraform/terraform_guidelines.html)
+* [コードベースの構造と組織のベストプラクティス - AWS 規範ガイダンス](https://docs.aws.amazon.com/ja_jp/prescriptive-guidance/latest/terraform-aws-provider-best-practices/structure.html)
+* [最低限のTerraformコード規約を定義した | Zenn](https://zenn.dev/coconala/articles/create_code_policy)
