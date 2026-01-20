@@ -256,6 +256,56 @@ resource "aws_route_table" "example" {
 
 推奨は以下の通り。
 
+```
+terraform
+│
+├── README.md
+├── dev
+├── prod
+│   ├── main.tf
+│   ├── variables.tf # 子モジュールに受け渡す変数と、ルートモジュール自体で使用する変数(providerやbackendの定義で使用する変数など)の定義を記述する
+│   ├── outputs.tf   # Terraform CLIの出力に表示する変数の定義を記述する
+│   ├── terraform.tf
+│   ├── provider.tf
+│   └── backend.tf
+│
+└── shared
+    ├── modules
+    │   ├── cloudfront
+    │   │   ├── README.md
+    │   │   ├── main.tf
+    │   │   ├── variables.tf # モジュールの呼び出し元から受け取る変数の定義を記述する
+    │   │   └── outputs.tf   # モジュールの呼び出し元に受け渡す変数の定義を記述する
+    │   │
+    │   ├── route53
+    │   │   ├── README.md
+    │   │   ├── main.tf
+    │   │   ├── variables.tf
+    │   │   └── outputs.tf
+    │   │
+    │   ├── s3
+    │   │   ├── README.md
+    │   │   ├── main.tf
+    │   │   ├── variables.tf
+    │   │   └── outputs.tf
+    │   │
+    │   └── waf
+    │       ├── README.md
+    │       ├── main.tf
+    │       ├── variables.tf
+    │       └── outputs.tf
+    │
+    │ # 以下は両環境でシェアする場合のみ作成し、各環境のディレクトリからシンボリックリンクで参照する
+    │ # シンボリックリンク可能なファイルは以下の2つのみに絞ることが推奨される
+    ├── terraform.tf
+    └── provider.tf
+```
+
+補足
+* Local ValuesやData Sourceは`main.tf`の中で定義しても良いし、`locals.tf`や`data.tf`のようにファイル分割しても良い
+* sharedに共通化できなかったものはdev, prodに置く
+* modulesに抽象化できなかったものはdev, prodの`main.tf`に直接記載する
+
 ## 参考資料
 
 * [Terraform設計ガイドライン | フューチャー株式会社](https://future-architect.github.io/arch-guidelines/documents/forTerraform/terraform_guidelines.html)
