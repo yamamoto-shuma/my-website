@@ -7,7 +7,7 @@
 ## Goals / Non-Goals
 
 **Goals:**
-- `terraform/bootstrap/` でS3バケット（`my-website-prod-tfstate`）を作成する
+- AWS CLIでS3バケット（`my-website-prod-tfstate`）を作成する
 - `terraform/prod/` にS3バックエンドを指定した `backend.tf` を配置する
 - ガイドライン（`terraform/GUIDELINE.md`）に準拠したコードを書く
 
@@ -15,17 +15,17 @@
 - DynamoDB によるstate locking（個人開発のため不要）
 - dev環境の作成（1環境のみ）
 - `shared/modules` の作成（1環境のため共通化不要）
-- bootstrapのstateをS3へ移行すること（個人開発のためローカルstateで十分）
+- S3バケット作成をTerraformで管理すること（bootstrapモジュールは作成しない）
 
 ## Decisions
 
-### ブートストラップアプローチ
+### S3バケット作成方法
 
-**決定**: `terraform/bootstrap/` を独立したルートモジュールとして作成し、ローカルstateで運用する
+**決定**: AWS CLIで手動作成する
 
-**理由**: S3バックエンドを使用するためにはS3バケットが事前に存在する必要があるが、そのバケット自体をTerraformで管理したい（鶏と卵問題）。bootstrapをローカルstateで動かすことで、バケット作成→prod環境でS3バックエンドを使用、という順序が成立する。
+**理由**: 個人開発・1人運用のため再現性よりシンプルさを優先する。bootstrapモジュールは管理コストに対して得られる恩恵が小さい。
 
-**代替案**: AWS CLIで手動作成 → 再現性が低くコードとして残らないため不採用
+**代替案**: `terraform/bootstrap/` モジュールで管理 → 個人開発では過剰なため不採用
 
 ---
 
@@ -42,11 +42,11 @@
 
 ### ディレクトリ構成
 
-**決定**: `terraform/bootstrap/`（独立モジュール）と `terraform/prod/`（メイン環境）の2ディレクトリ
+**決定**: `terraform/prod/` のみ（bootstrapディレクトリなし）
 
-**理由**: ガイドラインの推奨構成（dev/prod/shared）に従いつつ、bootstrapを明示的に分離することでその特殊な役割（初回のみ使用）を明確にする
+**理由**: S3バケットをAWS CLIで作成するため、bootstrapディレクトリが不要になる。ガイドラインの推奨構成に沿いつつシンプルに保つ。
 
 ## Risks / Trade-offs
 
-- **bootstrapのstateがローカルにのみ存在する** → PCが故障した場合、bootstrapのstateが失われる。ただし、S3バケット自体は残るため `terraform import` で復旧可能。個人開発の許容リスクとして判断
+- **S3バケット作成手順がコードとして残らない** → AWS CLIコマンドをREADMEに記載することで手順を文書化し、再現性を担保する
 - **DynamoDBなしのため並行apply時に競合が起きうる** → 個人開発のため実質的に並行applyは発生しない。許容リスク
