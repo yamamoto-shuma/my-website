@@ -1,6 +1,6 @@
 ## Context
 
-MWS-001でTerraformのS3バックエンドが整備された。本変更では個人ウェブサイトの静的コンテンツを配信するためのAWSインフラを構築する。コンテンツは純粋な静的HTML、訪問者は主に日本国内を想定する。すべてのリソースはTerraform（`terraform/prod/`）で管理し、デプロイはGitHub Actionsで自動化する。
+MWS-001でTerraformのS3バックエンドが整備された。本変更では個人ウェブサイトの静的コンテンツを配信するためのAWSインフラを構築する。コンテンツは純粋な静的HTML、訪問者は主に日本国内を想定する。すべてのリソースはTerraform（`terraform/prod/`）で管理し、静的HTMLコンテンツのS3へのアップロードはGitHub Actionsで自動化する。
 
 ## Goals / Non-Goals
 
