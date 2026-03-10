@@ -74,5 +74,5 @@ MWS-001でTerraformのS3バックエンドが整備された。本変更では�
 
 ## Open Questions
 
-- カスタムドメイン名（実際のドメイン）は実装フェーズで確認する
-- GitHub OrganizationかUserリポジトリかによってOIDCのConditionが変わる → 実装時に確認
+- カスタムドメイン名: 未定（PR3実装時に確定する）
+- GitHub OIDC Condition: Userリポジトリのため、IAMロールの信頼ポリシーのConditionは `repo:yamamoto-shuma/my-website:ref:refs/heads/main` を使用する
