@@ -1,7 +1,7 @@
 ## PR1: ドキュメント（ADR・アーキテクチャ図）
 
-- [ ] 1.1 `docs/adr/` ディレクトリを作成し、ADRを Markdown で作成する
-- [ ] 1.2 `docs/architecture/` ディレクトリを作成し、Mermaid記法のアーキテクチャ図を作成する
+- [x] 1.1 `docs/adr/` ディレクトリを作成し、ADRを Markdown で作成する
+- [x] 1.2 `docs/architecture/` ディレクトリを作成し、Mermaid記法のアーキテクチャ図を作成する
 
 ## PR2: コア配信基盤（S3 + CloudFront）
 
