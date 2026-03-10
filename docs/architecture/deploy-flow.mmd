@@ -1,0 +1,14 @@
+sequenceDiagram
+    participant Dev as 開発者
+    participant GH as GitHub (main)
+    participant GA as GitHub Actions
+    participant IAM as AWS IAM
+    participant S3 as S3
+    participant CF as CloudFront
+
+    Dev->>GH: git push
+    GH->>GA: workflow trigger
+    GA->>IAM: OIDC認証 / AssumeRole
+    IAM-->>GA: 一時クレデンシャル
+    GA->>S3: 静的ファイルを同期
+    GA->>CF: create-invalidation /*

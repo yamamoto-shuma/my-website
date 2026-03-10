@@ -1,0 +1,38 @@
+flowchart TD
+    User([ユーザー])
+
+    subgraph GitHub
+        Repo[my-website\nmain branch]
+        Actions[GitHub Actions]
+    end
+
+    subgraph AWS
+        subgraph DNS/TLS
+            Route53[Route53]
+            ACM[ACM 証明書\nus-east-1]
+        end
+
+        subgraph CDN
+            CF[CloudFront]
+        end
+
+        subgraph Storage
+            S3[S3 Bucket\nプライベート\n静的HTML格納]
+        end
+
+        subgraph IAM
+            OIDC[GitHub OIDC\nProvider]
+            Role[IAM Role\n最小権限]
+        end
+    end
+
+    User -->|HTTPS| Route53
+    Route53 -->|Alias| CF
+    ACM -.->|TLS証明書| CF
+    CF -->|OAC| S3
+
+    Repo -->|push| Actions
+    Actions -->|OIDC認証| OIDC
+    OIDC --> Role
+    Role -->|s3 sync| S3
+    Role -->|invalidation /*| CF
