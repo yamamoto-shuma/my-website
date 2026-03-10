@@ -2,7 +2,7 @@
 
 ## システム構成図
 
-<img src="system.svg" width="600" alt="システム構成図">
+<img src="system.svg" width="650" alt="システム構成図">
 
 ## リソース一覧
 
