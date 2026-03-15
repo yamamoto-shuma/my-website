@@ -1,9 +1,9 @@
-resource "aws_s3_bucket" "static_site" {
-  bucket = "my-website-static-site-prod"
+resource "aws_s3_bucket" "my_website" {
+  bucket = "my-website-prod"
 }
 
-resource "aws_s3_bucket_public_access_block" "static_site" {
-  bucket = aws_s3_bucket.static_site.id
+resource "aws_s3_bucket_public_access_block" "my_website" {
+  bucket = aws_s3_bucket.my_website.id
 
   block_public_acls       = true
   block_public_policy     = true
@@ -11,16 +11,16 @@ resource "aws_s3_bucket_public_access_block" "static_site" {
   restrict_public_buckets = true
 }
 
-resource "aws_s3_bucket_versioning" "static_site" {
-  bucket = aws_s3_bucket.static_site.id
+resource "aws_s3_bucket_versioning" "my_website" {
+  bucket = aws_s3_bucket.my_website.id
 
   versioning_configuration {
     status = "Enabled"
   }
 }
 
-resource "aws_s3_bucket_server_side_encryption_configuration" "static_site" {
-  bucket = aws_s3_bucket.static_site.id
+resource "aws_s3_bucket_server_side_encryption_configuration" "my_website" {
+  bucket = aws_s3_bucket.my_website.id
 
   rule {
     apply_server_side_encryption_by_default {
@@ -29,11 +29,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "static_site" {
   }
 }
 
-locals {
-  static_site_bucket_arn = aws_s3_bucket.static_site.arn
-}
-
-data "aws_iam_policy_document" "static_site_bucket" {
+data "aws_iam_policy_document" "my_website_bucket" {
   statement {
     sid    = "AllowCloudFrontOAC"
     effect = "Allow"
@@ -45,19 +41,19 @@ data "aws_iam_policy_document" "static_site_bucket" {
 
     actions = ["s3:GetObject"]
 
-    resources = ["${local.static_site_bucket_arn}/*"]
+    resources = ["${aws_s3_bucket.my_website.arn}/*"]
 
     condition {
       test     = "StringEquals"
       variable = "AWS:SourceArn"
-      values   = [local.cloudfront_distribution_arn]
+      values   = [aws_cloudfront_distribution.my_website.arn]
     }
   }
 }
 
-resource "aws_s3_bucket_policy" "static_site" {
-  bucket = aws_s3_bucket.static_site.id
-  policy = data.aws_iam_policy_document.static_site_bucket.json
+resource "aws_s3_bucket_policy" "my_website" {
+  bucket = aws_s3_bucket.my_website.id
+  policy = data.aws_iam_policy_document.my_website_bucket.json
 
-  depends_on = [aws_s3_bucket_public_access_block.static_site]
+  depends_on = [aws_s3_bucket_public_access_block.my_website]
 }
