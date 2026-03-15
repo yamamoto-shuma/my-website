@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "my_website" {
-  bucket = "my-website-prod"
+  bucket = "yamamoto-shuma-my-website-prod"
 }
 
 resource "aws_s3_bucket_public_access_block" "my_website" {

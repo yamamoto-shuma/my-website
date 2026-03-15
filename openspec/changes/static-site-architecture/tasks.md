@@ -12,8 +12,8 @@
 - [x] 2.5 HTTPS強制・HTTP→HTTPSリダイレクトを設定する
 - [x] 2.6 デフォルトルートオブジェクト（`index.html`）を設定する
 - [x] 2.7 CloudFront OAC用のS3バケットポリシーを設定する
-- [ ] 2.8 `terraform plan` / `terraform apply` を実行してリソースを作成する
-- [ ] 2.9 `*.cloudfront.net` のURLでHTTPS配信できることを確認する
+- [x] 2.8 `terraform plan` / `terraform apply` を実行してリソースを作成する
+- [x] 2.9 `*.cloudfront.net` のURLでHTTPS配信できることを確認する
 
 ## PR3: カスタムドメイン（ACM + Route53）
 
