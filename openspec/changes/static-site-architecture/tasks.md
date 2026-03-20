@@ -5,15 +5,15 @@
 
 ## PR2: コア配信基盤（S3 + CloudFront）
 
-- [ ] 2.1 `terraform/prod/s3.tf` を作成し、静的コンテンツ用S3バケットリソースを定義する
-- [ ] 2.2 パブリックアクセスブロック・バージョニング・SSE-S3暗号化を設定する
-- [ ] 2.3 `terraform/prod/cloudfront.tf` を作成し、OACリソースを定義する
-- [ ] 2.4 CloudFront Distributionを定義する（オリジン: S3、OAC適用、PriceClass_200）
-- [ ] 2.5 HTTPS強制・HTTP→HTTPSリダイレクトを設定する
-- [ ] 2.6 デフォルトルートオブジェクト（`index.html`）を設定する
-- [ ] 2.7 CloudFront OAC用のS3バケットポリシーを設定する
-- [ ] 2.8 `terraform plan` / `terraform apply` を実行してリソースを作成する
-- [ ] 2.9 `*.cloudfront.net` のURLでHTTPS配信できることを確認する
+- [x] 2.1 `terraform/prod/s3.tf` を作成し、静的コンテンツ用S3バケットリソースを定義する
+- [x] 2.2 パブリックアクセスブロック・バージョニング・SSE-S3暗号化を設定する
+- [x] 2.3 `terraform/prod/cloudfront.tf` を作成し、OACリソースを定義する
+- [x] 2.4 CloudFront Distributionを定義する（オリジン: S3、OAC適用、PriceClass_200）
+- [x] 2.5 HTTPS強制・HTTP→HTTPSリダイレクトを設定する
+- [x] 2.6 デフォルトルートオブジェクト（`index.html`）を設定する
+- [x] 2.7 CloudFront OAC用のS3バケットポリシーを設定する
+- [x] 2.8 `terraform plan` / `terraform apply` を実行してリソースを作成する
+- [x] 2.9 `*.cloudfront.net` のURLでHTTPS配信できることを確認する
 
 ## PR3: カスタムドメイン（ACM + Route53）
 
