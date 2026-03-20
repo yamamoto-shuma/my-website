@@ -31,6 +31,7 @@ resource "aws_cloudfront_distribution" "my_website" {
     allowed_methods        = ["GET", "HEAD"]
     cached_methods         = ["GET", "HEAD"]
     cache_policy_id        = data.aws_cloudfront_cache_policy.caching_optimized.id
+    compress               = true
   }
 
   restrictions {
@@ -41,5 +42,9 @@ resource "aws_cloudfront_distribution" "my_website" {
 
   viewer_certificate {
     cloudfront_default_certificate = true
+  }
+
+  lifecycle {
+    prevent_destroy = true
   }
 }
