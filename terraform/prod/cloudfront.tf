@@ -1,3 +1,7 @@
+locals {
+  s3_origin_id = aws_s3_bucket.my_website.id
+}
+
 resource "aws_cloudfront_origin_access_control" "my_website" {
   name                              = "my-website-oac"
   description                       = "OAC for my-website S3 origin"
@@ -17,12 +21,12 @@ resource "aws_cloudfront_distribution" "my_website" {
 
   origin {
     domain_name              = aws_s3_bucket.my_website.bucket_regional_domain_name
-    origin_id                = aws_s3_bucket.my_website.id
+    origin_id                = local.s3_origin_id
     origin_access_control_id = aws_cloudfront_origin_access_control.my_website.id
   }
 
   default_cache_behavior {
-    target_origin_id       = aws_s3_bucket.my_website.id
+    target_origin_id       = local.s3_origin_id
     viewer_protocol_policy = "redirect-to-https"
     allowed_methods        = ["GET", "HEAD"]
     cached_methods         = ["GET", "HEAD"]
