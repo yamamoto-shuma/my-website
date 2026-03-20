@@ -24,8 +24,8 @@
 - [x] 3.5 `terraform/prod/route53.tf` を作成し、カスタムドメインのHosted Zoneリソースを定義する
 - [x] 3.6 apexドメインからCloudFrontへのAliasレコード（A/AAAA）を定義する
 - [x] 3.7 カスタムドメインとACM証明書をCloudFrontに紐付ける
-- [ ] 3.8 `terraform plan` / `terraform apply` を実行してリソースを作成する
-- [ ] 3.9 `https://yamashu.com` でHTTPS通信できることを確認する
+- [x] 3.8 `terraform plan` / `terraform apply` を実行してリソースを作成する
+- [x] 3.9 `https://yama-shu.com` でHTTPS通信できることを確認する
 
 ## PR4: CI/CD（IAM OIDC + GitHub Actions）
 

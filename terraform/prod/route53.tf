@@ -1,5 +1,5 @@
 resource "aws_route53_zone" "my_website" {
-  name = "yamashu.com"
+  name = "yama-shu.com"
 
   lifecycle {
     prevent_destroy = true
@@ -8,7 +8,7 @@ resource "aws_route53_zone" "my_website" {
 
 resource "aws_route53_record" "apex_a" {
   zone_id = aws_route53_zone.my_website.zone_id
-  name    = "yamashu.com"
+  name    = "yama-shu.com"
   type    = "A"
 
   alias {
@@ -20,7 +20,7 @@ resource "aws_route53_record" "apex_a" {
 
 resource "aws_route53_record" "apex_aaaa" {
   zone_id = aws_route53_zone.my_website.zone_id
-  name    = "yamashu.com"
+  name    = "yama-shu.com"
   type    = "AAAA"
 
   alias {

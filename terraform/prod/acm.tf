@@ -1,6 +1,6 @@
 resource "aws_acm_certificate" "my_website" {
   provider          = aws.us_east_1
-  domain_name       = "yamashu.com"
+  domain_name       = "yama-shu.com"
   validation_method = "DNS"
 
   lifecycle {
