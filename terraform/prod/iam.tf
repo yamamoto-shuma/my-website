@@ -14,6 +14,10 @@ resource "aws_iam_openid_connect_provider" "github_actions" {
     "6938fd4d98bab03faadb97b34396831e3780aea1",
     "1c58a3a8518e8759bf075b76b750d4f2df264fcd",
   ]
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 data "aws_iam_policy_document" "github_actions_assume_role" {
@@ -47,7 +51,6 @@ data "aws_iam_policy_document" "github_actions_deploy" {
     effect = "Allow"
 
     actions = [
-      "s3:GetObject",
       "s3:PutObject",
       "s3:DeleteObject",
       "s3:ListBucket",
@@ -72,6 +75,10 @@ data "aws_iam_policy_document" "github_actions_deploy" {
 resource "aws_iam_role" "github_actions_deploy" {
   name               = "github-actions-deploy"
   assume_role_policy = data.aws_iam_policy_document.github_actions_assume_role.json
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 resource "aws_iam_role_policy" "github_actions_deploy" {
