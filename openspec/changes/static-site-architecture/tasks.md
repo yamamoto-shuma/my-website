@@ -17,15 +17,15 @@
 
 ## PR3: カスタムドメイン（ACM + Route53）
 
-- [ ] 3.1 `terraform/prod/acm.tf` を作成し、us-east-1プロバイダーエイリアスを `provider.tf` に追加する
-- [ ] 3.2 ACM証明書リソースをus-east-1で定義する（DNS検証方式）
-- [ ] 3.3 Route53の検証用CNAMEレコードリソースを定義する
-- [ ] 3.4 `aws_acm_certificate_validation` リソースで証明書の発行完了を待機する
-- [ ] 3.5 `terraform/prod/route53.tf` を作成し、カスタムドメインのHosted Zoneリソースを定義する
-- [ ] 3.6 apexドメインからCloudFrontへのAliasレコード（A/AAAA）を定義する
-- [ ] 3.7 カスタムドメインとACM証明書をCloudFrontに紐付ける
-- [ ] 3.8 `terraform plan` / `terraform apply` を実行してリソースを作成する
-- [ ] 3.9 `https://example.com` でHTTPS通信できることを確認する
+- [x] 3.1 `terraform/prod/acm.tf` を作成し、us-east-1プロバイダーエイリアスを `provider.tf` に追加する
+- [x] 3.2 ACM証明書リソースをus-east-1で定義する（DNS検証方式）
+- [x] 3.3 Route53の検証用CNAMEレコードリソースを定義する
+- [x] 3.4 `aws_acm_certificate_validation` リソースで証明書の発行完了を待機する
+- [x] 3.5 `terraform/prod/route53.tf` を作成し、カスタムドメインのHosted Zoneリソースを定義する
+- [x] 3.6 apexドメインからCloudFrontへのAliasレコード（A/AAAA）を定義する
+- [x] 3.7 カスタムドメインとACM証明書をCloudFrontに紐付ける
+- [x] 3.8 `terraform plan` / `terraform apply` を実行してリソースを作成する
+- [x] 3.9 `https://yama-shu.com` でHTTPS通信できることを確認する
 
 ## PR4: CI/CD（IAM OIDC + GitHub Actions）
 

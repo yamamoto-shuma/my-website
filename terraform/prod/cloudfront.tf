@@ -18,6 +18,7 @@ resource "aws_cloudfront_distribution" "my_website" {
   enabled             = true
   price_class         = "PriceClass_200"
   default_root_object = "index.html"
+  aliases             = ["yama-shu.com"]
 
   origin {
     domain_name              = aws_s3_bucket.my_website.bucket_regional_domain_name
@@ -41,7 +42,9 @@ resource "aws_cloudfront_distribution" "my_website" {
   }
 
   viewer_certificate {
-    cloudfront_default_certificate = true
+    acm_certificate_arn      = aws_acm_certificate_validation.my_website.certificate_arn
+    ssl_support_method       = "sni-only"
+    minimum_protocol_version = "TLSv1.2_2021"
   }
 
   lifecycle {
