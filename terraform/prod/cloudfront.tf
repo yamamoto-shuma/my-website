@@ -33,6 +33,11 @@ resource "aws_cloudfront_distribution" "my_website" {
     cached_methods         = ["GET", "HEAD"]
     cache_policy_id        = data.aws_cloudfront_cache_policy.caching_optimized.id
     compress               = true
+
+    function_association {
+      event_type   = "viewer-request"
+      function_arn = aws_cloudfront_function.index_html_rewrite.arn
+    }
   }
 
   restrictions {
