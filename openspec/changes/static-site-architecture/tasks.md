@@ -29,12 +29,12 @@
 
 ## PR4: CI/CD（IAM OIDC + GitHub Actions）
 
-- [ ] 4.1 `terraform/prod/iam.tf` を作成し、GitHub OIDC Providerリソースを定義する
-- [ ] 4.2 GitHub Actions用IAMロールを定義する（信頼ポリシー: 対象リポジトリ・mainブランチ限定）
-- [ ] 4.3 最小権限ポリシー（S3同期・CloudFront Invalidation）をIAMロールにアタッチする
-- [ ] 4.4 `terraform plan` / `terraform apply` を実行してIAMリソースを作成する
-- [ ] 4.5 `.github/workflows/deploy.yml` を作成し、mainブランチpushをトリガーとするワークフローを定義する
-- [ ] 4.6 OIDC認証（`aws-actions/configure-aws-credentials`）を設定する
-- [ ] 4.7 `aws s3 sync` で静的ファイルをS3に同期するステップを追加する
-- [ ] 4.8 `aws cloudfront create-invalidation --paths "/*"` でキャッシュ無効化するステップを追加する
+- [x] 4.1 `terraform/prod/iam.tf` を作成し、GitHub OIDC Providerリソースを定義する
+- [x] 4.2 GitHub Actions用IAMロールを定義する（信頼ポリシー: 対象リポジトリ・mainブランチ限定）
+- [x] 4.3 最小権限ポリシー（S3同期・CloudFront Invalidation）をIAMロールにアタッチする
+- [x] 4.4 `terraform plan` / `terraform apply` を実行してIAMリソースを作成する
+- [x] 4.5 `.github/workflows/deploy.yml` を作成し、mainブランチpushをトリガーとするワークフローを定義する
+- [x] 4.6 OIDC認証（`aws-actions/configure-aws-credentials`）を設定する
+- [x] 4.7 `aws s3 sync` で静的ファイルをS3に同期するステップを追加する
+- [x] 4.8 `aws cloudfront create-invalidation --paths "/*"` でキャッシュ無効化するステップを追加する
 - [ ] 4.9 テストコミットをmainにpushしてデプロイが自動実行されることを確認する
