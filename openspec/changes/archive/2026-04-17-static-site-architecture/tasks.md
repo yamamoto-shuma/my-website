@@ -37,4 +37,4 @@
 - [x] 4.6 OIDC認証（`aws-actions/configure-aws-credentials`）を設定する
 - [x] 4.7 `aws s3 sync` で静的ファイルをS3に同期するステップを追加する
 - [x] 4.8 `aws cloudfront create-invalidation --paths "/*"` でキャッシュ無効化するステップを追加する
-- [ ] 4.9 テストコミットをmainにpushしてデプロイが自動実行されることを確認する
+- [x] 4.9 テストコミットをmainにpushしてデプロイが自動実行されることを確認する
