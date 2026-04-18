@@ -23,7 +23,7 @@ Accepted
 - **Vite**: 高速なビルドツール。`build.outDir: 'dist'`、`publicDir: 'static'` を設定し、S3へのデプロイ対象を `dist/` とする
 - **TypeScript**: 問題データのスキーマを型定義で保証する
 - **React Router**: `/`（トップページ）と `/aws-quiz`（クイズ）のルーティングを管理する
-- **Node.js 22 LTS**: 2026年4月時点での最新安定版（Active LTS）
+- **Node.js 24 LTS**: 2026年4月時点での最新安定版（Active LTS）
 
 ### ファイル構成
 

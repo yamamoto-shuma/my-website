@@ -4,10 +4,10 @@
 
 ## 2. Reactプロジェクトセットアップ（MWS-008）
 
-- [ ] 2.1 `npm create vite@latest` で React + TypeScript プロジェクトを初期化する（Node.js 22 LTS）
+- [ ] 2.1 `npm create vite@latest` で React + TypeScript プロジェクトを初期化する（Node.js 24 LTS）
 - [ ] 2.2 `vite.config.ts` で `publicDir: 'static'`、`build.outDir: 'dist'` を設定する
 - [ ] 2.3 `.gitignore` に `dist/` を追加する
-- [ ] 2.4 `.github/workflows/deploy.yml` に Node.js 22 セットアップ・`npm ci`・`npm run build` のステップを追加し、sync元を `./public` から `./dist` に変更する（`cache: 'npm'` を設定してCIキャッシュを有効化する）
+- [ ] 2.4 `.github/workflows/deploy.yml` に Node.js 24 セットアップ・`npm ci`・`npm run build` のステップを追加し、sync元を `./public` から `./dist` に変更する（`cache: 'npm'` を設定してCIキャッシュを有効化する）
 - [ ] 2.5 既存の `public/index.html` を `src/pages/Home.tsx` に移行し、`public/` ディレクトリを削除する
 - [ ] 2.6 React Router を設定し、`/` → `Home`、`/aws-quiz` → `AwsQuiz` のルーティングを実装する
 - [ ] 2.7 `npm run build` でビルドが正常に完了し、`dist/` に成果物が出力されることをローカルで確認する

@@ -77,9 +77,9 @@ export default defineConfig({
 - `public/aws-quiz/index.html` → `src/pages/AwsQuiz.tsx` に置き換え
 - `public/` ディレクトリ自体は削除
 
-### D3: Node.js バージョン — Node.js 22 LTS
+### D3: Node.js バージョン — Node.js 24 LTS
 
-**決定**: Node.js 22（Active LTS）を使用する。
+**決定**: Node.js 24（Active LTS）を使用する。
 
 **理由**: 2026年4月時点での最新安定版（Active LTS）。2027年4月まで Active LTS サポートが続く。
 
@@ -108,7 +108,7 @@ interface Question {
 - name: Setup Node.js
   uses: actions/setup-node@v4
   with:
-    node-version: '22'
+    node-version: '24'
     cache: 'npm'
 
 - name: Install dependencies
