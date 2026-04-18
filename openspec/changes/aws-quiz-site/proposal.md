@@ -20,7 +20,7 @@
 
 ### Modified Capabilities
 
-- `cicd-deploy`: ビルドステップ（Node.js 22 LTS, `npm ci`, `npm run build`）を追加し、デプロイ元を `./public` から `./dist` に変更する
+- `cicd-deploy`: ビルドステップ（Node.js 24 LTS, `npm ci`, `npm run build`）を追加し、デプロイ元を `./public` から `./dist` に変更する
 
 ## Impact
 
