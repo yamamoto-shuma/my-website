@@ -1,7 +1,7 @@
 ## ADDED Requirements
 
 ### Requirement: 問題データがJSONスキーマに従って管理される
-全ての問題データは定められたJSONスキーマに従わなければならない（SHALL）。スキーマに違反するデータはTypeScriptの型エラーとして検出されなければならない（SHALL）。
+全ての問題データは定められたJSONスキーマに従わなければならない（SHALL）。型フィールド（id・service・phase・question・answer・explanation）の違反はTypeScriptの型エラーとして検出される。choices の4要素はTypeScriptの型では強制できないため、データ管理上の規約として運用する（SHALL）。
 
 ```typescript
 interface Question {
