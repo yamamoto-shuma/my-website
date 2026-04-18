@@ -1,4 +1,4 @@
-# ADR-004: クイズサイトの技術スタックにReact + Vite + TypeScriptを採用する
+# ADR-004: サイト全体のフロントエンドをReact + Vite + TypeScriptで統一する
 
 ## ステータス
 
