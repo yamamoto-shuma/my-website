@@ -9,11 +9,11 @@
 
 #### Scenario: npmビルドが実行される
 - **WHEN** デプロイワークフローが実行される
-- **THEN** `npm ci` と `npm run build` が順に実行され、`public/aws-quiz/` にビルド成果物が出力される
+- **THEN** `npm ci` と `npm run build` が順に実行され、`dist/` にビルド成果物が出力される
 
 #### Scenario: S3に静的ファイルが同期される
 - **WHEN** npmビルドが完了する
-- **THEN** `public/` 以下の全ファイル（ビルド成果物を含む）がS3バケットに同期される（削除も含む）
+- **THEN** `dist/` 以下の全ファイルがS3バケットに同期される（削除も含む）
 
 #### Scenario: CloudFrontのキャッシュが全無効化される
 - **WHEN** S3同期が完了する

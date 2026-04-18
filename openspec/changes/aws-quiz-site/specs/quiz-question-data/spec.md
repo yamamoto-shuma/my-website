@@ -19,9 +19,9 @@ interface Question {
 - **WHEN** 上記スキーマに従ったJSONを `src/data/questions/<service>.json` に追加する
 - **THEN** TypeScriptのビルドがエラーなく完了する
 
-#### Scenario: スキーマに違反するデータを追加する
-- **WHEN** `choices` が4要素でないデータを追加する
-- **THEN** TypeScriptがビルドエラーを出力する
+#### Scenario: 選択肢数の管理規約
+- **WHEN** 問題データを追加する
+- **THEN** `choices` は必ず4要素とする（TypeScriptの型では強制できないため、データ管理上の規約として運用する）
 
 ### Requirement: 問題データがサービス別・Phase別に管理される
 問題データはサービスごとにJSONファイルに分割して `src/data/questions/` 以下に配置しなければならない（SHALL）。各ファイルには当該サービスの問題のみを含まなければならない（SHALL）。
@@ -30,9 +30,9 @@ interface Question {
 - **WHEN** `src/data/questions/` を参照する
 - **THEN** サービスごと（例: `vpc.json`, `iam.json`）にファイルが存在する
 
-#### Scenario: Phaseでフィルタリングできる
-- **WHEN** Phase1の問題のみを取得する処理を実行する
-- **THEN** `phase: 1` のデータのみが返される
+#### Scenario: phaseフィールドが将来のフィルタリングに対応できる
+- **WHEN** 問題データの `phase` フィールドを参照する
+- **THEN** `phase: 1` のように数値で識別でき、将来のPhase別フィルタリング実装に利用可能である（現時点ではUIでのPhase絞り込みは実装しない）
 
 ### Requirement: Phase1の問題データが充実している
 VPC・IAM・KMSの各サービスについて、実務レベルの問題が各10問以上作成されていなければならない（SHALL）。

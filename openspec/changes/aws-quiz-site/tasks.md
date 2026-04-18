@@ -1,6 +1,6 @@
 ## 1. ADR作成（MWS-007）
 
-- [ ] 1.1 `docs/adr/ADR-004-quiz-site-tech-stack.md` を作成する（技術スタック・全体React化・ファイル構成・データ設計の選定根拠を記載）
+- [ ] 1.1 `docs/adr/004-quiz-site-tech-stack.md` を作成する（技術スタック・全体React化・ファイル構成・データ設計の選定根拠を記載）
 
 ## 2. Reactプロジェクトセットアップ（MWS-008）
 
