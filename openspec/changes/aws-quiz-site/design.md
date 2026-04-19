@@ -122,6 +122,33 @@ interface Question {
   run: aws s3 sync ./dist s3://...
 ```
 
+### D6: CloudFront Function — SPA対応ルーティング
+
+**決定**: CloudFront FunctionのURLリライトロジックをSPA対応に変更する。
+
+**理由**: React SPAではルートが1つの `index.html` に集約されるため、旧来の「`/aws-quiz` → `/aws-quiz/index.html`」リダイレクトでは404になる。拡張子なしのパスは全て `/index.html` に書き換え、React Routerにルーティングを委譲する必要がある。
+
+**変更前:**
+```js
+// /aws-quiz/ → /aws-quiz/index.html
+// /aws-quiz  → /aws-quiz/index.html
+if (uri.endsWith('/')) {
+  request.uri += 'index.html';
+} else if (!uri.includes('.', uri.lastIndexOf('/'))) {
+  request.uri += '/index.html';
+}
+```
+
+**変更後:**
+```js
+// 拡張子なしパスは全て /index.html（React Routerが処理）
+if (!uri.includes('.', uri.lastIndexOf('/'))) {
+  request.uri = '/index.html';
+}
+```
+
+この変更は Terraform で管理されており、`terraform apply` が必要。
+
 ## Risks / Trade-offs
 
 - **`dist/` の .gitignore 管理**
@@ -135,3 +162,7 @@ interface Question {
 - **Node.js CI追加によるデプロイ時間増加**
   → `npm ci` と `npm run build` で約30〜60秒増加する見込み（許容範囲）
   → 対策: `cache: 'npm'` で `node_modules` キャッシュを活用する（tasks 2.4 で設定）
+
+- **CloudFront Function 変更に `terraform apply` が必要**
+  → リスク: コードをデプロイしても CloudFront Function が更新されるまでは `/aws-quiz` で404になる
+  → 対策: MWS-008 の PR マージ前に `terraform apply` を実施し、ルーティング変更を先行適用する

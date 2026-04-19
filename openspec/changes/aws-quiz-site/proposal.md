@@ -21,6 +21,7 @@
 ### Modified Capabilities
 
 - `cicd-deploy`: ビルドステップ（Node.js 24 LTS, `npm ci`, `npm run build`）を追加し、デプロイ元を `./public` から `./dist` に変更する
+- `static-site-hosting`: CloudFront FunctionをSPA対応に更新する（拡張子なしパスを全て `/index.html` にリダイレクトし、React Routerにルーティングを委譲する）
 
 ## Impact
 
@@ -29,3 +30,4 @@
 - `public/` : 削除（既存の静的ファイルはReactコンポーネントに移行）
 - `.github/workflows/deploy.yml` : ビルドステップ追加・sync元変更
 - `package.json`, `vite.config.ts`, `index.html` : 新規追加
+- `terraform/prod/functions/index_html_rewrite.js` : SPA対応ルーティングに変更（`terraform apply` 必要）
