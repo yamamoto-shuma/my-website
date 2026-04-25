@@ -10,7 +10,8 @@
       "365日（1年）",
       "730日（2年）"
     ],
-    "answer": 2,
-    "explanation": "AWS KMS のカスタマーマネージドキーの自動ローテーションは最短で365日（1年）ごとに設定できます。ローテーションにより古いキーマテリアルは保持され、既存の暗号化データを復号できます。"
+    "answer": 1,
+    "explanation": "AWS KMS のカスタマーマネージドキーの自動ローテーションは90日から2560日の範囲でカスタム設定できます（2024年4月以降）。デフォルトは365日です。90日が設定可能な最短期間です。",
+    "reference": "https://docs.aws.amazon.com/kms/latest/APIReference/API_EnableKeyRotation.html"
   }
 ]

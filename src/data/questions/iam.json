@@ -11,6 +11,7 @@
       "ルートアカウントを日常業務で使用する"
     ],
     "answer": 1,
-    "explanation": "最小権限の原則とは、ユーザーやサービスに必要最低限の権限のみを付与することです。これによりセキュリティリスクを最小化できます。"
+    "explanation": "最小権限の原則とは、ユーザーやサービスに必要最低限の権限のみを付与することです。これによりセキュリティリスクを最小化できます。",
+    "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html"
   }
 ]

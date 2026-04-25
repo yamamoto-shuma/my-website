@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import type { Question } from '../types/quiz';
+import type { Question, ResultItem } from '../types/quiz';
 import ServiceSelector from '../components/ServiceSelector';
 import QuizCard from '../components/QuizCard';
 import Result from '../components/Result';
@@ -18,10 +18,6 @@ const ALL_SERVICES = [...new Set(ALL_QUESTIONS.map((q) => q.service))];
 
 type Phase = 'selecting' | 'quizzing' | 'result';
 
-interface ResultItem {
-  question: Question;
-  correct: boolean;
-}
 
 function shuffle<T>(arr: T[]): T[] {
   const copy = [...arr];
@@ -81,6 +77,7 @@ function AwsQuiz() {
   if (phase === 'quizzing') {
     return (
       <QuizCard
+        key={currentIndex}
         question={questions[currentIndex]}
         current={currentIndex + 1}
         total={questions.length}

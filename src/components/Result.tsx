@@ -1,9 +1,4 @@
-import type { Question } from '../types/quiz';
-
-interface ResultItem {
-  question: Question;
-  correct: boolean;
-}
+import type { ResultItem } from '../types/quiz';
 
 interface ResultProps {
   results: ResultItem[];

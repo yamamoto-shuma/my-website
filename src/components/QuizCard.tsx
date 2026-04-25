@@ -72,6 +72,16 @@ function QuizCard({ question, current, total, onNext }: QuizCardProps) {
             {selected === question.answer ? '正解！' : '不正解'}
           </p>
           <p style={{ margin: 0 }}>{question.explanation}</p>
+          {question.reference && (
+            <a
+              href={question.reference}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ display: 'inline-block', marginTop: 8, fontSize: 13, color: '#0066cc' }}
+            >
+              AWS公式ドキュメント →
+            </a>
+          )}
         </div>
       )}
       <button

@@ -6,4 +6,10 @@ export interface Question {
   choices: string[];
   answer: number;
   explanation: string;
+  reference?: string;
+}
+
+export interface ResultItem {
+  question: Question;
+  correct: boolean;
 }

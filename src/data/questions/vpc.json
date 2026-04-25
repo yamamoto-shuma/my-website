@@ -11,6 +11,7 @@
       "Virtual Private Gateway"
     ],
     "answer": 1,
-    "explanation": "Internet Gateway（IGW）は VPC とインターネット間の通信を可能にするコンポーネントです。パブリックサブネット内のリソースがインターネットと通信するために必要です。"
+    "explanation": "Internet Gateway（IGW）は VPC とインターネット間の通信を可能にするコンポーネントです。パブリックサブネット内のリソースがインターネットと通信するために必要です。",
+    "reference": "https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Internet_Gateway.html"
   }
 ]
