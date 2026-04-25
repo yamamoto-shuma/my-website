@@ -5,13 +5,14 @@
 
 ```typescript
 interface Question {
-  id: string;          // "{service}-{連番3桁}" 例: "vpc-001"
-  phase: number;       // Phaseの番号（1〜6）
-  service: string;     // サービス名 例: "VPC", "IAM", "KMS"
-  question: string;    // 問題文
-  choices: string[];   // 4要素の配列（選択肢）
-  answer: number;      // 正解のインデックス（0〜3）
-  explanation: string; // 解説文
+  id: string;           // "{service}-{連番3桁}" 例: "vpc-001"
+  phase: number;        // Phaseの番号（1〜6）
+  service: string;      // サービス名 例: "VPC", "IAM", "KMS"
+  question: string;     // 問題文
+  choices: string[];    // 4要素の配列（選択肢）
+  answer: number;       // 正解のインデックス（0〜3）
+  explanation: string;  // 解説文
+  reference?: string;   // AWS公式ドキュメントのURL（省略可）
 }
 ```
 
