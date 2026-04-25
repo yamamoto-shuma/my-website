@@ -1,0 +1,16 @@
+[
+  {
+    "id": "vpc-001",
+    "phase": 1,
+    "service": "VPC",
+    "question": "Amazon VPC において、インターネットとの通信を可能にするために必要なゲートウェイはどれですか？",
+    "choices": [
+      "NAT Gateway",
+      "Internet Gateway",
+      "Transit Gateway",
+      "Virtual Private Gateway"
+    ],
+    "answer": 1,
+    "explanation": "Internet Gateway（IGW）は VPC とインターネット間の通信を可能にするコンポーネントです。パブリックサブネット内のリソースがインターネットと通信するために必要です。"
+  }
+]
