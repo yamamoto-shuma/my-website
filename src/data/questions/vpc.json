@@ -257,10 +257,10 @@
     "service": "VPC",
     "question": "VPCフローログのデータを保存・送信できる送信先として正しいものはどれですか？",
     "choices": [
-      { "text": "Amazon CloudWatch Logs、Amazon S3、Amazon Kinesis Data Firehose", "correct": true },
-      { "text": "Amazon CloudWatch Logsのみ", "correct": false },
-      { "text": "Amazon S3のみ", "correct": false },
-      { "text": "Amazon CloudWatch LogsとAmazon S3のみ", "correct": false }
+      { "text": "CloudWatch Logs・S3・Kinesis Data Firehose の3種類", "correct": true },
+      { "text": "CloudWatch Logsのみ", "correct": false },
+      { "text": "S3のみ", "correct": false },
+      { "text": "CloudWatch LogsとS3のみ", "correct": false }
     ],
     "explanation": "VPCフローログは CloudWatch Logs、S3、Kinesis Data Firehose の3種類の送信先をサポートしています。CloudWatch Logsはリアルタイム分析・アラーム設定に、S3は長期保存・コスト効率に、Kinesis Data Firehoseはサードパーティ分析ツールへのストリーミングに適しています。",
     "reference": "https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs.html#flow-logs-destinations"
