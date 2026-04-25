@@ -466,5 +466,31 @@
     ],
     "explanation": "SSE-KMSが設定されたバケットへのアップロード時、S3はKMS APIのGenerateDataKeyを呼び出してデータキーを生成します。そのため、アップロードするIAMエンティティにはs3:PutObjectに加えてkms:GenerateDataKeyの権限が必要です。この権限不足はよくあるエラーで、s3:PutObjectのみ付与した状態でアップロードするとKMSアクセス拒否エラーが発生します。ダウンロード（GetObject）時はkms:Decryptが必要になります。",
     "reference": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingKMSEncryption.html"
+  },
+  {
+    "id": "kms-023",
+    "phase": 1,
+    "service": "KMS",
+    "question": "RDSインスタンスの暗号化設定に関する正しい説明はどれですか？",
+    "choices": [
+      {
+        "text": "暗号化はインスタンス作成時にのみ有効にでき、稼働中のインスタンスに後から暗号化を追加することはできない",
+        "correct": true
+      },
+      {
+        "text": "稼働中のRDSインスタンスの暗号化設定はコンソールのModifyで変更できる",
+        "correct": false
+      },
+      {
+        "text": "暗号化されていないスナップショットから暗号化インスタンスをそのままリストアできる",
+        "correct": false
+      },
+      {
+        "text": "RDSの暗号化を有効にするとリードレプリカは自動的に暗号化なしに切り替わる",
+        "correct": false
+      }
+    ],
+    "explanation": "RDSインスタンスの暗号化はインスタンス作成時のみ設定できます。稼働中インスタンスへの後付け暗号化は不可能です。既存の非暗号化インスタンスを暗号化するには、①スナップショット作成→②スナップショットのコピー時にCMKを指定して暗号化コピーを作成→③暗号化スナップショットから新規インスタンスをリストアする手順が必要で、ダウンタイムが伴います。設計段階での暗号化有効化の判断が重要であり、後から変更できない代表的な設定の1つです。",
+    "reference": "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.Encryption.html"
   }
 ]

@@ -1,31 +1,5 @@
 [
   {
-    "id": "vpc-001",
-    "phase": 1,
-    "service": "VPC",
-    "question": "Amazon VPC において、インターネットとの通信を可能にするために必要なゲートウェイはどれですか？",
-    "choices": [
-      {
-        "text": "Internet Gateway",
-        "correct": true
-      },
-      {
-        "text": "NAT Gateway",
-        "correct": false
-      },
-      {
-        "text": "Transit Gateway",
-        "correct": false
-      },
-      {
-        "text": "Virtual Private Gateway",
-        "correct": false
-      }
-    ],
-    "explanation": "Internet Gateway（IGW）は VPC とインターネット間の通信を可能にするコンポーネントです。パブリックサブネット内のリソースがインターネットと通信するために必要です。",
-    "reference": "https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Internet_Gateway.html"
-  },
-  {
     "id": "vpc-003",
     "phase": 1,
     "service": "VPC",
@@ -78,32 +52,6 @@
     "reference": "https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html"
   },
   {
-    "id": "vpc-005",
-    "phase": 1,
-    "service": "VPC",
-    "question": "ネットワークACL（NACL）とセキュリティグループの違いとして正しいものはどれですか？",
-    "choices": [
-      {
-        "text": "NACLはステートレスで、サブネットレベルで適用される",
-        "correct": true
-      },
-      {
-        "text": "NACLはステートフルで、セキュリティグループはステートレスである",
-        "correct": false
-      },
-      {
-        "text": "NACLはインスタンスレベルで適用される",
-        "correct": false
-      },
-      {
-        "text": "NACLはデフォルトですべてのトラフィックを許可する",
-        "correct": false
-      }
-    ],
-    "explanation": "NACLはステートレスなファイアウォールで、サブネットレベルで適用されます。インバウンドとアウトバウンドのルールを個別に設定する必要があります。デフォルトのNACLはすべてのトラフィックを許可し、カスタムNACLはすべてを拒否します。",
-    "reference": "https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html"
-  },
-  {
     "id": "vpc-006",
     "phase": 1,
     "service": "VPC",
@@ -154,32 +102,6 @@
     ],
     "explanation": "Gateway Endpoint は S3 と DynamoDB に対応しており、追加料金なしで使用できます。VPCのルートテーブルにエントリを追加することでインターネットを経由せずにアクセスできます。Interface Endpoint は他のAWSサービスに使用します。",
     "reference": "https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-s3.html"
-  },
-  {
-    "id": "vpc-009",
-    "phase": 1,
-    "service": "VPC",
-    "question": "Elastic IPアドレスに関する説明として正しいものはどれですか？",
-    "choices": [
-      {
-        "text": "EC2インスタンスを停止・起動してもアドレスが維持され、インスタンスに再割り当てできる",
-        "correct": true
-      },
-      {
-        "text": "EC2インスタンスの起動時に自動的に割り当てられる固定IPアドレスである",
-        "correct": false
-      },
-      {
-        "text": "Elastic IPは複数のリージョンにまたがって使用できる",
-        "correct": false
-      },
-      {
-        "text": "Elastic IPはEC2インスタンスに割り当てている限り料金が発生しない",
-        "correct": false
-      }
-    ],
-    "explanation": "Elastic IPはAWSアカウントに割り当てられる静的なIPv4アドレスです。インスタンスを停止しても解放されず、別のインスタンスへ移動できます。ただし、割り当て済みで稼働中インスタンスへアタッチされていない場合は料金が発生します。",
-    "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/elastic-ip-addresses-eip.html"
   },
   {
     "id": "vpc-010",
@@ -336,32 +258,6 @@
     ],
     "explanation": "AWS PrivateLinkを使用すると、インターネットを経由せずにVPC内のプライベートIPアドレスでサードパーティサービスにアクセスできます。VPCピアリングはCIDR重複不可・推移的ルーティング不可の制約があり、多数のサービスとの接続には不向きです。PrivateLinkはCIDRの重複があっても使用できます。",
     "reference": "https://docs.aws.amazon.com/vpc/latest/privatelink/what-is-privatelink.html"
-  },
-  {
-    "id": "vpc-018",
-    "phase": 1,
-    "service": "VPC",
-    "question": "Internet Gateway（IGW）の可用性に関する正しい説明はどれですか？",
-    "choices": [
-      {
-        "text": "IGWはAWSによって水平スケーリングされ冗長化されており、単一障害点にならない",
-        "correct": true
-      },
-      {
-        "text": "IGWはAZ単位でスコープされるため、AZごとに1つ作成する必要がある",
-        "correct": false
-      },
-      {
-        "text": "IGWには帯域幅の上限があり、高トラフィック時はスケールアップが必要",
-        "correct": false
-      },
-      {
-        "text": "1つのVPCに複数のIGWをアタッチしてスループットを向上できる",
-        "correct": false
-      }
-    ],
-    "explanation": "Internet GatewayはAWSが管理する完全冗長化・水平スケーリングされたコンポーネントです。単一障害点にならず、帯域幅の制限もありません。1つのVPCにアタッチできるIGWは1つのみです。可用性の観点でIGW自体を冗長化する設計は不要です。",
-    "reference": "https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Internet_Gateway.html"
   },
   {
     "id": "vpc-020",

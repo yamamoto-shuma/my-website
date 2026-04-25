@@ -6,7 +6,7 @@
     "question": "AWSマネージドポリシーとカスタマーマネージドポリシーの違いとして正しいものはどれですか？",
     "choices": [
       {
-        "text": "AWSマネージドポリシーはAWSが作成・管理し、複数のエンティティにアタッチできる",
+        "text": "AWSマネージドポリシーはAWSが管理するためユーザーが内容を変更・カスタマイズできない",
         "correct": true
       },
       {
@@ -22,7 +22,7 @@
         "correct": false
       }
     ],
-    "explanation": "AWSマネージドポリシーはAWSが作成・管理するポリシーで、一般的なユースケース向けに用意されています。複数のIAMエンティティ（ユーザー・グループ・ロール）にアタッチできます。カスタマーマネージドポリシーはユーザーが独自に作成・管理します。",
+    "explanation": "AWSマネージドポリシーはAWSが作成・管理するポリシーで、ユーザーは内容を変更できません。一般的なユースケース（ReadOnlyAccess・AdministratorAccessなど）向けに用意されています。カスタマーマネージドポリシーはユーザーが独自に作成・管理でき、自社要件に合わせた細かな権限設定が可能です。どちらも複数のIAMエンティティ（ユーザー・グループ・ロール）にアタッチできます。",
     "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_managed-vs-inline.html"
   },
   {
@@ -180,32 +180,6 @@
     ],
     "explanation": "Permission Boundaryはエンティティ（ユーザー・ロール）の最大権限の上限を設定します。アイデンティティベースポリシーとPermission Boundaryの両方で許可されている場合のみ操作が可能です。権限を付与するものではなく、既存の権限を制限するためのガードレールです。",
     "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html"
-  },
-  {
-    "id": "iam-009",
-    "phase": 1,
-    "service": "IAM",
-    "question": "rootアカウントのセキュリティ保護として最も重要なベストプラクティスはどれですか？",
-    "choices": [
-      {
-        "text": "rootアカウントにMFA（多要素認証）を設定し、日常業務ではIAMユーザー・ロールを使用する",
-        "correct": true
-      },
-      {
-        "text": "rootアカウントを日常業務に使用し、操作ログを取得する",
-        "correct": false
-      },
-      {
-        "text": "rootアカウントのアクセスキーを作成して安全な場所に保管する",
-        "correct": false
-      },
-      {
-        "text": "rootアカウントのパスワードを全管理者に共有する",
-        "correct": false
-      }
-    ],
-    "explanation": "rootアカウントはAWSアカウントのすべての権限を持ち、制限できません。MFAを必ず設定し、日常業務では使用しないことが強く推奨されます。rootアカウントのアクセスキーは作成しないことがベストプラクティスです。",
-    "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_root-user.html"
   },
   {
     "id": "iam-010",
