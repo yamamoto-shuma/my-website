@@ -91,7 +91,7 @@ function AwsQuiz() {
     );
   }
 
-  return <Result results={results} onRetry={handleRetry} />;
+  return <Result results={results} onRetry={handleRetry} onBackToTop={handleBackToTop} />;
 }
 
 export default AwsQuiz;
