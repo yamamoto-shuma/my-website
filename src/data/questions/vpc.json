@@ -152,5 +152,131 @@
     ],
     "explanation": "Transit Gatewayはハブ＆スポーク型のネットワークアーキテクチャを実現するサービスです。多数のVPCやオンプレミス（VPN/Direct Connect）を1つのTransit Gatewayに接続することで、フルメッシュのVPCピアリングを設定する複雑さを解消します。",
     "reference": "https://docs.aws.amazon.com/vpc/latest/tgw/what-is-transit-gateway.html"
+  },
+  {
+    "id": "vpc-012",
+    "phase": 1,
+    "service": "VPC",
+    "question": "マルチAZ構成でNAT Gatewayを高可用性に運用するための正しいアーキテクチャはどれですか？",
+    "choices": [
+      { "text": "各AZのパブリックサブネットにNAT Gatewayを1つずつ配置し、同一AZのプライベートサブネットのルートテーブルから参照する", "correct": true },
+      { "text": "1つのNAT Gatewayを全AZのプライベートサブネットで共有する", "correct": false },
+      { "text": "NAT GatewayはAWSが自動的に複数AZへ冗長化するため、1つだけ作成すれば良い", "correct": false },
+      { "text": "プライベートサブネットにNAT Gatewayを配置し、IGWと組み合わせる", "correct": false }
+    ],
+    "explanation": "NAT GatewayはAZ内でのみ冗長化されます。AZ障害に備えるには、各AZのパブリックサブネットに1つずつNAT Gatewayを配置し、各AZのプライベートサブネットのルートテーブルが同じAZのNAT Gatewayへ向くよう設定します。1つ共有する構成ではAZ障害で全プライベートサブネットのアウトバウンドが停止します。",
+    "reference": "https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html#nat-gateway-basics"
+  },
+  {
+    "id": "vpc-013",
+    "phase": 1,
+    "service": "VPC",
+    "question": "EC2インスタンスにパブリックDNS名（例: ec2-xx-xx-xx.compute.amazonaws.com）を付与するために必要なVPCの設定はどれですか？",
+    "choices": [
+      { "text": "enableDnsHostnames と enableDnsSupport の両方を有効にする", "correct": true },
+      { "text": "enableDnsHostnames のみ有効にする", "correct": false },
+      { "text": "enableDnsSupport のみ有効にする", "correct": false },
+      { "text": "デフォルトVPCでは自動的に有効になるため設定不要", "correct": false }
+    ],
+    "explanation": "パブリックDNS名の付与には enableDnsSupport（VPC内のDNS解決を有効化）と enableDnsHostnames（パブリックIPへのDNSホスト名付与）の両方が必要です。enableDnsSupport だけではDNS解決は動作しますがホスト名は付与されず、enableDnsHostnames だけでは効果がありません。",
+    "reference": "https://docs.aws.amazon.com/vpc/latest/userguide/vpc-dns.html"
+  },
+  {
+    "id": "vpc-014",
+    "phase": 1,
+    "service": "VPC",
+    "question": "ALBからEC2へのアクセスをセキュリティグループで制御する最もベストプラクティスな方法はどれですか？",
+    "choices": [
+      { "text": "EC2のセキュリティグループのインバウンドルールで、ソースにALBのセキュリティグループIDを指定する", "correct": true },
+      { "text": "EC2のセキュリティグループでALBのElastic IPアドレスを許可する", "correct": false },
+      { "text": "ALBとEC2に同一のセキュリティグループを割り当てる", "correct": false },
+      { "text": "NACLでALBのサブネットCIDRを許可し、セキュリティグループは使用しない", "correct": false }
+    ],
+    "explanation": "セキュリティグループのソースに別のセキュリティグループIDを指定することで、IPアドレスではなくセキュリティグループメンバーシップでアクセス制御できます。ALBのIPは動的に変わるため、IPアドレスでの管理は現実的でなく、セキュリティグループ参照が最も安全でメンテナンスコストも低い方法です。",
+    "reference": "https://docs.aws.amazon.com/vpc/latest/userguide/security-group-rules.html"
+  },
+  {
+    "id": "vpc-015",
+    "phase": 1,
+    "service": "VPC",
+    "question": "ネットワークACL（NACL）のルール評価に関する正しい説明はどれですか？",
+    "choices": [
+      { "text": "ルール番号の小さい順に評価され、最初にマッチしたルールが即座に適用される", "correct": true },
+      { "text": "すべてのルールが評価され、Allowが1つでもあればアクセスが許可される", "correct": false },
+      { "text": "ルール番号の大きい順（高優先度）に評価される", "correct": false },
+      { "text": "DenyルールはAllowルールより常に優先して評価される", "correct": false }
+    ],
+    "explanation": "NACLはルール番号の昇順（小さい順）に評価し、最初にマッチしたルールを適用して以降の評価は行いません。そのため、広いCIDR範囲のDenyを低い番号に置くと、後続の特定IPのAllowより優先されてしまいます。ルール番号の設計は慎重に行う必要があります。",
+    "reference": "https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html#nacl-rules"
+  },
+  {
+    "id": "vpc-016",
+    "phase": 1,
+    "service": "VPC",
+    "question": "サードパーティSaaSサービスをVPC内のプライベートネットワーク経由で安全に利用したい場合、最適なサービスはどれですか？",
+    "choices": [
+      { "text": "AWS PrivateLink（VPC Endpoint Services）", "correct": true },
+      { "text": "VPCピアリング", "correct": false },
+      { "text": "Transit Gateway", "correct": false },
+      { "text": "AWS Direct Connect", "correct": false }
+    ],
+    "explanation": "AWS PrivateLinkを使用すると、インターネットを経由せずにVPC内のプライベートIPアドレスでサードパーティサービスにアクセスできます。VPCピアリングはCIDR重複不可・推移的ルーティング不可の制約があり、多数のサービスとの接続には不向きです。PrivateLinkはCIDRの重複があっても使用できます。",
+    "reference": "https://docs.aws.amazon.com/vpc/latest/privatelink/what-is-privatelink.html"
+  },
+  {
+    "id": "vpc-017",
+    "phase": 1,
+    "service": "VPC",
+    "question": "Amazon VPCで使用できるIPv4 CIDRブロックのサイズ範囲として正しいものはどれですか？",
+    "choices": [
+      { "text": "/16（最大65,536アドレス）〜/28（最小16アドレス）", "correct": true },
+      { "text": "/8（最大）〜/30（最小）", "correct": false },
+      { "text": "/16（最大）〜/24（最小）", "correct": false },
+      { "text": "/8（最大）〜/28（最小）", "correct": false }
+    ],
+    "explanation": "VPCのCIDRブロックは /16（65,536IPアドレス）から /28（16IPアドレス）の範囲で指定できます。サブネット設計時はAWSが予約する5IPを考慮し、/28サブネットでは実際に使えるのは11IPのみです。CIDRは後から追加はできますが縮小はできないため、将来を見越した設計が重要です。",
+    "reference": "https://docs.aws.amazon.com/vpc/latest/userguide/vpc-cidr-blocks.html"
+  },
+  {
+    "id": "vpc-018",
+    "phase": 1,
+    "service": "VPC",
+    "question": "Internet Gateway（IGW）の可用性に関する正しい説明はどれですか？",
+    "choices": [
+      { "text": "IGWはAWSによって水平スケーリングされ冗長化されており、単一障害点にならない", "correct": true },
+      { "text": "IGWはAZ単位でスコープされるため、AZごとに1つ作成する必要がある", "correct": false },
+      { "text": "IGWには帯域幅の上限があり、高トラフィック時はスケールアップが必要", "correct": false },
+      { "text": "1つのVPCに複数のIGWをアタッチしてスループットを向上できる", "correct": false }
+    ],
+    "explanation": "Internet GatewayはAWSが管理する完全冗長化・水平スケーリングされたコンポーネントです。単一障害点にならず、帯域幅の制限もありません。1つのVPCにアタッチできるIGWは1つのみです。可用性の観点でIGW自体を冗長化する設計は不要です。",
+    "reference": "https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Internet_Gateway.html"
+  },
+  {
+    "id": "vpc-019",
+    "phase": 1,
+    "service": "VPC",
+    "question": "VPCフローログのデータを保存・送信できる送信先として正しいものはどれですか？",
+    "choices": [
+      { "text": "Amazon CloudWatch Logs、Amazon S3、Amazon Kinesis Data Firehose", "correct": true },
+      { "text": "Amazon CloudWatch Logsのみ", "correct": false },
+      { "text": "Amazon S3のみ", "correct": false },
+      { "text": "Amazon CloudWatch LogsとAmazon S3のみ", "correct": false }
+    ],
+    "explanation": "VPCフローログは CloudWatch Logs、S3、Kinesis Data Firehose の3種類の送信先をサポートしています。CloudWatch Logsはリアルタイム分析・アラーム設定に、S3は長期保存・コスト効率に、Kinesis Data Firehoseはサードパーティ分析ツールへのストリーミングに適しています。",
+    "reference": "https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs.html#flow-logs-destinations"
+  },
+  {
+    "id": "vpc-020",
+    "phase": 1,
+    "service": "VPC",
+    "question": "新しく作成したカスタムセキュリティグループのデフォルトのインバウンド・アウトバウンドルールはどれですか？",
+    "choices": [
+      { "text": "インバウンド：全拒否、アウトバウンド：全許可", "correct": true },
+      { "text": "インバウンド：全許可、アウトバウンド：全許可", "correct": false },
+      { "text": "インバウンド：全拒否、アウトバウンド：全拒否", "correct": false },
+      { "text": "インバウンド：同一SGからの通信のみ許可、アウトバウンド：全許可", "correct": false }
+    ],
+    "explanation": "カスタムセキュリティグループのデフォルトはインバウンド全拒否・アウトバウンド全許可です。デフォルトVPCに存在するデフォルトセキュリティグループは「同一SG内からのインバウンドを許可」という初期ルールが含まれますが、新規作成したカスタムSGにはその初期ルールはありません。アウトバウンドの全許可は必要に応じて削除し最小権限化することが推奨されます。",
+    "reference": "https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html#default-security-group"
   }
 ]

@@ -152,5 +152,131 @@
     ],
     "explanation": "インラインポリシーは特定のIAMエンティティに直接埋め込まれるポリシーです。エンティティを削除するとポリシーも削除されます。再利用や共有はできず、バージョニングもありません。再利用性が必要な場合はマネージドポリシーの使用が推奨されます。",
     "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_managed-vs-inline.html"
+  },
+  {
+    "id": "iam-012",
+    "phase": 1,
+    "service": "IAM",
+    "question": "IAMグループに関する説明として正しいものはどれですか？",
+    "choices": [
+      { "text": "グループはネストできない（グループにグループを追加することはできない）", "correct": true },
+      { "text": "グループにはポリシーをアタッチできない", "correct": false },
+      { "text": "IAMユーザーは1つのグループにしか所属できない", "correct": false },
+      { "text": "グループはAWSリソースへのアクセスに直接使用できる（グループにロールを引き受けさせられる）", "correct": false }
+    ],
+    "explanation": "IAMグループはユーザーのコレクションであり、グループ内にグループを入れるネスト構造はサポートされていません。1ユーザーは最大10グループに所属でき、グループにはポリシーをアタッチして一括で権限管理できます。グループはIAMプリンシパルではないため、直接リソースポリシーで参照することはできません。",
+    "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_groups.html"
+  },
+  {
+    "id": "iam-013",
+    "phase": 1,
+    "service": "IAM",
+    "question": "AWSアカウントAのLambdaからアカウントBのS3バケットにアクセスするための正しい設定はどれですか？",
+    "choices": [
+      { "text": "アカウントBでIAMロールを作成しアカウントAを信頼ポリシーに追加、アカウントAのLambda実行ロールにAssumeRole権限を付与する", "correct": true },
+      { "text": "アカウントBのS3バケットをパブリックに設定してアクセスキー不要にする", "correct": false },
+      { "text": "アカウントAのLambdaにアカウントBのIAMユーザーのアクセスキーを環境変数で渡す", "correct": false },
+      { "text": "アカウントAとBのVPCをピアリングすれば自動的にS3アクセスが可能になる", "correct": false }
+    ],
+    "explanation": "クロスアカウントアクセスはIAMロールの委任（AssumeRole）で実現します。アカウントBで信頼ポリシーにアカウントAのプリンシパルを許可したロールを作成し、アカウントAのLambda実行ロールにそのロールをAssumeRoleする権限を付与します。加えてS3バケットポリシーでも許可が必要な場合があります。",
+    "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/tutorial_cross-account-with-roles.html"
+  },
+  {
+    "id": "iam-014",
+    "phase": 1,
+    "service": "IAM",
+    "question": "AWS STSのAssumeRoleで取得できる一時的な認証情報のデフォルトおよび最大有効期間として正しいものはどれですか？",
+    "choices": [
+      { "text": "デフォルト1時間、最大12時間（ロールの MaxSessionDuration 設定による）", "correct": true },
+      { "text": "デフォルト1時間、最大24時間", "correct": false },
+      { "text": "常に1時間固定で変更不可", "correct": false },
+      { "text": "有効期限はなく、明示的に無効化するまで有効", "correct": false }
+    ],
+    "explanation": "AssumeRoleの一時的な認証情報のデフォルト有効期間は1時間です。ロールの MaxSessionDuration（最大12時間）を設定し、AssumeRole時に DurationSeconds パラメータで延長できます。最小は15分です。長期的なアクセスが必要な場合はロールの設定を適切に行う必要があります。",
+    "reference": "https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html"
+  },
+  {
+    "id": "iam-015",
+    "phase": 1,
+    "service": "IAM",
+    "question": "AWS IAM Access Analyzerの主な用途として正しいものはどれですか？",
+    "choices": [
+      { "text": "外部エンティティ（他のAWSアカウントやパブリック）からアクセス可能なリソースを自動検出する", "correct": true },
+      { "text": "IAMポリシーの構文エラーを自動修正する", "correct": false },
+      { "text": "90日以上使用されていないIAMユーザーを自動削除する", "correct": false },
+      { "text": "MFAが設定されていないユーザーへのAWSコンソールアクセスを自動ブロックする", "correct": false }
+    ],
+    "explanation": "IAM Access Analyzerは、S3バケット・IAMロール・KMSキー・SQSキューなどのリソースポリシーを分析し、意図せず外部アカウントやパブリックからアクセス可能になっているリソースを検出します。また、ポリシーの検証・未使用アクセスの分析機能も提供します。",
+    "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/what-is-access-analyzer.html"
+  },
+  {
+    "id": "iam-016",
+    "phase": 1,
+    "service": "IAM",
+    "question": "同一アカウント内でS3バケットポリシー（リソースベース）とIAMポリシー（アイデンティティベース）が競合した場合のアクセス評価として正しいものはどれですか？",
+    "choices": [
+      { "text": "どちらか一方にAllowがあればアクセス可能（ただし明示的なDenyがない場合）", "correct": true },
+      { "text": "IAMポリシーが常にリソースベースポリシーより優先される", "correct": false },
+      { "text": "リソースベースポリシーが常にIAMポリシーより優先される", "correct": false },
+      { "text": "両方のポリシーでAllowが必要", "correct": false }
+    ],
+    "explanation": "同一アカウント内では、アイデンティティベースポリシーとリソースベースポリシーはOR評価されます。つまりどちらか一方でAllowがあれば（かつ明示的なDenyがなければ）アクセスできます。一方、クロスアカウントアクセスの場合は両方でAllowが必要です。",
+    "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic.html#policy-eval-basics"
+  },
+  {
+    "id": "iam-017",
+    "phase": 1,
+    "service": "IAM",
+    "question": "タグを使った属性ベースのアクセス制御（ABAC）の主なメリットはどれですか？",
+    "choices": [
+      { "text": "新しいリソースを追加してもタグさえ付ければポリシー変更なしでアクセス制御が適用される", "correct": true },
+      { "text": "タグはAWSが自動的に付与するため管理コストが発生しない", "correct": false },
+      { "text": "ABACはAWSマネージドポリシーのみで実現でき、カスタムポリシーは不要", "correct": false },
+      { "text": "ABACはS3とEC2のみに適用できる限定的な機能である", "correct": false }
+    ],
+    "explanation": "ABACではポリシーの Condition に `aws:ResourceTag` や `aws:PrincipalTag` などを使い、タグの値でアクセスを制御します。新しいリソースをデプロイする際も正しいタグを付与するだけでポリシー変更なしに権限が適用されるため、大規模環境でのスケーラビリティが高いのが最大の利点です。",
+    "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction_attribute-based-access-control.html"
+  },
+  {
+    "id": "iam-018",
+    "phase": 1,
+    "service": "IAM",
+    "question": "オンプレミスサーバーからAWSリソースに長期的なアクセスキーを使わずにアクセスする方法として正しいものはどれですか？",
+    "choices": [
+      { "text": "IAM Roles Anywhereを使用し、PKI証明書でSTSから一時的な認証情報を取得する", "correct": true },
+      { "text": "オンプレミスサーバーにIAMユーザーのアクセスキーを直接配置する", "correct": false },
+      { "text": "オンプレミスからはVPN接続があれば追加の認証情報なしでアクセスできる", "correct": false },
+      { "text": "オンプレミス環境ではIAMロールを使用できないため、長期的なアクセスキーが必須", "correct": false }
+    ],
+    "explanation": "IAM Roles Anywhereは、オンプレミスやクラウド外の環境でもX.509証明書を使ってSTSから一時的な認証情報を取得できる仕組みです。長期的なアクセスキーを配置するリスクを排除でき、証明書の有効期限管理でアクセス制御できます。",
+    "reference": "https://docs.aws.amazon.com/rolesanywhere/latest/userguide/introduction.html"
+  },
+  {
+    "id": "iam-019",
+    "phase": 1,
+    "service": "IAM",
+    "question": "AWSサービスリンクロール（Service-Linked Role）に関する正しい説明はどれですか？",
+    "choices": [
+      { "text": "AWSサービスが特定の機能を実現するために自動作成するロールで、AWSが管理するポリシーが紐づいている", "correct": true },
+      { "text": "ユーザーが任意のポリシーをアタッチして権限を自由に拡張できる", "correct": false },
+      { "text": "すべてのサービスリンクロールはユーザーが手動で作成する必要がある", "correct": false },
+      { "text": "サービスリンクロールはいつでも自由に削除できる", "correct": false }
+    ],
+    "explanation": "サービスリンクロールはAWSサービス（ECS、RDS、Auto Scalingなど）が自動作成する特殊なIAMロールです。ロールに紐づくポリシーはAWSが管理し、ユーザーは変更できません。削除するには依存するサービスリソースをすべて削除する必要があります。",
+    "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/using-service-linked-roles.html"
+  },
+  {
+    "id": "iam-020",
+    "phase": 1,
+    "service": "IAM",
+    "question": "IAMポリシーで `\"Effect\": \"Deny\", \"NotAction\": [\"s3:GetObject\"]` と記述した場合の動作として正しいものはどれですか？",
+    "choices": [
+      { "text": "s3:GetObject 以外のすべてのアクションが拒否される", "correct": true },
+      { "text": "s3:GetObject のみが拒否される", "correct": false },
+      { "text": "すべてのS3アクションが拒否される", "correct": false },
+      { "text": "NotActionはAllowのみで使用でき、Denyとの組み合わせは無効", "correct": false }
+    ],
+    "explanation": "NotAction は指定したアクション「以外」を対象にします。`Deny + NotAction: [s3:GetObject]` は「s3:GetObject 以外のすべてのアクションをDeny」を意味します。SCPでよく使われるパターンで、例えば「特定のサービス以外はすべて禁止する」ような強力なガードレールを実装できます。",
+    "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_notaction.html"
   }
 ]

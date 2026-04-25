@@ -152,5 +152,131 @@
     ],
     "explanation": "インポートしたキーマテリアルはユーザーが管理する独自のキーマテリアルです。任意のタイミングでキーマテリアルを削除できるため、暗号化されたデータへのアクセスを即時遮断できます（暗号破棄）。ただし、AWSはキーマテリアルを複製しないため、失ったキーマテリアルの回復はユーザー責任です。また自動ローテーションには対応していません。",
     "reference": "https://docs.aws.amazon.com/kms/latest/developerguide/importing-keys.html"
+  },
+  {
+    "id": "kms-012",
+    "phase": 1,
+    "service": "KMS",
+    "question": "Amazon EBSのデフォルト暗号化を有効にした場合の動作として正しいものはどれですか？",
+    "choices": [
+      { "text": "設定以降に新規作成されるEBSボリュームとスナップショットが自動的に暗号化される", "correct": true },
+      { "text": "設定と同時に既存のすべてのEBSボリュームが自動的に暗号化される", "correct": false },
+      { "text": "デフォルト暗号化を有効にしても、ボリューム作成時に手動で暗号化を指定する必要がある", "correct": false },
+      { "text": "デフォルト暗号化はAWSマネージドキーのみ使用でき、CMKは指定できない", "correct": false }
+    ],
+    "explanation": "EBSのデフォルト暗号化を有効にすると、以降に作成する新しいEBSボリューム・スナップショット・スナップショットからの復元ボリュームが自動的に暗号化されます。既存ボリュームには適用されません。使用するKMSキーはデフォルトのAWSマネージドキー（aws/ebs）またはCMKを指定できます。",
+    "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html#encryption-by-default"
+  },
+  {
+    "id": "kms-013",
+    "phase": 1,
+    "service": "KMS",
+    "question": "AWS CloudHSMとAWS KMSの違いとして正しいものはどれですか？",
+    "choices": [
+      { "text": "CloudHSMはHSMをユーザー専有で使用し、キーマテリアルをAWSと共有しない完全なコントロールを提供する", "correct": true },
+      { "text": "KMSではAWSはキーマテリアルに一切アクセスできず、セキュリティはKMSの方が高い", "correct": false },
+      { "text": "CloudHSMはKMSよりも安価でスケーラビリティが高い", "correct": false },
+      { "text": "CloudHSMとKMSは同等のサービスであり機能に実質的な差異はない", "correct": false }
+    ],
+    "explanation": "CloudHSMはFIPS 140-2 Level 3認定のHSMをユーザー専有で使用し、キーマテリアルはAWSすら参照できません。KMSはマルチテナントで管理も容易ですが、キーマテリアルの管理はAWSに委ねます。CloudHSMはコストが高く運用が複雑ですが、規制要件やコンプライアンスでHSMの専有が求められる場合に使用します。",
+    "reference": "https://docs.aws.amazon.com/cloudhsm/latest/userguide/introduction.html"
+  },
+  {
+    "id": "kms-014",
+    "phase": 1,
+    "service": "KMS",
+    "question": "アカウントAのLambdaからアカウントBのCMKを使ってデータを暗号化するために必要な設定はどれですか？",
+    "choices": [
+      { "text": "アカウントBのCMKキーポリシーでアカウントAを許可し、アカウントAのLambda実行ロールにkms:Encryptを付与する", "correct": true },
+      { "text": "アカウントBのCMKキーポリシーのみ変更すればよく、アカウントA側のIAMポリシー変更は不要", "correct": false },
+      { "text": "アカウントAのIAMポリシーのみ変更すればよく、アカウントBのキーポリシー変更は不要", "correct": false },
+      { "text": "クロスアカウントでのKMSキー使用はサポートされていない", "correct": false }
+    ],
+    "explanation": "KMSのクロスアカウントアクセスには両側の設定が必要です。アカウントBのCMKキーポリシーでアカウントAのプリンシパルを許可し、かつアカウントAのIAMポリシー（LambdaのロールなどのID）にもkms:Encryptなどの許可が必要です。どちらか片方だけでは動作しません。",
+    "reference": "https://docs.aws.amazon.com/kms/latest/developerguide/key-policy-modifying-external-accounts.html"
+  },
+  {
+    "id": "kms-015",
+    "phase": 1,
+    "service": "KMS",
+    "question": "AWS KMSキーのローテーション実行後、既存の暗号化データはどうなりますか？",
+    "choices": [
+      { "text": "既存データはローテーション後も古いキーマテリアルで自動的に復号でき、データの再暗号化は不要", "correct": true },
+      { "text": "ローテーション後は古いキーマテリアルが破棄されるため、既存データの再暗号化が必要", "correct": false },
+      { "text": "ローテーション後は古いキーマテリアルで暗号化されたデータは復号不能になる", "correct": false },
+      { "text": "ローテーション後はキーIDが変更されるためアプリケーションの設定変更が必要", "correct": false }
+    ],
+    "explanation": "KMSの自動ローテーションでは、古いキーマテリアルは保持されます。KMSは暗号化に使用したキーマテリアルのバージョンを内部的に記憶しており、既存データは対応する古いキーマテリアルで復号されます。キーIDやARNは変わらず、アプリケーション側の変更も不要です。",
+    "reference": "https://docs.aws.amazon.com/kms/latest/developerguide/rotate-keys.html"
+  },
+  {
+    "id": "kms-016",
+    "phase": 1,
+    "service": "KMS",
+    "question": "KMS APIのスロットリングが多発する場合の根本的な対策として最も効果的なものはどれですか？",
+    "choices": [
+      { "text": "AWS Encryption SDKのData Key Cachingを使用してKMS API呼び出し回数を削減する", "correct": true },
+      { "text": "リトライ処理を増やしてすべてのリクエストが成功するまで再試行する", "correct": false },
+      { "text": "CMKの数を増やすことでリクエストが分散されスロットリングを回避できる", "correct": false },
+      { "text": "スロットリングはAWSサポートへの申請でのみ上限緩和できるため、まずサポートに連絡する", "correct": false }
+    ],
+    "explanation": "Data Key Cachingは一度生成したデータキーを一定時間・一定回数まで再利用する仕組みです。毎回KMS APIを呼び出す代わりにキャッシュからデータキーを取得するため、KMS APIの呼び出し回数を大幅に削減できます。CMK数を増やしてもリクエストの分散効果はありません。スロットリング上限は申請で緩和も可能です。",
+    "reference": "https://docs.aws.amazon.com/encryption-sdk/latest/developer-guide/data-key-caching.html"
+  },
+  {
+    "id": "kms-017",
+    "phase": 1,
+    "service": "KMS",
+    "question": "AWS Secrets ManagerがKMSを使用してシークレットを暗号化する場合のデフォルト動作として正しいものはどれですか？",
+    "choices": [
+      { "text": "AWSマネージドキー（aws/secretsmanager）を使用してシークレットを自動的に暗号化する", "correct": true },
+      { "text": "Secrets Managerは暗号化機能を持たず、KMSと手動で統合する必要がある", "correct": false },
+      { "text": "Secrets ManagerはKMSではなくSSM Parameter Storeと同じ暗号化方式を使用する", "correct": false },
+      { "text": "Secrets Managerのシークレットはデフォルトでは暗号化されない", "correct": false }
+    ],
+    "explanation": "Secrets Managerはシークレット作成時にデフォルトでAWSマネージドキー（aws/secretsmanager）を使用してKMSで暗号化します。CMKを指定することも可能で、その場合はSecretsManagerに対してキーポリシーでkms:GenerateDataKey等の権限を付与する必要があります。",
+    "reference": "https://docs.aws.amazon.com/secretsmanager/latest/userguide/security-encryption.html"
+  },
+  {
+    "id": "kms-018",
+    "phase": 1,
+    "service": "KMS",
+    "question": "KMSキーポリシーの Condition に `kms:ViaService` を設定した場合の効果として正しいものはどれですか？",
+    "choices": [
+      { "text": "指定したAWSサービス（S3、RDSなど）経由のリクエストのみCMKの使用を許可できる", "correct": true },
+      { "text": "KMSキーポリシーではCondition要素はサポートされていない", "correct": false },
+      { "text": "kms:ViaServiceはAWSマネージドキーのみで使用できる条件キーである", "correct": false },
+      { "text": "kms:ViaServiceを設定するとコンソールからの手動暗号化操作もブロックされる", "correct": false }
+    ],
+    "explanation": "kms:ViaService条件キーを使用すると、特定のAWSサービス（例: s3.ap-northeast-1.amazonaws.com）経由のリクエストのみCMKの使用を許可できます。これにより「S3経由でのみ使えるキー」「RDS経由でのみ使えるキー」といった細かいアクセス制御が実現できます。",
+    "reference": "https://docs.aws.amazon.com/kms/latest/developerguide/policy-conditions.html#conditions-kms-via-service"
+  },
+  {
+    "id": "kms-019",
+    "phase": 1,
+    "service": "KMS",
+    "question": "KMSのカスタムキーストア（CloudHSM backed）を使用するメリットとして正しいものはどれですか？",
+    "choices": [
+      { "text": "キーマテリアルをユーザー管理のCloudHSMクラスター内に保持し、FIPS 140-2 Level 3のハードウェア保護を実現できる", "correct": true },
+      { "text": "カスタムキーストアを使用するとKMSのAPIスループット制限がなくなる", "correct": false },
+      { "text": "カスタムキーストアはKMSの標準キーより安価に利用できる", "correct": false },
+      { "text": "カスタムキーストアを使用すると自動ローテーションの設定が不要になる", "correct": false }
+    ],
+    "explanation": "カスタムキーストアはKMSの使い慣れたAPIを維持しながら、キーマテリアルをユーザー管理のCloudHSMクラスター内に保存します。FIPS 140-2 Level 3の要件がある場合や、キーマテリアルをAWSインフラ外に持ちたい規制要件に対応できます。コストは標準KMSより高くなります。",
+    "reference": "https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html"
+  },
+  {
+    "id": "kms-020",
+    "phase": 1,
+    "service": "KMS",
+    "question": "KMSのGenerateDataKeyWithoutPlaintextが通常のGenerateDataKeyより適しているユースケースはどれですか？",
+    "choices": [
+      { "text": "今すぐ暗号化は行わず暗号化済みデータキーだけを生成・保存しておき、後で復号して使用するワークフロー", "correct": true },
+      { "text": "大量のデータをリアルタイムで暗号化する高スループットのユースケース", "correct": false },
+      { "text": "非対称キーを使ったデータ暗号化が必要なユースケース", "correct": false },
+      { "text": "複数リージョンで同じデータキーを共有するユースケース", "correct": false }
+    ],
+    "explanation": "GenerateDataKeyWithoutPlaintextは暗号化されたデータキーのみを返し、平文のデータキーは返しません。「今は暗号化しないが、将来の暗号化操作のためにデータキーを事前に配布・保存しておく」ようなワークフローに適しています。GenerateDataKeyは平文キーと暗号化済みキーの両方を返し、すぐ暗号化する際に使用します。",
+    "reference": "https://docs.aws.amazon.com/kms/latest/APIReference/API_GenerateDataKeyWithoutPlaintext.html"
   }
 ]
