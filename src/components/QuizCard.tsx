@@ -13,15 +13,13 @@ function QuizCard({ question, current, total, onNext, onBack }: QuizCardProps) {
   const [selected, setSelected] = useState<number | null>(null);
 
   const shuffledChoices = useMemo(() => {
-    const indexed = question.choices.map((text, i) => ({ text, originalIndex: i }));
-    for (let i = indexed.length - 1; i > 0; i--) {
+    const arr = [...question.choices];
+    for (let i = arr.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [indexed[i], indexed[j]] = [indexed[j], indexed[i]];
+      [arr[i], arr[j]] = [arr[j], arr[i]];
     }
-    return indexed;
+    return arr;
   }, [question]);
-
-  const correctShuffledIndex = shuffledChoices.findIndex((c) => c.originalIndex === question.answer);
 
   const handleSelect = (index: number) => {
     if (selected !== null) return;
@@ -30,7 +28,7 @@ function QuizCard({ question, current, total, onNext, onBack }: QuizCardProps) {
 
   const handleNext = () => {
     if (selected === null) return;
-    onNext(selected === correctShuffledIndex);
+    onNext(shuffledChoices[selected].correct);
   };
 
   const progress = Math.round((current / total) * 100);
@@ -52,12 +50,12 @@ function QuizCard({ question, current, total, onNext, onBack }: QuizCardProps) {
       fontFamily: 'inherit',
     };
     if (selected === null) return base;
-    if (index === correctShuffledIndex) return { ...base, background: '#E9F5EC', border: '1.5px solid #1D8348', color: '#1D8348', fontWeight: 600 };
+    if (shuffledChoices[index].correct) return { ...base, background: '#E9F5EC', border: '1.5px solid #1D8348', color: '#1D8348', fontWeight: 600 };
     if (index === selected) return { ...base, background: '#FDEDEC', border: '1.5px solid #C0392B', color: '#C0392B' };
     return { ...base, opacity: 0.4 };
   };
 
-  const isCorrect = selected === correctShuffledIndex;
+  const isCorrect = selected !== null && shuffledChoices[selected].correct;
 
   return (
     <div>
@@ -92,7 +90,7 @@ function QuizCard({ question, current, total, onNext, onBack }: QuizCardProps) {
           <div>
             {shuffledChoices.map((choice, index) => (
               <button
-                key={choice.originalIndex}
+                key={choice.text}
                 onClick={() => handleSelect(index)}
                 disabled={selected !== null}
                 className={`choice-btn${selected === null ? ' choice-btn--interactive' : ''}`}

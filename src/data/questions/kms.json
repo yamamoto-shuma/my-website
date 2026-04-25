@@ -5,12 +5,11 @@
     "service": "KMS",
     "question": "AWS KMS において、カスタマーマネージドキー（CMK）の自動ローテーション間隔として設定できる最短期間はどれですか？",
     "choices": [
-      "30日",
-      "90日",
-      "365日（1年）",
-      "730日（2年）"
+      { "text": "90日", "correct": true },
+      { "text": "30日", "correct": false },
+      { "text": "365日（1年）", "correct": false },
+      { "text": "730日（2年）", "correct": false }
     ],
-    "answer": 1,
     "explanation": "AWS KMS のカスタマーマネージドキーの自動ローテーションは90日から2560日の範囲でカスタム設定できます（2024年4月以降）。デフォルトは365日です。90日が設定可能な最短期間です。",
     "reference": "https://docs.aws.amazon.com/kms/latest/APIReference/API_EnableKeyRotation.html"
   },
@@ -20,12 +19,11 @@
     "service": "KMS",
     "question": "AWS KMSにおける対称キーと非対称キーの違いとして正しいものはどれですか？",
     "choices": [
-      "対称キーは暗号化と復号化に異なるキーを使用する",
-      "非対称キーはKMSの外部（クライアントサイド）でも公開鍵を使って暗号化できる",
-      "対称キーのみS3のSSE-KMSに使用できる",
-      "非対称キーの方がデータ暗号化の処理速度が速い"
+      { "text": "非対称キーはKMSの外部（クライアントサイド）でも公開鍵を使って暗号化できる", "correct": true },
+      { "text": "対称キーは暗号化と復号化に異なるキーを使用する", "correct": false },
+      { "text": "対称キーのみS3のSSE-KMSに使用できる", "correct": false },
+      { "text": "非対称キーの方がデータ暗号化の処理速度が速い", "correct": false }
     ],
-    "answer": 1,
     "explanation": "非対称キーペアの公開鍵はKMS外部にダウンロードしてクライアントサイドで暗号化に使用できます。復号はKMS内の秘密鍵で行います。S3のSSE-KMSは対称キーを使用します。一般的にデータ暗号化では対称キーの方が高速です。",
     "reference": "https://docs.aws.amazon.com/kms/latest/developerguide/symmetric-asymmetric.html"
   },
@@ -35,12 +33,11 @@
     "service": "KMS",
     "question": "カスタマーマネージドキー（CMK）とAWSマネージドキーの違いとして正しいものはどれですか？",
     "choices": [
-      "AWSマネージドキーはユーザーが手動でローテーションできる",
-      "CMKはキーポリシーを変更・カスタマイズできない",
-      "CMKはユーザーが作成・管理し、キーポリシーを自由に設定できる",
-      "AWSマネージドキーはKMSの利用料金が一切発生しない"
+      { "text": "CMKはユーザーが作成・管理し、キーポリシーを自由に設定できる", "correct": true },
+      { "text": "AWSマネージドキーはユーザーが手動でローテーションできる", "correct": false },
+      { "text": "CMKはキーポリシーを変更・カスタマイズできない", "correct": false },
+      { "text": "AWSマネージドキーはKMSの利用料金が一切発生しない", "correct": false }
     ],
-    "answer": 2,
     "explanation": "CMKはユーザーが作成・管理するキーで、キーポリシーの変更・無効化・削除・ローテーションのカスタム設定が可能です。AWSマネージドキーはAWSサービスが自動的に作成・管理し、ユーザーはキーポリシーを変更できません。どちらもKMSのAPI利用料金が発生します。",
     "reference": "https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#key-mgmt"
   },
@@ -50,12 +47,11 @@
     "service": "KMS",
     "question": "AWS KMSのエンベロープ暗号化（Envelope Encryption）の仕組みとして正しいものはどれですか？",
     "choices": [
-      "データを直接CMKで暗号化する方式",
-      "CMKでデータキーを暗号化し、そのデータキーでデータを暗号化する方式",
-      "複数のCMKでデータを二重に暗号化する方式",
-      "暗号化したデータキーをKMSに安全に保存する方式"
+      { "text": "CMKでデータキーを暗号化し、そのデータキーでデータを暗号化する方式", "correct": true },
+      { "text": "データを直接CMKで暗号化する方式", "correct": false },
+      { "text": "複数のCMKでデータを二重に暗号化する方式", "correct": false },
+      { "text": "暗号化したデータキーをKMSに安全に保存する方式", "correct": false }
     ],
-    "answer": 1,
     "explanation": "エンベロープ暗号化では、まず平文のデータキー（DEK）でデータを暗号化し、次にそのデータキーをCMKで暗号化します。暗号化済みデータキーをデータと一緒に保存します。大容量データはCMKを直接使えないため、この方式が採用されています。",
     "reference": "https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#enveloping"
   },
@@ -65,12 +61,11 @@
     "service": "KMS",
     "question": "AWS KMSのキーポリシーに関する正しい説明はどれですか？",
     "choices": [
-      "キーポリシーを設定しなければ、AWSアカウント内の全員がCMKにアクセスできる",
-      "IAMポリシーだけでCMKへのアクセスを完全に制御できる",
-      "キーポリシーはCMKへのアクセスを制御する主要なメカニズムであり、必須の設定である",
-      "キーポリシーはAWSマネージドキーにも自由に設定できる"
+      { "text": "キーポリシーはCMKへのアクセスを制御する主要なメカニズムであり、必須の設定である", "correct": true },
+      { "text": "キーポリシーを設定しなければ、AWSアカウント内の全員がCMKにアクセスできる", "correct": false },
+      { "text": "IAMポリシーだけでCMKへのアクセスを完全に制御できる", "correct": false },
+      { "text": "キーポリシーはAWSマネージドキーにも自由に設定できる", "correct": false }
     ],
-    "answer": 2,
     "explanation": "キーポリシーはCMKに必ず存在するリソースベースのアクセスポリシーです。IAMポリシーだけではCMKへのアクセスは制御できず、キーポリシーでもアクセスを明示的に許可する必要があります。デフォルトのキーポリシーはAWSアカウントのルートに完全なアクセスを許可します。",
     "reference": "https://docs.aws.amazon.com/kms/latest/developerguide/key-policies.html"
   },
@@ -80,12 +75,11 @@
     "service": "KMS",
     "question": "AWS KMSでCMKを削除する際の動作として正しいものはどれですか？",
     "choices": [
-      "CMKは即座に削除でき、削除後は復元できない",
-      "削除リクエスト後7〜30日間の待機期間が設定でき、待機期間中はキャンセル可能である",
-      "CMKを削除すると、そのCMKで暗号化されたデータは自動的に復号される",
-      "CMKは完全に削除できず、無効化のみ可能である"
+      { "text": "削除リクエスト後7〜30日間の待機期間が設定でき、待機期間中はキャンセル可能である", "correct": true },
+      { "text": "CMKは即座に削除でき、削除後は復元できない", "correct": false },
+      { "text": "CMKを削除すると、そのCMKで暗号化されたデータは自動的に復号される", "correct": false },
+      { "text": "CMKは完全に削除できず、無効化のみ可能である", "correct": false }
     ],
-    "answer": 1,
     "explanation": "KMSのCMK削除には7〜30日間の待機期間（デフォルト30日）が設定されます。この期間中はCMKは使用不可になりますが、削除をキャンセルして復元できます。待機期間後に完全削除されると、そのCMKで暗号化されたデータは永久に復号不能になるため慎重に判断する必要があります。",
     "reference": "https://docs.aws.amazon.com/kms/latest/developerguide/deleting-keys.html"
   },
@@ -95,12 +89,11 @@
     "service": "KMS",
     "question": "AWS KMSとAWS CloudTrailの統合に関する正しい説明はどれですか？",
     "choices": [
-      "KMSのAPI呼び出しはCloudTrailに記録されないため、別途監査ログを設定する必要がある",
-      "CloudTrailはKMSの管理イベント（キー作成・削除）のみを記録する",
-      "KMSへのすべてのAPI呼び出しはCloudTrailに自動で記録され、誰がいつ何を復号したか追跡できる",
-      "CloudTrailとKMSの統合は有料オプションであり、追加設定が必要である"
+      { "text": "KMSへのすべてのAPI呼び出しはCloudTrailに自動で記録され、誰がいつ何を復号したか追跡できる", "correct": true },
+      { "text": "KMSのAPI呼び出しはCloudTrailに記録されないため、別途監査ログを設定する必要がある", "correct": false },
+      { "text": "CloudTrailはKMSの管理イベント（キー作成・削除）のみを記録する", "correct": false },
+      { "text": "CloudTrailとKMSの統合は有料オプションであり、追加設定が必要である", "correct": false }
     ],
-    "answer": 2,
     "explanation": "AWS KMSはCloudTrailと自動的に統合されており、すべてのKMS API呼び出し（暗号化・復号・キー管理など）がCloudTrailに記録されます。誰がいつどのキーを使って何を暗号化・復号したかの監査証跡が自動的に作成されます。",
     "reference": "https://docs.aws.amazon.com/kms/latest/developerguide/logging-using-cloudtrail.html"
   },
@@ -110,12 +103,11 @@
     "service": "KMS",
     "question": "AWS KMSのマルチリージョンキー（Multi-Region Key）に関する正しい説明はどれですか？",
     "choices": [
-      "マルチリージョンキーは全リージョンで同一のキーIDとARNを共有する",
-      "リージョンAで暗号化したデータをリージョンBのレプリカキーで復号できる",
-      "マルチリージョンキーはリージョン間でキーマテリアルを共有しない",
-      "マルチリージョンキーは非対称キーには対応していない"
+      { "text": "リージョンAで暗号化したデータをリージョンBのレプリカキーで復号できる", "correct": true },
+      { "text": "マルチリージョンキーは全リージョンで同一のキーIDとARNを共有する", "correct": false },
+      { "text": "マルチリージョンキーはリージョン間でキーマテリアルを共有しない", "correct": false },
+      { "text": "マルチリージョンキーは非対称キーには対応していない", "correct": false }
     ],
-    "answer": 1,
     "explanation": "マルチリージョンキーを使用すると、プライマリキーと同じキーマテリアルを持つレプリカキーを他リージョンに作成できます。リージョンAで暗号化したデータをリージョンBに転送し、ローカルで復号できるため、クロスリージョンの暗号化要件に対応できます。",
     "reference": "https://docs.aws.amazon.com/kms/latest/developerguide/multi-region-keys-overview.html"
   },
@@ -125,12 +117,11 @@
     "service": "KMS",
     "question": "Amazon S3のSSE-KMS（KMSによるサーバーサイド暗号化）に関する正しい説明はどれですか？",
     "choices": [
-      "SSE-KMSではAWSが暗号化キーを完全に管理するため、ユーザーは関与できない",
-      "SSE-KMSはSSE-S3と同じ暗号化キーを使用する",
-      "SSE-KMSはS3へのオブジェクト操作ごとにKMS APIを呼び出すため、KMSのAPI利用料金が発生する",
-      "SSE-KMSを使用するとS3バケットへのアクセス権限だけでオブジェクトを復号できる"
+      { "text": "SSE-KMSはS3へのオブジェクト操作ごとにKMS APIを呼び出すため、KMSのAPI利用料金が発生する", "correct": true },
+      { "text": "SSE-KMSではAWSが暗号化キーを完全に管理するため、ユーザーは関与できない", "correct": false },
+      { "text": "SSE-KMSはSSE-S3と同じ暗号化キーを使用する", "correct": false },
+      { "text": "SSE-KMSを使用するとS3バケットへのアクセス権限だけでオブジェクトを復号できる", "correct": false }
     ],
-    "answer": 2,
     "explanation": "SSE-KMSではS3オブジェクトの暗号化・復号のたびにKMS GenerateDataKeyまたはDecrypt APIが呼び出され、KMSの料金が発生します。また、S3へのアクセス権限だけでなくKMSキーへのDecrypt権限も必要なため、よりきめ細かいアクセス制御が可能です。",
     "reference": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingKMSEncryption.html"
   },
@@ -140,12 +131,11 @@
     "service": "KMS",
     "question": "AWS KMSのGrantに関する正しい説明はどれですか？",
     "choices": [
-      "Grantはキーポリシーと異なり、作成後最長24時間後に有効になる",
-      "Grantはルートアカウントにのみ付与できる",
-      "Grantは一時的に特定のプリンシパルにCMKの使用を委任する仕組みで、プログラムでの動的な権限管理に適している",
-      "Grantを使用するためにはSCPでの明示的な許可が必要である"
+      { "text": "Grantは一時的に特定のプリンシパルにCMKの使用を委任する仕組みで、プログラムでの動的な権限管理に適している", "correct": true },
+      { "text": "Grantはキーポリシーと異なり、作成後最長24時間後に有効になる", "correct": false },
+      { "text": "Grantはルートアカウントにのみ付与できる", "correct": false },
+      { "text": "Grantを使用するためにはSCPでの明示的な許可が必要である", "correct": false }
     ],
-    "answer": 2,
     "explanation": "Grantはキーポリシーを変更せずに、特定のプリンシパル（ユーザー・ロール・サービス）に対してCMKの使用を動的に委任できる仕組みです。アプリケーションが一時的に他のエンティティへ暗号化権限を委任する場合などに使用されます。即座に有効になり、プログラムで作成・取り消しが可能です。",
     "reference": "https://docs.aws.amazon.com/kms/latest/developerguide/grants.html"
   },
@@ -155,12 +145,11 @@
     "service": "KMS",
     "question": "AWS KMSのキーマテリアルのインポート（Bring Your Own Key: BYOK）に関する正しい説明はどれですか？",
     "choices": [
-      "BYOKを使用すると、自動ローテーションを設定できる",
-      "インポートしたキーマテリアルは任意のタイミングで削除でき、暗号化データを即時アクセス不能にできる",
-      "BYOKはAWSマネージドキーにのみ適用できる",
-      "インポートしたキーマテリアルはAWSによって複製・バックアップされる"
+      { "text": "インポートしたキーマテリアルは任意のタイミングで削除でき、暗号化データを即時アクセス不能にできる", "correct": true },
+      { "text": "BYOKを使用すると、自動ローテーションを設定できる", "correct": false },
+      { "text": "BYOKはAWSマネージドキーにのみ適用できる", "correct": false },
+      { "text": "インポートしたキーマテリアルはAWSによって複製・バックアップされる", "correct": false }
     ],
-    "answer": 1,
     "explanation": "インポートしたキーマテリアルはユーザーが管理する独自のキーマテリアルです。任意のタイミングでキーマテリアルを削除できるため、暗号化されたデータへのアクセスを即時遮断できます（暗号破棄）。ただし、AWSはキーマテリアルを複製しないため、失ったキーマテリアルの回復はユーザー責任です。また自動ローテーションには対応していません。",
     "reference": "https://docs.aws.amazon.com/kms/latest/developerguide/importing-keys.html"
   }

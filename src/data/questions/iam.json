@@ -5,12 +5,11 @@
     "service": "IAM",
     "question": "IAM ポリシーで最小権限の原則を実現するために推奨されるアプローチはどれですか？",
     "choices": [
-      "全リソースに AdministratorAccess を付与する",
-      "必要な操作のみを許可し、不要な権限は付与しない",
-      "全ユーザーに同一のポリシーを適用する",
-      "ルートアカウントを日常業務で使用する"
+      { "text": "必要な操作のみを許可し、不要な権限は付与しない", "correct": true },
+      { "text": "全リソースに AdministratorAccess を付与する", "correct": false },
+      { "text": "全ユーザーに同一のポリシーを適用する", "correct": false },
+      { "text": "ルートアカウントを日常業務で使用する", "correct": false }
     ],
-    "answer": 1,
     "explanation": "最小権限の原則とは、ユーザーやサービスに必要最低限の権限のみを付与することです。これによりセキュリティリスクを最小化できます。",
     "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html"
   },
@@ -20,12 +19,11 @@
     "service": "IAM",
     "question": "AWSマネージドポリシーとカスタマーマネージドポリシーの違いとして正しいものはどれですか？",
     "choices": [
-      "カスタマーマネージドポリシーはAWSが作成・管理する",
-      "AWSマネージドポリシーは1つのエンティティにのみアタッチできる",
-      "AWSマネージドポリシーはAWSが作成・管理し、複数のエンティティにアタッチできる",
-      "カスタマーマネージドポリシーは一度作成したら変更できない"
+      { "text": "AWSマネージドポリシーはAWSが作成・管理し、複数のエンティティにアタッチできる", "correct": true },
+      { "text": "カスタマーマネージドポリシーはAWSが作成・管理する", "correct": false },
+      { "text": "AWSマネージドポリシーは1つのエンティティにのみアタッチできる", "correct": false },
+      { "text": "カスタマーマネージドポリシーは一度作成したら変更できない", "correct": false }
     ],
-    "answer": 2,
     "explanation": "AWSマネージドポリシーはAWSが作成・管理するポリシーで、一般的なユースケース向けに用意されています。複数のIAMエンティティ（ユーザー・グループ・ロール）にアタッチできます。カスタマーマネージドポリシーはユーザーが独自に作成・管理します。",
     "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_managed-vs-inline.html"
   },
@@ -35,12 +33,11 @@
     "service": "IAM",
     "question": "IAMロールに関する説明として正しいものはどれですか？",
     "choices": [
-      "ロールには必ずアクセスキーとシークレットキーが付与される",
-      "ロールはEC2などのAWSサービスには割り当てられない",
-      "ロールの認証情報は一時的であり、有効期限がある",
-      "ロールは一度に1つのエンティティにのみ使用できる"
+      { "text": "ロールの認証情報は一時的であり、有効期限がある", "correct": true },
+      { "text": "ロールには必ずアクセスキーとシークレットキーが付与される", "correct": false },
+      { "text": "ロールはEC2などのAWSサービスには割り当てられない", "correct": false },
+      { "text": "ロールは一度に1つのエンティティにのみ使用できる", "correct": false }
     ],
-    "answer": 2,
     "explanation": "IAMロールの認証情報（アクセスキー・シークレットキー・セッショントークン）は一時的で有効期限があります。ロールはEC2インスタンスプロファイルやLambda実行ロールなどAWSサービスに割り当てられ、複数のエンティティが同時に同じロールを引き受けることができます。",
     "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html"
   },
@@ -50,12 +47,11 @@
     "service": "IAM",
     "question": "EC2インスタンスがS3バケットにアクセスするための最も推奨される方法はどれですか？",
     "choices": [
-      "EC2インスタンスのユーザーデータにIAMユーザーのアクセスキーを記述する",
-      "EC2インスタンスにIAMロールをアタッチしてS3への権限を付与する",
-      "S3バケットをパブリックに設定してアクセスキーを不要にする",
-      "環境変数にアクセスキーを設定する"
+      { "text": "EC2インスタンスにIAMロールをアタッチしてS3への権限を付与する", "correct": true },
+      { "text": "EC2インスタンスのユーザーデータにIAMユーザーのアクセスキーを記述する", "correct": false },
+      { "text": "S3バケットをパブリックに設定してアクセスキーを不要にする", "correct": false },
+      { "text": "環境変数にアクセスキーを設定する", "correct": false }
     ],
-    "answer": 1,
     "explanation": "EC2インスタンスにIAMロールをアタッチする（インスタンスプロファイル経由）方法が最も推奨されます。一時的な認証情報がIMDSを通じて自動的に提供されるため、アクセスキーをコードや設定ファイルに埋め込む必要がなく、セキュリティリスクを大幅に低減できます。",
     "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html"
   },
@@ -65,12 +61,11 @@
     "service": "IAM",
     "question": "IAMポリシーの評価において、明示的なDenyが設定されている場合の動作として正しいものはどれですか？",
     "choices": [
-      "同一ポリシー内にAllowが存在する場合はDenyは無視される",
-      "Denyは同一ポリシー内のAllowのみをオーバーライドする",
-      "明示的なDenyは他のすべてのAllowより優先される",
-      "Denyはリソースベースポリシーには適用されない"
+      { "text": "明示的なDenyは他のすべてのAllowより優先される", "correct": true },
+      { "text": "同一ポリシー内にAllowが存在する場合はDenyは無視される", "correct": false },
+      { "text": "Denyは同一ポリシー内のAllowのみをオーバーライドする", "correct": false },
+      { "text": "Denyはリソースベースポリシーには適用されない", "correct": false }
     ],
-    "answer": 2,
     "explanation": "IAMポリシーの評価ロジックでは、明示的なDenyが最優先されます。複数のポリシーが評価される場合でも、いずれかのポリシーにDenyが含まれていれば、他のポリシーのAllowに関わらずアクセスは拒否されます。デフォルトは暗黙のDenyです。",
     "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic.html"
   },
@@ -80,12 +75,11 @@
     "service": "IAM",
     "question": "AWS Organizationsのサービスコントロールポリシー（SCP）に関する正しい説明はどれですか？",
     "choices": [
-      "SCPはマスターアカウント（管理アカウント）のrootユーザーにも適用される",
-      "SCPはIAMポリシーより低い優先度を持ち、IAMポリシーで上書きできる",
-      "SCPはOU（組織単位）やアカウントに許可される操作の最大権限の境界を設定する",
-      "SCPによってIAMエンティティに権限が付与される"
+      { "text": "SCPはOU（組織単位）やアカウントに許可される操作の最大権限の境界を設定する", "correct": true },
+      { "text": "SCPはマスターアカウント（管理アカウント）のrootユーザーにも適用される", "correct": false },
+      { "text": "SCPはIAMポリシーより低い優先度を持ち、IAMポリシーで上書きできる", "correct": false },
+      { "text": "SCPによってIAMエンティティに権限が付与される", "correct": false }
     ],
-    "answer": 2,
     "explanation": "SCPはアカウントまたはOU内のすべてのIAMエンティティ（ユーザー・ロール）が実行できる操作の上限を設定します。SCPで許可されていない操作はIAMポリシーで許可しても実行できません。ただし管理アカウント自体にはSCPは適用されません。",
     "reference": "https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html"
   },
@@ -95,12 +89,11 @@
     "service": "IAM",
     "question": "IAMユーザーのアクセスキー管理のベストプラクティスとして推奨されるものはどれですか？",
     "choices": [
-      "アクセスキーはrootアカウントで作成し、チームで共有する",
-      "1ユーザーに3つ以上のアクセスキーを作成して冗長化する",
-      "アクセスキーを定期的にローテーションし、不要になったら削除する",
-      "アクセスキーをソースコードにハードコードしてバージョン管理する"
+      { "text": "アクセスキーを定期的にローテーションし、不要になったら削除する", "correct": true },
+      { "text": "アクセスキーはrootアカウントで作成し、チームで共有する", "correct": false },
+      { "text": "1ユーザーに3つ以上のアクセスキーを作成して冗長化する", "correct": false },
+      { "text": "アクセスキーをソースコードにハードコードしてバージョン管理する", "correct": false }
     ],
-    "answer": 2,
     "explanation": "アクセスキーのセキュリティリスクを最小化するため、定期的なローテーションと不要になったキーの即時削除が推奨されます。rootアカウントのアクセスキー作成は避け、キーは共有せず、コードへのハードコードも禁止です。可能な限りIAMロールを使用してください。",
     "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html"
   },
@@ -110,12 +103,11 @@
     "service": "IAM",
     "question": "IAMのアクセス許可の境界（Permission Boundary）に関する正しい説明はどれですか？",
     "choices": [
-      "Permission Boundaryを設定すると、そのBoundaryで定義した権限がエンティティに付与される",
-      "Permission Boundaryを設定すると、アイデンティティベースポリシーの有効な権限がBoundaryの範囲内に制限される",
-      "Permission BoundaryはS3バケットなどのリソースに対してのみ設定できる",
-      "Permission BoundaryはSCPと同じ機能であり、Organizationsが必要である"
+      { "text": "Permission Boundaryを設定すると、アイデンティティベースポリシーの有効な権限がBoundaryの範囲内に制限される", "correct": true },
+      { "text": "Permission Boundaryを設定すると、そのBoundaryで定義した権限がエンティティに付与される", "correct": false },
+      { "text": "Permission BoundaryはS3バケットなどのリソースに対してのみ設定できる", "correct": false },
+      { "text": "Permission BoundaryはSCPと同じ機能であり、Organizationsが必要である", "correct": false }
     ],
-    "answer": 1,
     "explanation": "Permission Boundaryはエンティティ（ユーザー・ロール）の最大権限の上限を設定します。アイデンティティベースポリシーとPermission Boundaryの両方で許可されている場合のみ操作が可能です。権限を付与するものではなく、既存の権限を制限するためのガードレールです。",
     "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html"
   },
@@ -125,12 +117,11 @@
     "service": "IAM",
     "question": "rootアカウントのセキュリティ保護として最も重要なベストプラクティスはどれですか？",
     "choices": [
-      "rootアカウントを日常業務に使用し、操作ログを取得する",
-      "rootアカウントのアクセスキーを作成して安全な場所に保管する",
-      "rootアカウントにMFA（多要素認証）を設定し、日常業務ではIAMユーザー・ロールを使用する",
-      "rootアカウントのパスワードを全管理者に共有する"
+      { "text": "rootアカウントにMFA（多要素認証）を設定し、日常業務ではIAMユーザー・ロールを使用する", "correct": true },
+      { "text": "rootアカウントを日常業務に使用し、操作ログを取得する", "correct": false },
+      { "text": "rootアカウントのアクセスキーを作成して安全な場所に保管する", "correct": false },
+      { "text": "rootアカウントのパスワードを全管理者に共有する", "correct": false }
     ],
-    "answer": 2,
     "explanation": "rootアカウントはAWSアカウントのすべての権限を持ち、制限できません。MFAを必ず設定し、日常業務では使用しないことが強く推奨されます。rootアカウントのアクセスキーは作成しないことがベストプラクティスです。",
     "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_root-user.html"
   },
@@ -140,12 +131,11 @@
     "service": "IAM",
     "question": "IAMポリシーのConditionキー `aws:RequestedRegion` を使用して実現できることはどれですか？",
     "choices": [
-      "リクエストを行ったユーザーのIPアドレスに基づくアクセス制御",
-      "特定のAWSリージョンへのAPIリクエストのみを許可または拒否する",
-      "リソースのタグに基づくアクセス制御",
-      "特定の時間帯のみアクセスを許可する"
+      { "text": "特定のAWSリージョンへのAPIリクエストのみを許可または拒否する", "correct": true },
+      { "text": "リクエストを行ったユーザーのIPアドレスに基づくアクセス制御", "correct": false },
+      { "text": "リソースのタグに基づくアクセス制御", "correct": false },
+      { "text": "特定の時間帯のみアクセスを許可する", "correct": false }
     ],
-    "answer": 1,
     "explanation": "`aws:RequestedRegion` 条件キーを使用すると、APIリクエストが送信されるリージョンを制限できます。例えば東京リージョン以外への操作を拒否するSCPやIAMポリシーを作成でき、データレジデンシー要件やコスト管理に活用できます。",
     "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_condition-keys.html"
   },
@@ -155,12 +145,11 @@
     "service": "IAM",
     "question": "インラインポリシーの特徴として正しいものはどれですか？",
     "choices": [
-      "複数のIAMエンティティ（ユーザー・グループ・ロール）で共有できる",
-      "AWSコンソールのポリシーライブラリに表示され、再利用できる",
-      "アタッチされたエンティティを削除するとポリシーも自動的に削除される",
-      "バージョニング機能をサポートしており、ロールバックできる"
+      { "text": "アタッチされたエンティティを削除するとポリシーも自動的に削除される", "correct": true },
+      { "text": "複数のIAMエンティティ（ユーザー・グループ・ロール）で共有できる", "correct": false },
+      { "text": "AWSコンソールのポリシーライブラリに表示され、再利用できる", "correct": false },
+      { "text": "バージョニング機能をサポートしており、ロールバックできる", "correct": false }
     ],
-    "answer": 2,
     "explanation": "インラインポリシーは特定のIAMエンティティに直接埋め込まれるポリシーです。エンティティを削除するとポリシーも削除されます。再利用や共有はできず、バージョニングもありません。再利用性が必要な場合はマネージドポリシーの使用が推奨されます。",
     "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_managed-vs-inline.html"
   }
