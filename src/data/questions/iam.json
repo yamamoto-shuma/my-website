@@ -220,7 +220,7 @@
       { "text": "リソースベースポリシーが常にIAMポリシーより優先される", "correct": false },
       { "text": "両方のポリシーでAllowが必要", "correct": false }
     ],
-    "explanation": "同一アカウント内では、アイデンティティベースポリシーとリソースベースポリシーはOR評価されます。つまりどちらか一方でAllowがあれば（かつ明示的なDenyがなければ）アクセスできます。一方、クロスアカウントアクセスの場合は両方でAllowが必要です。",
+    "explanation": "S3では、同一アカウント内でアイデンティティベースポリシーとリソースベースポリシーはOR評価されます。つまりどちらか一方でAllowがあれば（かつ明示的なDenyがなければ）アクセスできます。一方、クロスアカウントアクセスの場合は両方でAllowが必要です。なお、KMSキーポリシーなど一部のサービスでは同一アカウントでもAND評価が必要な場合があります。",
     "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic.html#policy-eval-basics"
   },
   {

@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import type { Question } from '../types/quiz';
 
 interface QuizCardProps {
@@ -12,14 +12,14 @@ interface QuizCardProps {
 function QuizCard({ question, current, total, onNext, onBack }: QuizCardProps) {
   const [selected, setSelected] = useState<number | null>(null);
 
-  const shuffledChoices = useMemo(() => {
+  const [shuffledChoices] = useState(() => {
     const arr = [...question.choices];
     for (let i = arr.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [arr[i], arr[j]] = [arr[j], arr[i]];
     }
     return arr;
-  }, [question]);
+  });
 
   const handleSelect = (index: number) => {
     if (selected !== null) return;
