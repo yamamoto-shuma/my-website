@@ -1,0 +1,17 @@
+[
+  {
+    "id": "kms-001",
+    "phase": 1,
+    "service": "KMS",
+    "question": "AWS KMS において、カスタマーマネージドキー（CMK）の自動ローテーション間隔として設定できる最短期間はどれですか？",
+    "choices": [
+      "30日",
+      "90日",
+      "365日（1年）",
+      "730日（2年）"
+    ],
+    "answer": 1,
+    "explanation": "AWS KMS のカスタマーマネージドキーの自動ローテーションは90日から2560日の範囲でカスタム設定できます（2024年4月以降）。デフォルトは365日です。90日が設定可能な最短期間です。",
+    "reference": "https://docs.aws.amazon.com/kms/latest/APIReference/API_EnableKeyRotation.html"
+  }
+]

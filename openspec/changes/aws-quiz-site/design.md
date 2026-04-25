@@ -51,6 +51,7 @@ my-website/
 │   │   ├── ServiceSelector.tsx   ← サービス選択・フィルタリング
 │   │   ├── QuizCard.tsx          ← 問題出題画面（4択）
 │   │   └── Result.tsx            ← 結果表示画面
+│   ├── index.css           ← グローバルスタイル（フォント・リセット・ホバーCSS）
 │   ├── data/
 │   │   └── questions/
 │   │       ├── vpc.json
@@ -87,13 +88,14 @@ export default defineConfig({
 
 ```typescript
 interface Question {
-  id: string;          // "{service}-{連番3桁}" 例: "vpc-001"
-  service: string;     // サービス名 例: "VPC", "IAM", "KMS"
-  phase: number;       // Phaseの番号（1〜6）※将来のフィルタリング拡張用
-  question: string;    // 問題文
-  choices: string[];   // 4要素の配列（選択肢）
-  answer: number;      // 正解のインデックス（0〜3）
-  explanation: string; // 解説文
+  id: string;           // "{service}-{連番3桁}" 例: "vpc-001"
+  service: string;      // サービス名 例: "VPC", "IAM", "KMS"
+  phase: number;        // Phaseの番号（1〜6）※将来のフィルタリング拡張用
+  question: string;     // 問題文
+  choices: string[];    // 4要素の配列（選択肢）
+  answer: number;       // 正解のインデックス（0〜3）
+  explanation: string;  // 解説文
+  reference?: string;   // AWS公式ドキュメントのURL（省略可）
 }
 ```
 

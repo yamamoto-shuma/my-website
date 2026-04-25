@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap');
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  min-height: 100%;
+}
+
+.aws-btn {
+  transition: filter 0.15s;
+}
+.aws-btn:hover:not(:disabled) {
+  filter: brightness(0.9);
+}
+.aws-btn:active:not(:disabled) {
+  filter: brightness(0.82);
+}
+
+.choice-btn {
+  transition: border-color 0.15s, background 0.15s;
+}
+.choice-btn--interactive:hover {
+  border-color: #8A9199 !important;
+  background: #F0F1F2 !important;
+}
+
+.service-label {
+  transition: border-color 0.15s, background 0.15s;
+}
+.service-label--unchecked:hover {
+  border-color: #8A9199 !important;
+  background: #F0F1F2 !important;
+}
+
+body, #root {
+  min-height: 100vh;
+  background: #F2F3F3;
+  font-family: 'Noto Sans JP', 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
