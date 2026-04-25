@@ -40,8 +40,8 @@ function QuizCard({ question, current, total, onNext }: QuizCardProps) {
       fontFamily: 'inherit',
     };
     if (selected === null) return base;
-    if (index === question.answer) return { ...base, background: '#E9F5EC', borderColor: '#1D8348', color: '#1D8348', fontWeight: 600 };
-    if (index === selected) return { ...base, background: '#FDEDEC', borderColor: '#C0392B', color: '#C0392B' };
+    if (index === question.answer) return { ...base, background: '#E9F5EC', border: '1.5px solid #1D8348', color: '#1D8348', fontWeight: 600 };
+    if (index === selected) return { ...base, background: '#FDEDEC', border: '1.5px solid #C0392B', color: '#C0392B' };
     return { ...base, opacity: 0.4 };
   };
 
@@ -78,6 +78,7 @@ function QuizCard({ question, current, total, onNext }: QuizCardProps) {
                 key={index}
                 onClick={() => handleSelect(index)}
                 disabled={selected !== null}
+                className={`choice-btn${selected === null ? ' choice-btn--interactive' : ''}`}
                 style={getChoiceStyle(index)}
               >
                 <span style={{ marginRight: 10, fontWeight: 700, color: '#8A9199', fontSize: 13 }}>
@@ -122,6 +123,7 @@ function QuizCard({ question, current, total, onNext }: QuizCardProps) {
           <button
             onClick={handleNext}
             disabled={selected === null}
+            className="aws-btn"
             style={{
               padding: '10px 28px',
               fontSize: 14,

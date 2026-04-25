@@ -97,6 +97,7 @@ function Result({ results, onRetry }: ResultProps) {
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
           <button
             onClick={onRetry}
+            className="aws-btn"
             style={{
               padding: '10px 28px',
               fontSize: 14,

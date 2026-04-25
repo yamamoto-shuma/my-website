@@ -10,6 +10,32 @@ html {
   min-height: 100%;
 }
 
+.aws-btn {
+  transition: filter 0.15s;
+}
+.aws-btn:hover:not(:disabled) {
+  filter: brightness(0.9);
+}
+.aws-btn:active:not(:disabled) {
+  filter: brightness(0.82);
+}
+
+.choice-btn {
+  transition: border-color 0.15s, background 0.15s;
+}
+.choice-btn--interactive:hover {
+  border-color: #8A9199 !important;
+  background: #F0F1F2 !important;
+}
+
+.service-label {
+  transition: border-color 0.15s, background 0.15s;
+}
+.service-label--unchecked:hover {
+  border-color: #8A9199 !important;
+  background: #F0F1F2 !important;
+}
+
 body, #root {
   min-height: 100vh;
   background: #F2F3F3;
