@@ -62,6 +62,10 @@ function AwsQuiz() {
     setPhase('quizzing');
   };
 
+  const handleBackToTop = () => {
+    setPhase('selecting');
+  };
+
   if (phase === 'selecting') {
     return (
       <ServiceSelector
@@ -82,6 +86,7 @@ function AwsQuiz() {
         current={currentIndex + 1}
         total={questions.length}
         onNext={handleNext}
+        onBack={handleBackToTop}
       />
     );
   }

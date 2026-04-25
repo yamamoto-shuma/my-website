@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import type { Question } from '../types/quiz';
 
 interface QuizCardProps {
@@ -6,10 +6,22 @@ interface QuizCardProps {
   current: number;
   total: number;
   onNext: (correct: boolean) => void;
+  onBack: () => void;
 }
 
-function QuizCard({ question, current, total, onNext }: QuizCardProps) {
+function QuizCard({ question, current, total, onNext, onBack }: QuizCardProps) {
   const [selected, setSelected] = useState<number | null>(null);
+
+  const shuffledChoices = useMemo(() => {
+    const indexed = question.choices.map((text, i) => ({ text, originalIndex: i }));
+    for (let i = indexed.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [indexed[i], indexed[j]] = [indexed[j], indexed[i]];
+    }
+    return indexed;
+  }, [question]);
+
+  const correctShuffledIndex = shuffledChoices.findIndex((c) => c.originalIndex === question.answer);
 
   const handleSelect = (index: number) => {
     if (selected !== null) return;
@@ -18,7 +30,7 @@ function QuizCard({ question, current, total, onNext }: QuizCardProps) {
 
   const handleNext = () => {
     if (selected === null) return;
-    onNext(selected === question.answer);
+    onNext(selected === correctShuffledIndex);
   };
 
   const progress = Math.round((current / total) * 100);
@@ -40,12 +52,12 @@ function QuizCard({ question, current, total, onNext }: QuizCardProps) {
       fontFamily: 'inherit',
     };
     if (selected === null) return base;
-    if (index === question.answer) return { ...base, background: '#E9F5EC', border: '1.5px solid #1D8348', color: '#1D8348', fontWeight: 600 };
+    if (index === correctShuffledIndex) return { ...base, background: '#E9F5EC', border: '1.5px solid #1D8348', color: '#1D8348', fontWeight: 600 };
     if (index === selected) return { ...base, background: '#FDEDEC', border: '1.5px solid #C0392B', color: '#C0392B' };
     return { ...base, opacity: 0.4 };
   };
 
-  const isCorrect = selected === question.answer;
+  const isCorrect = selected === correctShuffledIndex;
 
   return (
     <div>
@@ -54,6 +66,23 @@ function QuizCard({ question, current, total, onNext }: QuizCardProps) {
         <span style={{ color: '#FF9900', fontWeight: 700, fontSize: 20 }}>AWS</span>
         <span style={{ color: '#fff', fontSize: 18, fontWeight: 500 }}>Quiz</span>
         <span style={{ marginLeft: 'auto', color: '#9BA7B4', fontSize: 13 }}>{question.service}</span>
+        <button
+          onClick={onBack}
+          style={{
+            background: 'transparent',
+            border: '1px solid #4A5568',
+            borderRadius: 6,
+            color: '#9BA7B4',
+            fontSize: 12,
+            fontWeight: 500,
+            padding: '4px 12px',
+            cursor: 'pointer',
+            fontFamily: 'inherit',
+            marginLeft: 12,
+          }}
+        >
+          ← トップへ
+        </button>
       </div>
 
       {/* プログレスバー */}
@@ -73,9 +102,9 @@ function QuizCard({ question, current, total, onNext }: QuizCardProps) {
           </p>
 
           <div>
-            {question.choices.map((choice, index) => (
+            {shuffledChoices.map((choice, index) => (
               <button
-                key={index}
+                key={choice.originalIndex}
                 onClick={() => handleSelect(index)}
                 disabled={selected !== null}
                 className={`choice-btn${selected === null ? ' choice-btn--interactive' : ''}`}
@@ -84,7 +113,7 @@ function QuizCard({ question, current, total, onNext }: QuizCardProps) {
                 <span style={{ marginRight: 10, fontWeight: 700, color: '#8A9199', fontSize: 13 }}>
                   {String.fromCharCode(65 + index)}.
                 </span>
-                {choice}
+                {choice.text}
               </button>
             ))}
           </div>
