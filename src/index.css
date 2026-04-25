@@ -6,8 +6,12 @@
   padding: 0;
 }
 
-html, body, #root {
-  height: 100%;
+html {
+  min-height: 100%;
+}
+
+body, #root {
+  min-height: 100vh;
   background: #F2F3F3;
   font-family: 'Noto Sans JP', 'Helvetica Neue', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

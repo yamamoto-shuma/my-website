@@ -38,9 +38,9 @@ function ServiceSelector({ services, selected, onChange, onStart, questionCount 
           {/* Card body */}
           <div style={{ padding: 28 }}>
             <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 14 }}>
-              <span onClick={toggleAll} style={{ color: '#0073BB', fontSize: 13, cursor: 'pointer', fontWeight: 500 }}>
+              <button onClick={toggleAll} style={{ background: 'none', border: 'none', padding: 0, color: '#0073BB', fontSize: 13, cursor: 'pointer', fontWeight: 500, fontFamily: 'inherit' }}>
                 {allSelected ? 'すべて解除' : 'すべて選択'}
-              </span>
+              </button>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 28 }}>
