@@ -63,26 +63,14 @@ function QuizCard({ question, current, total, onNext, onBack }: QuizCardProps) {
     <div>
       {/* Header */}
       <div style={{ background: '#232F3E', padding: '16px 32px', display: 'flex', alignItems: 'center', gap: 12 }}>
-        <span style={{ color: '#FF9900', fontWeight: 700, fontSize: 20 }}>AWS</span>
-        <span style={{ color: '#fff', fontSize: 18, fontWeight: 500 }}>Quiz</span>
-        <span style={{ marginLeft: 'auto', color: '#9BA7B4', fontSize: 13 }}>{question.service}</span>
         <button
           onClick={onBack}
-          style={{
-            background: 'transparent',
-            border: '1px solid #4A5568',
-            borderRadius: 6,
-            color: '#9BA7B4',
-            fontSize: 12,
-            fontWeight: 500,
-            padding: '4px 12px',
-            cursor: 'pointer',
-            fontFamily: 'inherit',
-            marginLeft: 12,
-          }}
+          style={{ background: 'transparent', border: 'none', padding: 0, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8 }}
         >
-          ← トップへ
+          <span style={{ color: '#FF9900', fontWeight: 700, fontSize: 20 }}>AWS</span>
+          <span style={{ color: '#fff', fontSize: 18, fontWeight: 500 }}>Quiz</span>
         </button>
+        <span style={{ marginLeft: 'auto', color: '#9BA7B4', fontSize: 13 }}>{question.service}</span>
       </div>
 
       {/* プログレスバー */}
@@ -148,7 +136,23 @@ function QuizCard({ question, current, total, onNext, onBack }: QuizCardProps) {
           </div>
         )}
 
-        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <button
+            onClick={onBack}
+            style={{
+              padding: '10px 20px',
+              fontSize: 14,
+              fontWeight: 500,
+              background: 'transparent',
+              color: '#8A9199',
+              border: '1.5px solid #D5DBDB',
+              borderRadius: 8,
+              cursor: 'pointer',
+              fontFamily: 'inherit',
+            }}
+          >
+            やめる
+          </button>
           <button
             onClick={handleNext}
             disabled={selected === null}
