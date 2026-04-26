@@ -1,0 +1,314 @@
+[
+  {
+    "id": "ec2-001",
+    "phase": 2,
+    "service": "EC2",
+    "question": "EC2インスタンスに対してIAMロールを付与する際に使用する仕組みはどれですか？",
+    "choices": [
+      {
+        "text": "インスタンスプロファイル",
+        "correct": true
+      },
+      {
+        "text": "サービスコントロールポリシー（SCP）",
+        "correct": false
+      },
+      {
+        "text": "リソースベースポリシー",
+        "correct": false
+      },
+      {
+        "text": "アクセスコントロールリスト（ACL）",
+        "correct": false
+      }
+    ],
+    "explanation": "IAMロールをEC2インスタンスにアタッチするにはインスタンスプロファイルを使用します。インスタンスプロファイルはIAMロールのコンテナであり、インスタンス起動時または起動後に関連付けることができます。アプリケーションはIMDSから一時的な認証情報を自動取得します。",
+    "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2_instance-profiles.html"
+  },
+  {
+    "id": "ec2-002",
+    "phase": 2,
+    "service": "EC2",
+    "question": "EC2のオンデマンドインスタンスと比較して、最大90%のコスト削減が可能なオプションはどれですか？",
+    "choices": [
+      {
+        "text": "スポットインスタンス",
+        "correct": true
+      },
+      {
+        "text": "リザーブドインスタンス",
+        "correct": false
+      },
+      {
+        "text": "Savings Plans",
+        "correct": false
+      },
+      {
+        "text": "Dedicated Hosts",
+        "correct": false
+      }
+    ],
+    "explanation": "スポットインスタンスはAWSの余剰キャパシティを活用し、オンデマンド比最大90%割引で利用できます。ただし、AWSが容量を必要とする場合は2分間の警告後にインスタンスが中断されます。耐障害性のあるバッチ処理や分散ワークロードに適しています。",
+    "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-spot-instances.html"
+  },
+  {
+    "id": "ec2-003",
+    "phase": 2,
+    "service": "EC2",
+    "question": "EC2インスタンスの起動時に自動実行されるスクリプトを設定するために使用する機能はどれですか？",
+    "choices": [
+      {
+        "text": "ユーザーデータ（User Data）",
+        "correct": true
+      },
+      {
+        "text": "インスタンスメタデータ",
+        "correct": false
+      },
+      {
+        "text": "Systems Manager Run Command",
+        "correct": false
+      },
+      {
+        "text": "EC2 Launch Template",
+        "correct": false
+      }
+    ],
+    "explanation": "ユーザーデータはEC2インスタンスの初回起動時にroot権限で自動実行されるスクリプトです。パッケージのインストール、設定ファイルの配置、アプリケーションの初期化などに使用します。Base64エンコードされた形式で渡されます。",
+    "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/user-data.html"
+  },
+  {
+    "id": "ec2-004",
+    "phase": 2,
+    "service": "EC2",
+    "question": "EC2インスタンスタイプのうち、メモリ最適化に特化したインスタンスファミリーはどれですか？",
+    "choices": [
+      {
+        "text": "R系（r6i, r6g など）",
+        "correct": true
+      },
+      {
+        "text": "C系（c6i, c6g など）",
+        "correct": false
+      },
+      {
+        "text": "M系（m6i, m6g など）",
+        "correct": false
+      },
+      {
+        "text": "T系（t3, t4g など）",
+        "correct": false
+      }
+    ],
+    "explanation": "R系インスタンスはRAMが大きくメモリ集約型ワークロード（大規模データベース、インメモリキャッシュ、リアルタイム分析）向けです。C系はコンピューティング最適化、M系は汎用、T系はバースト可能なパフォーマンスを提供します。",
+    "reference": "https://aws.amazon.com/ec2/instance-types/"
+  },
+  {
+    "id": "ec2-005",
+    "phase": 2,
+    "service": "EC2",
+    "question": "常時稼働するステートフルなWebアプリサーバーのコスト削減を検討しています。ワークロードが安定しており1〜3年の長期利用が確定している場合、最も適した購入オプションはどれですか？",
+    "choices": [
+      {
+        "text": "Compute Savings Plans または リザーブドインスタンス",
+        "correct": true
+      },
+      {
+        "text": "スポットインスタンス",
+        "correct": false
+      },
+      {
+        "text": "オンデマンドインスタンス",
+        "correct": false
+      },
+      {
+        "text": "Dedicated Hosts",
+        "correct": false
+      }
+    ],
+    "explanation": "常時稼働・長期利用が確定している場合はCompute Savings Plans（最大66%割引、インスタンスタイプ・リージョン・OS変更が柔軟）またはリザーブドインスタンス（最大72%割引、条件が厳密）が適切です。スポットは中断リスクがありステートフルなWebサーバーには不向きです。Savings PlansはEC2以外（Fargate・Lambda）にも適用できる柔軟性が魅力です。",
+    "reference": "https://docs.aws.amazon.com/savingsplans/latest/userguide/what-is-savings-plans.html"
+  },
+  {
+    "id": "ec2-006",
+    "phase": 2,
+    "service": "EC2",
+    "question": "EC2インスタンスのCPU使用率を1分間隔で監視してアラートを出したい場合、必要な設定はどれですか？",
+    "choices": [
+      {
+        "text": "CloudWatchの詳細モニタリング（Detailed Monitoring）を有効にする",
+        "correct": true
+      },
+      {
+        "text": "CloudWatch Agentをインストールする",
+        "correct": false
+      },
+      {
+        "text": "CloudTrailを有効にする",
+        "correct": false
+      },
+      {
+        "text": "VPCフローログを有効にする",
+        "correct": false
+      }
+    ],
+    "explanation": "EC2のCloudWatchモニタリングはデフォルトで5分間隔（基本モニタリング）です。詳細モニタリングを有効にすると1分間隔になり、障害発生時の迅速な検知や細かいスケーリングトリガーが可能になります。詳細モニタリングは有料（基本は無料）ですが、本番環境では有効にしておくことが推奨されます。CloudWatch Agentはメモリ使用率など標準では取得できないOSレベルのメトリクスに使用します。",
+    "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-cloudwatch-new.html"
+  },
+  {
+    "id": "ec2-007",
+    "phase": 2,
+    "service": "EC2",
+    "question": "EC2のリザーブドインスタンス（RI）において、未使用のRIを他のAWSアカウントに販売できる仕組みはどれですか？",
+    "choices": [
+      {
+        "text": "リザーブドインスタンスマーケットプレイス",
+        "correct": true
+      },
+      {
+        "text": "AWS Marketplace",
+        "correct": false
+      },
+      {
+        "text": "Savings Plans Exchange",
+        "correct": false
+      },
+      {
+        "text": "AWS Cost Explorer",
+        "correct": false
+      }
+    ],
+    "explanation": "リザーブドインスタンスマーケットプレイスでは、不要になったスタンダードRIを他のAWSユーザーに販売できます。コンバーティブルRIはマーケットプレイスでの販売はできませんが、RIの交換（RI Exchange）が可能です。",
+    "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ri-market-general.html"
+  },
+  {
+    "id": "ec2-008",
+    "phase": 2,
+    "service": "EC2",
+    "question": "EC2インスタンスのOSレベルの設定変更なしにネットワークインターフェースを複数持ち、セカンダリIPアドレスを追加するために使用するのはどれですか？",
+    "choices": [
+      {
+        "text": "Elastic Network Interface（ENI）",
+        "correct": true
+      },
+      {
+        "text": "Elastic IP（EIP）",
+        "correct": false
+      },
+      {
+        "text": "Network Load Balancer",
+        "correct": false
+      },
+      {
+        "text": "Transit Gateway",
+        "correct": false
+      }
+    ],
+    "explanation": "ENIは仮想ネットワークカードであり、インスタンスに複数アタッチして複数のプライベートIPアドレス、セキュリティグループ、MACアドレスを持たせることができます。デュアルホーミング（管理用と本番用ネットワークを分離）やフェイルオーバー構成に活用されます。",
+    "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-eni.html"
+  },
+  {
+    "id": "ec2-009",
+    "phase": 2,
+    "service": "EC2",
+    "question": "EC2 Dedicated Hostsを使用する主な理由として最も適切なものはどれですか？",
+    "choices": [
+      {
+        "text": "既存のソフトウェアライセンス（ソケット/コア単位）をAWS上で継続使用するため",
+        "correct": true
+      },
+      {
+        "text": "他のAWSアカウントのインスタンスと物理ホストを共有しないようにするため",
+        "correct": false
+      },
+      {
+        "text": "インスタンスのパフォーマンスを向上させるため",
+        "correct": false
+      },
+      {
+        "text": "コストを削減するため",
+        "correct": false
+      }
+    ],
+    "explanation": "Dedicated Hostsの主な用途はBYOL（Bring Your Own License）です。Windows Server、SQL Server、RHELなどのソフトウェアライセンスをソケットやコア単位で持っている場合、Dedicated Hostsでそのライセンスを活用できます。物理ホストの専有という点はDedicated Instancesと共通ですが、Dedicated HostsはホストのソケットやコアのIDが固定されるためライセンス管理に有利です。",
+    "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/dedicated-hosts-overview.html"
+  },
+  {
+    "id": "ec2-010",
+    "phase": 2,
+    "service": "EC2",
+    "question": "EC2インスタンスを別のAZに移動したい場合、正しい手順はどれですか？",
+    "choices": [
+      {
+        "text": "AMIを作成し、別のAZで新しいインスタンスを起動する",
+        "correct": true
+      },
+      {
+        "text": "インスタンスを停止し、AZ設定を変更して再起動する",
+        "correct": false
+      },
+      {
+        "text": "インスタンスを一時停止してからAZを変更する",
+        "correct": false
+      },
+      {
+        "text": "ライブマイグレーション機能でAZを変更する",
+        "correct": false
+      }
+    ],
+    "explanation": "EC2インスタンスのAZは変更できません。別のAZへ移動するにはAMI（Amazon Machine Image）を作成し、ターゲットのAZを指定して新しいインスタンスを起動します。EBSスナップショットを経由してEBSボリュームを別AZに複製する方法もあります。",
+    "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/creating-an-ami-ebs.html"
+  },
+  {
+    "id": "ec2-011",
+    "phase": 2,
+    "service": "EC2",
+    "question": "SSHキーペアを使わずにEC2インスタンスへ安全に接続するためのAWSサービスはどれですか？",
+    "choices": [
+      {
+        "text": "AWS Systems Manager Session Manager",
+        "correct": true
+      },
+      {
+        "text": "AWS Direct Connect",
+        "correct": false
+      },
+      {
+        "text": "EC2 Instance Connect",
+        "correct": false
+      },
+      {
+        "text": "AWS VPN",
+        "correct": false
+      }
+    ],
+    "explanation": "Session Managerはキーペアもインバウンドセキュリティグループルール（ポート22）も不要でEC2インスタンスのシェルに接続できます。接続ログはCloudTrailやS3に記録でき、踏み台サーバーも不要になります。IAMポリシーでアクセス制御できるため、セキュリティ強化とオペレーション簡略化を両立する現代的なベストプラクティスです。",
+    "reference": "https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html"
+  },
+  {
+    "id": "ec2-012",
+    "phase": 2,
+    "service": "EC2",
+    "question": "稼働中のEC2インスタンスのインスタンスタイプを変更したい場合、正しい手順はどれですか？",
+    "choices": [
+      {
+        "text": "インスタンスを停止してからインスタンスタイプを変更し、再起動する",
+        "correct": true
+      },
+      {
+        "text": "インスタンスが起動中のままインスタンスタイプをコンソールから変更できる",
+        "correct": false
+      },
+      {
+        "text": "AMIを作成して新しいインスタンスタイプで起動しなければならない",
+        "correct": false
+      },
+      {
+        "text": "インスタンスタイプ変更はサポートに依頼が必要である",
+        "correct": false
+      }
+    ],
+    "explanation": "インスタンスタイプの変更はインスタンスを一度停止（Stop）する必要があります。停止後にコンソール・CLIでインスタンスタイプを変更し、再起動します。ただしインスタンスストアを持つインスタンスタイプへの変更はできないなど制約があります。変更後のパブリックIPは変わるため（Elastic IPを使っていない場合）注意が必要です。",
+    "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-resize.html"
+  }
+]

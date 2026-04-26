@@ -7,11 +7,21 @@ import Result from '../components/Result';
 import vpcQuestions from '../data/questions/vpc.json';
 import iamQuestions from '../data/questions/iam.json';
 import kmsQuestions from '../data/questions/kms.json';
+import ec2Questions from '../data/questions/ec2.json';
+import autoscalingQuestions from '../data/questions/autoscaling.json';
+import ebsQuestions from '../data/questions/ebs.json';
+import ecsQuestions from '../data/questions/ecs.json';
+import lambdaQuestions from '../data/questions/lambda.json';
 
 const ALL_QUESTIONS: Question[] = [
   ...(vpcQuestions as Question[]),
   ...(iamQuestions as Question[]),
   ...(kmsQuestions as Question[]),
+  ...(ec2Questions as Question[]),
+  ...(autoscalingQuestions as Question[]),
+  ...(ebsQuestions as Question[]),
+  ...(ecsQuestions as Question[]),
+  ...(lambdaQuestions as Question[]),
 ];
 
 const ALL_SERVICES = [...new Set(ALL_QUESTIONS.map((q) => q.service))];

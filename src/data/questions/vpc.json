@@ -336,5 +336,83 @@
     ],
     "explanation": "S3 Gateway Endpointにはエンドポイントポリシー（IAMリソースポリシーと同形式）をアタッチできます。デフォルトは全S3アクセスを許可しますが、ポリシーで許可するバケットやオペレーションを制限できます。「このVPCから自社バケット以外へのデータ送信を禁止する」というデータ漏洩防止（DLP）の要件を実現する際に有効です。S3のIPアドレスは定期的に変化するためSGによるIP制限は実運用できません。",
     "reference": "https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-s3.html#edit-vpc-endpoint-policy-s3"
+  },
+  {
+    "id": "vpc-014",
+    "phase": 1,
+    "service": "VPC",
+    "question": "EC2インスタンス間の通信が届いていないかどうかをIPレベルで確認したい場合、最初に確認すべきAWSの機能はどれですか？",
+    "choices": [
+      {
+        "text": "VPCフローログ（VPC Flow Logs）",
+        "correct": true
+      },
+      {
+        "text": "CloudTrail",
+        "correct": false
+      },
+      {
+        "text": "AWS Config",
+        "correct": false
+      },
+      {
+        "text": "CloudWatch メトリクス",
+        "correct": false
+      }
+    ],
+    "explanation": "VPCフローログはENIを通過するIPトラフィックのメタデータ（送信元・宛先IP、ポート、プロトコル、ACCEPT/REJECTなど）を記録します。セキュリティグループやネットワークACLの設定ミスで通信が拒否されているかどうかをREJECTレコードで確認でき、「通信が届いているのか届いていないのか」を切り分ける最初のステップです。CloudTrailはAWS APIコールの記録であり、IPレベルの通信可否は確認できません。",
+    "reference": "https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs.html"
+  },
+  {
+    "id": "vpc-015",
+    "phase": 1,
+    "service": "VPC",
+    "question": "セキュリティグループとNACLの設定が正しいかどうかをリアルなトラフィックを発生させずに事前確認したい場合、最も適したAWSツールはどれですか？",
+    "choices": [
+      {
+        "text": "VPC Reachability Analyzer",
+        "correct": true
+      },
+      {
+        "text": "VPC Flow Logs",
+        "correct": false
+      },
+      {
+        "text": "AWS Config",
+        "correct": false
+      },
+      {
+        "text": "CloudWatch Logs Insights",
+        "correct": false
+      }
+    ],
+    "explanation": "VPC Reachability Analyzerは送信元と宛先を指定するとSG・NACL・ルートテーブルなどのVPC設定をシミュレーションし、実際のトラフィックを流さずに通信可否の原因を特定できます。Flow LogsはACTUALのトラフィックを記録するため「実際に通信が発生した後の調査」に使い、Reachability Analyzerは「設定の事前検証・変更後の確認」に使うというように役割が異なります。",
+    "reference": "https://docs.aws.amazon.com/vpc/latest/reachability/what-is-reachability-analyzer.html"
+  },
+  {
+    "id": "vpc-016",
+    "phase": 1,
+    "service": "VPC",
+    "question": "AWS Direct Connectの冗長構成において、障害発生時のフォールバック経路として最もコスト効率の良い組み合わせはどれですか？",
+    "choices": [
+      {
+        "text": "Direct Connectをプライマリとし、AWS Site-to-Site VPNをバックアップとして組み合わせる",
+        "correct": true
+      },
+      {
+        "text": "異なるロケーションに2本のDirect Connectを敷設して完全冗長化する",
+        "correct": false
+      },
+      {
+        "text": "Direct Connectは単一障害点がないためバックアップ不要",
+        "correct": false
+      },
+      {
+        "text": "インターネットVPNで十分であり、Direct Connectは不要",
+        "correct": false
+      }
+    ],
+    "explanation": "Direct Connect単独は物理線・ルーター障害のリスクがあります。最高可用性は複数ロケーション・複数回線でのDX冗長化ですが、コスト負担が大きくなります。コスト効率の高い現実的な構成は「Direct Connect（プライマリ）+ Site-to-Site VPN（バックアップ）」です。BGPのパスプリファレンス設定でDX優先にし、DX障害時はVPNに自動フェイルオーバーさせます。SLA要件と予算のバランスで設計を決める典型的なアーキテクチャ判断です。",
+    "reference": "https://docs.aws.amazon.com/directconnect/latest/UserGuide/resiliency_toolkit.html"
   }
 ]
