@@ -1,6 +1,6 @@
 [
   {
-    "id": "iam-002",
+    "id": "iam-001",
     "phase": 1,
     "service": "IAM",
     "question": "AWSマネージドポリシーとカスタマーマネージドポリシーの違いとして正しいものはどれですか？",
@@ -26,7 +26,7 @@
     "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_managed-vs-inline.html"
   },
   {
-    "id": "iam-003",
+    "id": "iam-002",
     "phase": 1,
     "service": "IAM",
     "question": "IAMロールに関する説明として正しいものはどれですか？",
@@ -52,7 +52,7 @@
     "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html"
   },
   {
-    "id": "iam-004",
+    "id": "iam-003",
     "phase": 1,
     "service": "IAM",
     "question": "EC2インスタンスがS3バケットにアクセスするための最も推奨される方法はどれですか？",
@@ -78,7 +78,7 @@
     "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html"
   },
   {
-    "id": "iam-005",
+    "id": "iam-004",
     "phase": 1,
     "service": "IAM",
     "question": "IAMポリシーの評価において、明示的なDenyが設定されている場合の動作として正しいものはどれですか？",
@@ -104,7 +104,7 @@
     "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic.html"
   },
   {
-    "id": "iam-006",
+    "id": "iam-005",
     "phase": 1,
     "service": "IAM",
     "question": "AWS Organizationsのサービスコントロールポリシー（SCP）に関する正しい説明はどれですか？",
@@ -130,7 +130,7 @@
     "reference": "https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html"
   },
   {
-    "id": "iam-007",
+    "id": "iam-006",
     "phase": 1,
     "service": "IAM",
     "question": "IAMユーザーのアクセスキー管理のベストプラクティスとして推奨されるものはどれですか？",
@@ -156,7 +156,7 @@
     "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html"
   },
   {
-    "id": "iam-008",
+    "id": "iam-007",
     "phase": 1,
     "service": "IAM",
     "question": "IAMのアクセス許可の境界（Permission Boundary）に関する正しい説明はどれですか？",
@@ -182,7 +182,7 @@
     "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html"
   },
   {
-    "id": "iam-010",
+    "id": "iam-008",
     "phase": 1,
     "service": "IAM",
     "question": "IAMポリシーのConditionキー `aws:RequestedRegion` を使用して実現できることはどれですか？",
@@ -208,7 +208,7 @@
     "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_condition-keys.html"
   },
   {
-    "id": "iam-013",
+    "id": "iam-009",
     "phase": 1,
     "service": "IAM",
     "question": "AWSアカウントAのLambdaからアカウントBのS3バケットにアクセスするための正しい設定はどれですか？",
@@ -234,7 +234,7 @@
     "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/tutorial_cross-account-with-roles.html"
   },
   {
-    "id": "iam-015",
+    "id": "iam-010",
     "phase": 1,
     "service": "IAM",
     "question": "AWS IAM Access Analyzerの主な用途として正しいものはどれですか？",
@@ -260,7 +260,7 @@
     "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/what-is-access-analyzer.html"
   },
   {
-    "id": "iam-016",
+    "id": "iam-011",
     "phase": 1,
     "service": "IAM",
     "question": "同一アカウント内でS3バケットポリシー（リソースベース）とIAMポリシー（アイデンティティベース）が競合した場合のアクセス評価として正しいものはどれですか？",
@@ -286,7 +286,7 @@
     "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic.html#policy-eval-basics"
   },
   {
-    "id": "iam-017",
+    "id": "iam-012",
     "phase": 1,
     "service": "IAM",
     "question": "タグを使った属性ベースのアクセス制御（ABAC）の主なメリットはどれですか？",
@@ -312,7 +312,7 @@
     "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction_attribute-based-access-control.html"
   },
   {
-    "id": "iam-018",
+    "id": "iam-013",
     "phase": 1,
     "service": "IAM",
     "question": "オンプレミスサーバーからAWSリソースに長期的なアクセスキーを使わずにアクセスする方法として正しいものはどれですか？",
@@ -338,7 +338,7 @@
     "reference": "https://docs.aws.amazon.com/rolesanywhere/latest/userguide/introduction.html"
   },
   {
-    "id": "iam-019",
+    "id": "iam-014",
     "phase": 1,
     "service": "IAM",
     "question": "AWSサービスリンクロール（Service-Linked Role）に関する正しい説明はどれですか？",
@@ -364,7 +364,7 @@
     "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/using-service-linked-roles.html"
   },
   {
-    "id": "iam-020",
+    "id": "iam-015",
     "phase": 1,
     "service": "IAM",
     "question": "IAMポリシーで `\"Effect\": \"Deny\", \"NotAction\": [\"s3:GetObject\"]` と記述した場合の動作として正しいものはどれですか？",
@@ -390,7 +390,7 @@
     "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_notaction.html"
   },
   {
-    "id": "iam-021",
+    "id": "iam-016",
     "phase": 1,
     "service": "IAM",
     "question": "サードパーティSaaSにAWSアカウントへのAssumeRoleを許可するIAMロールを作成する際、「Confused Deputy攻撃」（同じSaaSを使う他顧客が自アカウントに侵入する問題）を防ぐために信頼ポリシーに追加すべき設定はどれですか？",
@@ -416,7 +416,7 @@
     "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/confused-deputy.html"
   },
   {
-    "id": "iam-022",
+    "id": "iam-017",
     "phase": 1,
     "service": "IAM",
     "question": "本番環境を変更せずに「このIAMロールは特定のS3バケットへのPutObjectを実行できるか」を事前に検証する最も適切な方法はどれですか？",
@@ -442,7 +442,7 @@
     "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html"
   },
   {
-    "id": "iam-023",
+    "id": "iam-018",
     "phase": 1,
     "service": "IAM",
     "question": "複数のAWSアカウントで開発チームが作業する環境で、各アカウントにIAMユーザーを個別作成せずに社内IdP（OktaやAzure AD）でシングルサインオンを実現する最適なサービスはどれですか？",

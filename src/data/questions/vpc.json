@@ -1,6 +1,6 @@
 [
   {
-    "id": "vpc-003",
+    "id": "vpc-001",
     "phase": 1,
     "service": "VPC",
     "question": "プライベートサブネットのEC2インスタンスがインターネットへの送信トラフィックを必要とするが、インターネットからの接続は受け付けたくない場合、どのコンポーネントを使用しますか？",
@@ -26,7 +26,7 @@
     "reference": "https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html"
   },
   {
-    "id": "vpc-004",
+    "id": "vpc-002",
     "phase": 1,
     "service": "VPC",
     "question": "セキュリティグループに関する説明として正しいものはどれですか？",
@@ -52,7 +52,7 @@
     "reference": "https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html"
   },
   {
-    "id": "vpc-006",
+    "id": "vpc-003",
     "phase": 1,
     "service": "VPC",
     "question": "VPCピアリングに関する説明として正しいものはどれですか？",
@@ -78,7 +78,7 @@
     "reference": "https://docs.aws.amazon.com/vpc/latest/peering/vpc-peering-basics.html"
   },
   {
-    "id": "vpc-007",
+    "id": "vpc-004",
     "phase": 1,
     "service": "VPC",
     "question": "EC2インスタンスからS3へのアクセスをインターネットを経由せずに行いたい場合、どのVPCエンドポイントタイプを使用しますか？",
@@ -104,7 +104,7 @@
     "reference": "https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-s3.html"
   },
   {
-    "id": "vpc-010",
+    "id": "vpc-005",
     "phase": 1,
     "service": "VPC",
     "question": "AWS Site-to-Site VPNとAWS Direct Connectの比較として正しいものはどれですか？",
@@ -130,7 +130,7 @@
     "reference": "https://docs.aws.amazon.com/directconnect/latest/UserGuide/Welcome.html"
   },
   {
-    "id": "vpc-011",
+    "id": "vpc-006",
     "phase": 1,
     "service": "VPC",
     "question": "AWS Transit Gatewayの主な用途として正しいものはどれですか？",
@@ -156,7 +156,7 @@
     "reference": "https://docs.aws.amazon.com/vpc/latest/tgw/what-is-transit-gateway.html"
   },
   {
-    "id": "vpc-012",
+    "id": "vpc-007",
     "phase": 1,
     "service": "VPC",
     "question": "マルチAZ構成でNAT Gatewayを高可用性に運用するための正しいアーキテクチャはどれですか？",
@@ -182,7 +182,7 @@
     "reference": "https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html#nat-gateway-basics"
   },
   {
-    "id": "vpc-013",
+    "id": "vpc-008",
     "phase": 1,
     "service": "VPC",
     "question": "EC2インスタンスにパブリックDNS名（例: ec2-xx-xx-xx.compute.amazonaws.com）を付与するために必要なVPCの設定はどれですか？",
@@ -208,7 +208,7 @@
     "reference": "https://docs.aws.amazon.com/vpc/latest/userguide/vpc-dns.html"
   },
   {
-    "id": "vpc-014",
+    "id": "vpc-009",
     "phase": 1,
     "service": "VPC",
     "question": "ALBからEC2へのアクセスをセキュリティグループで制御する最もベストプラクティスな方法はどれですか？",
@@ -234,7 +234,7 @@
     "reference": "https://docs.aws.amazon.com/vpc/latest/userguide/security-group-rules.html"
   },
   {
-    "id": "vpc-016",
+    "id": "vpc-010",
     "phase": 1,
     "service": "VPC",
     "question": "サードパーティSaaSサービスをVPC内のプライベートネットワーク経由で安全に利用したい場合、最適なサービスはどれですか？",
@@ -260,7 +260,7 @@
     "reference": "https://docs.aws.amazon.com/vpc/latest/privatelink/what-is-privatelink.html"
   },
   {
-    "id": "vpc-020",
+    "id": "vpc-011",
     "phase": 1,
     "service": "VPC",
     "question": "新しく作成したカスタムセキュリティグループのデフォルトのインバウンド・アウトバウンドルールはどれですか？",
@@ -286,7 +286,7 @@
     "reference": "https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html#default-security-group"
   },
   {
-    "id": "vpc-021",
+    "id": "vpc-012",
     "phase": 1,
     "service": "VPC",
     "question": "稼働中のEC2インスタンスにSSHで接続している状態で、NACLにインバウンドSSH（ポート22）をDenyするルールを追加した場合の動作として正しいものはどれですか？",
@@ -312,7 +312,7 @@
     "reference": "https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html"
   },
   {
-    "id": "vpc-022",
+    "id": "vpc-013",
     "phase": 1,
     "service": "VPC",
     "question": "プライベートサブネットのEC2からS3 Gateway Endpoint経由のアクセスを、自社の特定バケットのみに制限してデータ漏洩を防ぎたい場合の正しいアプローチはどれですか？",
