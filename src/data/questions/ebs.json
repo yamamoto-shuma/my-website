@@ -1,6 +1,6 @@
 [
   {
-    "id": "ebs-002",
+    "id": "ebs-001",
     "phase": 2,
     "service": "EBS",
     "question": "EBSボリュームのスナップショットに関する説明として正しいものはどれですか？",
@@ -26,7 +26,7 @@
     "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSSnapshots.html"
   },
   {
-    "id": "ebs-003",
+    "id": "ebs-002",
     "phase": 2,
     "service": "EBS",
     "question": "gp3ボリュームとgp2ボリュームの主な違いとして正しいものはどれですか？",
@@ -52,7 +52,7 @@
     "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html"
   },
   {
-    "id": "ebs-004",
+    "id": "ebs-003",
     "phase": 2,
     "service": "EBS",
     "question": "EBSボリュームを暗号化する際に使用できるキー管理オプションとして正しいものはどれですか？",
@@ -78,7 +78,7 @@
     "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html"
   },
   {
-    "id": "ebs-005",
+    "id": "ebs-004",
     "phase": 2,
     "service": "EBS",
     "question": "EBSのマルチアタッチ機能について正しい説明はどれですか？",
@@ -104,7 +104,7 @@
     "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volumes-multi.html"
   },
   {
-    "id": "ebs-006",
+    "id": "ebs-005",
     "phase": 2,
     "service": "EBS",
     "question": "EBSボリュームを大量データのシーケンシャル読み書き（ビッグデータ、ログ処理）に使用する場合、コスト効率が最も高いボリュームタイプはどれですか？",
@@ -130,7 +130,7 @@
     "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html"
   },
   {
-    "id": "ebs-007",
+    "id": "ebs-006",
     "phase": 2,
     "service": "EBS",
     "question": "EBSスナップショットを別リージョンに自動コピーしてDR構成を維持するための推奨サービスはどれですか？",
@@ -156,7 +156,7 @@
     "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/snapshot-lifecycle.html"
   },
   {
-    "id": "ebs-008",
+    "id": "ebs-007",
     "phase": 2,
     "service": "EBS",
     "question": "新しいEBSボリュームを初めて使用する際に発生することがある「初期化」（旧：プリウォーム）の説明として正しいものはどれですか？",
@@ -182,7 +182,7 @@
     "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-initialize.html"
   },
   {
-    "id": "ebs-009",
+    "id": "ebs-008",
     "phase": 2,
     "service": "EBS",
     "question": "実行中のEC2インスタンスにアタッチされているEBSボリュームのサイズを変更する際の正しい手順はどれですか？",
@@ -208,7 +208,7 @@
     "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/requesting-ebs-volume-modifications.html"
   },
   {
-    "id": "ebs-013",
+    "id": "ebs-009",
     "phase": 2,
     "service": "EBS",
     "question": "EC2インスタンスのディスクI/Oが遅くなっているとき、EBSのパフォーマンス問題を診断するために最初に確認すべきCloudWatchメトリクスはどれですか？",
@@ -234,7 +234,7 @@
     "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using_cloudwatch_ebs.html"
   },
   {
-    "id": "ebs-011",
+    "id": "ebs-010",
     "phase": 2,
     "service": "EBS",
     "question": "複数のEBSスナップショットをアーカイブ（低コスト長期保存）するための機能はどれですか？",
@@ -260,7 +260,7 @@
     "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/snapshot-archive.html"
   },
   {
-    "id": "ebs-012",
+    "id": "ebs-011",
     "phase": 2,
     "service": "EBS",
     "question": "EC2インスタンスを終了（Terminate）するとデータが消えてしまうストレージはどれですか？",

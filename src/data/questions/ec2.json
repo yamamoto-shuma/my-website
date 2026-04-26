@@ -1,6 +1,6 @@
 [
   {
-    "id": "ec2-002",
+    "id": "ec2-001",
     "phase": 2,
     "service": "EC2",
     "question": "EC2インスタンスに対してIAMロールを付与する際に使用する仕組みはどれですか？",
@@ -26,7 +26,7 @@
     "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2_instance-profiles.html"
   },
   {
-    "id": "ec2-003",
+    "id": "ec2-002",
     "phase": 2,
     "service": "EC2",
     "question": "EC2のオンデマンドインスタンスと比較して、最大90%のコスト削減が可能なオプションはどれですか？",
@@ -52,7 +52,7 @@
     "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-spot-instances.html"
   },
   {
-    "id": "ec2-004",
+    "id": "ec2-003",
     "phase": 2,
     "service": "EC2",
     "question": "EC2インスタンスの起動時に自動実行されるスクリプトを設定するために使用する機能はどれですか？",
@@ -78,7 +78,7 @@
     "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/user-data.html"
   },
   {
-    "id": "ec2-005",
+    "id": "ec2-004",
     "phase": 2,
     "service": "EC2",
     "question": "EC2インスタンスタイプのうち、メモリ最適化に特化したインスタンスファミリーはどれですか？",
@@ -104,7 +104,7 @@
     "reference": "https://aws.amazon.com/ec2/instance-types/"
   },
   {
-    "id": "ec2-015",
+    "id": "ec2-005",
     "phase": 2,
     "service": "EC2",
     "question": "常時稼働するステートフルなWebアプリサーバーのコスト削減を検討しています。ワークロードが安定しており1〜3年の長期利用が確定している場合、最も適した購入オプションはどれですか？",
@@ -130,7 +130,7 @@
     "reference": "https://docs.aws.amazon.com/savingsplans/latest/userguide/what-is-savings-plans.html"
   },
   {
-    "id": "ec2-016",
+    "id": "ec2-006",
     "phase": 2,
     "service": "EC2",
     "question": "EC2インスタンスのCPU使用率を1分間隔で監視してアラートを出したい場合、必要な設定はどれですか？",
@@ -156,7 +156,7 @@
     "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-cloudwatch-new.html"
   },
   {
-    "id": "ec2-009",
+    "id": "ec2-007",
     "phase": 2,
     "service": "EC2",
     "question": "EC2のリザーブドインスタンス（RI）において、未使用のRIを他のAWSアカウントに販売できる仕組みはどれですか？",
@@ -182,7 +182,7 @@
     "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ri-market-general.html"
   },
   {
-    "id": "ec2-010",
+    "id": "ec2-008",
     "phase": 2,
     "service": "EC2",
     "question": "EC2インスタンスのOSレベルの設定変更なしにネットワークインターフェースを複数持ち、セカンダリIPアドレスを追加するために使用するのはどれですか？",
@@ -208,7 +208,7 @@
     "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-eni.html"
   },
   {
-    "id": "ec2-011",
+    "id": "ec2-009",
     "phase": 2,
     "service": "EC2",
     "question": "EC2 Dedicated Hostsを使用する主な理由として最も適切なものはどれですか？",
@@ -234,7 +234,7 @@
     "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/dedicated-hosts-overview.html"
   },
   {
-    "id": "ec2-012",
+    "id": "ec2-010",
     "phase": 2,
     "service": "EC2",
     "question": "EC2インスタンスを別のAZに移動したい場合、正しい手順はどれですか？",
@@ -260,7 +260,7 @@
     "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/creating-an-ami-ebs.html"
   },
   {
-    "id": "ec2-013",
+    "id": "ec2-011",
     "phase": 2,
     "service": "EC2",
     "question": "SSHキーペアを使わずにEC2インスタンスへ安全に接続するためのAWSサービスはどれですか？",
@@ -286,7 +286,7 @@
     "reference": "https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html"
   },
   {
-    "id": "ec2-014",
+    "id": "ec2-012",
     "phase": 2,
     "service": "EC2",
     "question": "稼働中のEC2インスタンスのインスタンスタイプを変更したい場合、正しい手順はどれですか？",

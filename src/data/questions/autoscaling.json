@@ -156,7 +156,7 @@
     "reference": "https://docs.aws.amazon.com/autoscaling/ec2/userguide/lifecycle-hooks.html"
   },
   {
-    "id": "autoscaling-008",
+    "id": "autoscaling-007",
     "phase": 2,
     "service": "Auto Scaling",
     "question": "過去のトラフィックパターンを機械学習で分析し、将来の負荷を予測してスケーリングする機能はどれですか？",
@@ -182,7 +182,7 @@
     "reference": "https://docs.aws.amazon.com/autoscaling/ec2/userguide/ec2-auto-scaling-predictive-scaling.html"
   },
   {
-    "id": "autoscaling-009",
+    "id": "autoscaling-008",
     "phase": 2,
     "service": "Auto Scaling",
     "question": "Auto Scalingグループにおいて、スポットインスタンスとオンデマンドインスタンスを組み合わせて使用する機能はどれですか？",
@@ -208,7 +208,7 @@
     "reference": "https://docs.aws.amazon.com/autoscaling/ec2/userguide/mixed-instances-groups.html"
   },
   {
-    "id": "autoscaling-010",
+    "id": "autoscaling-009",
     "phase": 2,
     "service": "Auto Scaling",
     "question": "Auto Scalingグループに新しい起動テンプレートを適用する際、既存インスタンスを順次新しいテンプレートで置き換えるための機能はどれですか？",
@@ -234,7 +234,7 @@
     "reference": "https://docs.aws.amazon.com/autoscaling/ec2/userguide/asg-instance-refresh.html"
   },
   {
-    "id": "autoscaling-011",
+    "id": "autoscaling-010",
     "phase": 2,
     "service": "Auto Scaling",
     "question": "Auto Scalingグループで、一時的にスケーリングを停止したい場合（メンテナンス時など）に使用する機能はどれですか？",
@@ -260,7 +260,7 @@
     "reference": "https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-suspend-resume-processes.html"
   },
   {
-    "id": "autoscaling-012",
+    "id": "autoscaling-011",
     "phase": 2,
     "service": "Auto Scaling",
     "question": "Auto ScalingグループとALBを連携させてスケールアウト時に新しいインスタンスへのトラフィックを自動的に振り分けるためには何が必要ですか？",

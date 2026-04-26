@@ -156,7 +156,7 @@
     "reference": "https://docs.aws.amazon.com/lambda/latest/dg/configuration-vpc.html"
   },
   {
-    "id": "lambda-008",
+    "id": "lambda-007",
     "phase": 2,
     "service": "Lambda",
     "question": "Lambda関数でS3のオブジェクト作成イベントをトリガーとして設定する場合、正しい設定方法はどれですか？",
@@ -182,7 +182,7 @@
     "reference": "https://docs.aws.amazon.com/lambda/latest/dg/with-s3.html"
   },
   {
-    "id": "lambda-010",
+    "id": "lambda-008",
     "phase": 2,
     "service": "Lambda",
     "question": "Lambda SnapStartを使用した場合の主なメリットはどれですか？",
@@ -208,7 +208,7 @@
     "reference": "https://docs.aws.amazon.com/lambda/latest/dg/snapstart.html"
   },
   {
-    "id": "lambda-011",
+    "id": "lambda-009",
     "phase": 2,
     "service": "Lambda",
     "question": "複数のLambda関数で共通ライブラリを共有するための推奨される方法はどれですか？",
@@ -234,7 +234,7 @@
     "reference": "https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html"
   },
   {
-    "id": "lambda-012",
+    "id": "lambda-010",
     "phase": 2,
     "service": "Lambda",
     "question": "Lambda関数を定期的に実行したい場合（例：毎日AM2時にバッチ処理）、最も適切なトリガーはどれですか？",
@@ -260,7 +260,7 @@
     "reference": "https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-run-lambda-schedule.html"
   },
   {
-    "id": "lambda-013",
+    "id": "lambda-011",
     "phase": 2,
     "service": "Lambda",
     "question": "Lambda関数のメモリを512MBから1024MBに増やしたところ、実行時間が半分になりました。この変更のコストへの影響として正しいものはどれですか？",

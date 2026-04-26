@@ -208,7 +208,7 @@
     "reference": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cluster-capacity-providers.html"
   },
   {
-    "id": "ecs-013",
+    "id": "ecs-009",
     "phase": 2,
     "service": "ECS",
     "question": "ECSサービスのタスク数をリクエスト数に応じて自動でスケールさせるために使用するサービスはどれですか？",
@@ -260,7 +260,7 @@
     "reference": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/using_awslogs.html"
   },
   {
-    "id": "ecs-012",
+    "id": "ecs-011",
     "phase": 2,
     "service": "ECS",
     "question": "ECSタスクでAmazon ECRのプライベートリポジトリからコンテナイメージをプルするために必要な設定はどれですか？",
