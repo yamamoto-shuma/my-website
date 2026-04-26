@@ -466,5 +466,31 @@
     ],
     "explanation": "IAM Identity Center（旧AWS SSO）はOrganizations配下の複数アカウントへのアクセスを一元管理するサービスです。社内IdP（Okta・Azure AD・Google Workspaceなど）または組み込みディレクトリと連携し、Permission Setで各アカウントへの権限を定義します。ユーザーはポータルからアクセスするアカウントと権限を選択でき、一時的な認証情報が発行されます。各アカウントにIAMユーザーを管理する手間を排除でき、退職者対応も一箇所で完結します。",
     "reference": "https://docs.aws.amazon.com/singlesignon/latest/userguide/what-is.html"
+  },
+  {
+    "id": "iam-019",
+    "phase": 1,
+    "service": "IAM",
+    "question": "IAMユーザーがMFAを使用してログインした場合のみ、本番S3バケットの削除操作を許可するポリシーを実装するために使用する条件キーはどれですか？",
+    "choices": [
+      {
+        "text": "aws:MultiFactorAuthPresent: true",
+        "correct": true
+      },
+      {
+        "text": "aws:SecureTransport: true",
+        "correct": false
+      },
+      {
+        "text": "iam:PassedToService: mfa",
+        "correct": false
+      },
+      {
+        "text": "aws:PrincipalType: MFAUser",
+        "correct": false
+      }
+    ],
+    "explanation": "aws:MultiFactorAuthPresent条件キーはリクエストがMFA認証済みセッションから行われた場合にtrueになります。重要な操作（EC2インスタンス削除・IAMユーザー変更・本番データ操作など）に対して`Deny + aws:MultiFactorAuthPresent: false`を設定することで「MFAなしでは実行できない操作」を強制できます。Denyにfalseを使う（MFAが存在しない場合にDeny）という二重否定のパターンを正しく理解することが実装のポイントです。",
+    "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_condition-keys.html#condition-keys-multifactorauthpresent"
   }
 ]

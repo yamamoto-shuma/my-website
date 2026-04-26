@@ -362,5 +362,31 @@
     ],
     "explanation": "VPCフローログはENIを通過するIPトラフィックのメタデータ（送信元・宛先IP、ポート、プロトコル、ACCEPT/REJECTなど）を記録します。セキュリティグループやネットワークACLの設定ミスで通信が拒否されているかどうかをREJECTレコードで確認でき、「通信が届いているのか届いていないのか」を切り分ける最初のステップです。CloudTrailはAWS APIコールの記録であり、IPレベルの通信可否は確認できません。",
     "reference": "https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs.html"
+  },
+  {
+    "id": "vpc-015",
+    "phase": 1,
+    "service": "VPC",
+    "question": "セキュリティグループとNACLの設定が正しいかどうかをリアルなトラフィックを発生させずに事前確認したい場合、最も適したAWSツールはどれですか？",
+    "choices": [
+      {
+        "text": "VPC Reachability Analyzer",
+        "correct": true
+      },
+      {
+        "text": "VPC Flow Logs",
+        "correct": false
+      },
+      {
+        "text": "AWS Config",
+        "correct": false
+      },
+      {
+        "text": "CloudWatch Logs Insights",
+        "correct": false
+      }
+    ],
+    "explanation": "VPC Reachability Analyzerは送信元と宛先を指定するとSG・NACL・ルートテーブルなどのVPC設定をシミュレーションし、実際のトラフィックを流さずに通信可否の原因を特定できます。Flow LogsはACTUALのトラフィックを記録するため「実際に通信が発生した後の調査」に使い、Reachability Analyzerは「設定の事前検証・変更後の確認」に使うというように役割が異なります。",
+    "reference": "https://docs.aws.amazon.com/vpc/latest/reachability/what-is-reachability-analyzer.html"
   }
 ]
