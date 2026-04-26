@@ -284,5 +284,31 @@
     ],
     "explanation": "CloudFrontと統合するAWS WAFのWeb ACLはus-east-1（N. Virginia）リージョンに作成する必要があります。CloudFrontはグローバルサービスですがWAFの管理エンドポイントがus-east-1を使用するためです。ALBのWAFは各ALBのリージョンに作成します。この「us-east-1でないと紐付けられない」という制約は実装時にはまりやすいポイントです。",
     "reference": "https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/distribution-web-awswaf.html"
+  },
+  {
+    "id": "cloudfront-012",
+    "phase": 3,
+    "service": "CloudFront",
+    "question": "CloudFrontのリアルタイムログ（Real-time logs）と標準アクセスログ（Standard logs）の使い分けとして正しいものはどれですか？",
+    "choices": [
+      {
+        "text": "リアルタイムログはKinesis Data Streamsにほぼリアルタイムで送信され監視・アラートに適し、標準ログはS3に数分遅延で保存されコスト分析や長期保存に適する",
+        "correct": true
+      },
+      {
+        "text": "標準アクセスログはリアルタイムでCloudWatchに送信される",
+        "correct": false
+      },
+      {
+        "text": "リアルタイムログはCloudFrontのすべてのディストリビューションでデフォルト有効になっている",
+        "correct": false
+      },
+      {
+        "text": "リアルタイムログと標準ログは同じ情報を含んでおり、どちらか片方を選択する必要がある",
+        "correct": false
+      }
+    ],
+    "explanation": "リアルタイムログはKinesis Data Streams経由でほぼリアルタイム（数秒以内）にログを受け取れます。Kinesis Data Firehoseと組み合わせてOpenSearch ServiceやS3へ転送し、リアルタイムダッシュボードやアラートに使えます。標準ログはS3に数分の遅延で保存されAthenaでのバッチ分析向きです。両者は同時に有効化できます。リアルタイムログはサンプリングレートを設定してコストを調整できます。",
+    "reference": "https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/real-time-logs.html"
   }
 ]

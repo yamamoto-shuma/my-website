@@ -284,5 +284,31 @@
     ],
     "explanation": "API GatewayはデフォルトでVPCの外に存在するため、VPC内のプライベートなバックエンド（ECS、EC2、ALBなど）にはインターネット経由でしかアクセスできません。VPCリンクを使うとNLBを介してVPC内のリソースにプライベート接続できます。HTTP APIのVPCリンクはALBやCloud Mapとも統合できます。Lambda関数はVPCに配置しなくてもAPI Gatewayから直接呼び出せるためVPCリンクは不要です。",
     "reference": "https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-vpc-links.html"
+  },
+  {
+    "id": "api-gateway-012",
+    "phase": 3,
+    "service": "API Gateway",
+    "question": "API Gateway REST APIのキャッシュ（API Caching）を有効にする目的と注意点として正しいものはどれですか？",
+    "choices": [
+      {
+        "text": "同一リクエストに対してバックエンドを呼び出さずキャッシュから返すことでレイテンシー低減とバックエンド負荷削減ができるが、ステージ単位でのコストが発生する",
+        "correct": true
+      },
+      {
+        "text": "API GatewayのキャッシュはCloudFrontのキャッシュと自動的に同期される",
+        "correct": false
+      },
+      {
+        "text": "キャッシュはデフォルトで有効になっておりTTLは300秒に設定されている",
+        "correct": false
+      },
+      {
+        "text": "HTTP APIとREST APIの両方でAPIキャッシュ機能が使用できる",
+        "correct": false
+      }
+    ],
+    "explanation": "API GatewayのAPIキャッシュはREST APIのステージ単位で有効化し、TTL（デフォルト300秒・最大3600秒）を設定します。同一リクエストに対してバックエンド（Lambda・HTTP統合）を呼び出さずにキャッシュされたレスポンスを返すため、レイテンシーとコストを削減できます。ただしキャッシュはステージごとにGB単位で課金されます（0.5GB〜237GB）。クライアントはCache-Control: max-age=0ヘッダーでキャッシュを無効化できます。HTTP APIはキャッシュ機能を持たないためCloudFrontとの組み合わせで対応します。",
+    "reference": "https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-caching.html"
   }
 ]
