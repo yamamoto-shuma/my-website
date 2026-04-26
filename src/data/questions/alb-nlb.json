@@ -310,5 +310,31 @@
     ],
     "explanation": "ALBのリスナールールのForwardアクションでは複数のターゲットグループに重みを設定できます（Weighted Target Groups）。重み90のv1ターゲットグループと重み10のv2ターゲットグループを設定するだけでカナリアリリースが実現できます。ECSのBlue/Greenデプロイ（CodeDeploy統合）やAuto ScalingのInstance Refreshと組み合わせて、安全な段階的リリースを実施できます。",
     "reference": "https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-listeners.html#forward-actions"
+  },
+  {
+    "id": "alb-nlb-013",
+    "phase": 3,
+    "service": "ALB/NLB",
+    "question": "NLBのクロスゾーン負荷分散（Cross-Zone Load Balancing）を有効にした場合の動作と料金について正しいものはどれですか？",
+    "choices": [
+      {
+        "text": "すべてのAZのターゲットに均等にトラフィックを分散するが、AZをまたぐデータ転送料金が発生する",
+        "correct": true
+      },
+      {
+        "text": "クロスゾーン負荷分散を有効にしてもAZをまたぐ追加料金は発生しない",
+        "correct": false
+      },
+      {
+        "text": "NLBはクロスゾーン負荷分散をサポートしていない",
+        "correct": false
+      },
+      {
+        "text": "ALBと同様にクロスゾーン負荷分散はデフォルトで有効になっている",
+        "correct": false
+      }
+    ],
+    "explanation": "ALBはクロスゾーン負荷分散がデフォルト有効で追加料金なし（AZ間転送費用はALBが負担）ですが、NLBはデフォルト無効で有効化するとAZ間のデータ転送料金が発生します。NLBのクロスゾーン無効時は各AZのNLBノードがそのAZ内のターゲットにのみ振り分けます。AZごとのターゲット数が不均等な場合はクロスゾーンを有効にすると負荷が均等になりますが、コストとのトレードオフを考慮する必要があります。",
+    "reference": "https://docs.aws.amazon.com/elasticloadbalancing/latest/network/network-load-balancers.html#cross-zone-load-balancing"
   }
 ]

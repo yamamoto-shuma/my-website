@@ -284,5 +284,31 @@
     ],
     "explanation": "CloudWatchアラーム連携型ヘルスチェックは、HTTPエンドポイントへのアクセスではなくCloudWatchアラームの状態（OK/ALARM/INSUFFICIENT_DATA）をヘルスチェックの結果として使用します。EC2のメモリ使用率・カスタムメトリクス・SQSのキュー深度など、HTTPエンドポイントでは確認できないアプリケーション内部の状態に基づくフェイルオーバー制御が可能です。プライベートサブネットのリソース（外部からHTTPアクセスできない）のヘルスチェックにも有効です。",
     "reference": "https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/health-checks-creating-values.html#health-checks-creating-values-cloudwatch"
+  },
+  {
+    "id": "route53-012",
+    "phase": 3,
+    "service": "Route 53",
+    "question": "同一ドメイン（例: api.example.com）に対して、VPC内からアクセスした場合はプライベートIPを返し、インターネットからアクセスした場合はパブリックIPを返すDNS設計を実現するにはどうしますか？",
+    "choices": [
+      {
+        "text": "同一ドメイン名でパブリックホストゾーンとプライベートホストゾーンを両方作成し、VPCにプライベートホストゾーンを関連付ける（Split-view DNS）",
+        "correct": true
+      },
+      {
+        "text": "1つのホストゾーンに2つのAレコードを作成してAWS側で自動的に振り分けられる",
+        "correct": false
+      },
+      {
+        "text": "Route 53ではパブリックとプライベートの同名ゾーンを同時に保持できない",
+        "correct": false
+      },
+      {
+        "text": "NATゲートウェイを経由させることで自動的にDNS応答が切り替わる",
+        "correct": false
+      }
+    ],
+    "explanation": "Split-view DNS（Split-horizon DNS）は同一ドメインのパブリックホストゾーンとプライベートホストゾーンを共存させる設計パターンです。VPCに関連付けたプライベートホストゾーンはVPC内からのDNSクエリに対して優先的に参照され、プライベートIPを返します。VPC外（インターネット）からはパブリックホストゾーンを参照してパブリックIPを返します。本番APIをVPC内から直接アクセス（ALB不要）しつつ外部公開もするような構成で活用されます。",
+    "reference": "https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/hosted-zone-private-considerations.html"
   }
 ]
