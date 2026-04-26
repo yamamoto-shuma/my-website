@@ -156,32 +156,6 @@
     "reference": "https://docs.aws.amazon.com/autoscaling/ec2/userguide/lifecycle-hooks.html"
   },
   {
-    "id": "autoscaling-007",
-    "phase": 2,
-    "service": "Auto Scaling",
-    "question": "Auto Scalingグループで複数のアベイラビリティゾーンを設定している場合、スケールインで最初に削除されるインスタンスの選択ロジックはどれですか？",
-    "choices": [
-      {
-        "text": "インスタンス数が最も多いAZから、最も古い起動設定/テンプレートを使用するインスタンスが優先される",
-        "correct": true
-      },
-      {
-        "text": "ランダムに選択される",
-        "correct": false
-      },
-      {
-        "text": "最も新しいインスタンスが優先される",
-        "correct": false
-      },
-      {
-        "text": "CPUが最も低いインスタンスが優先される",
-        "correct": false
-      }
-    ],
-    "explanation": "スケールインのデフォルト終了ポリシーは：(1)最もインスタンス数の多いAZを選択、(2)同数なら最も古い起動設定/テンプレートを使用するAZを選択、(3)それでも同数なら課金時間の最も近いインスタンスを選択する、という順序です。カスタム終了ポリシーを設定することも可能です。",
-    "reference": "https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-instance-termination.html"
-  },
-  {
     "id": "autoscaling-008",
     "phase": 2,
     "service": "Auto Scaling",
@@ -284,5 +258,31 @@
     ],
     "explanation": "Auto Scalingグループのプロセス（Launch、Terminate、HealthCheck、ReplaceUnhealthyなど）を個別にサスペンドできます。メンテナンス中にReplaceUnhealthyをサスペンドすることで、ヘルスチェック失敗でもインスタンスが自動置換されなくなります。",
     "reference": "https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-suspend-resume-processes.html"
+  },
+  {
+    "id": "autoscaling-012",
+    "phase": 2,
+    "service": "Auto Scaling",
+    "question": "Auto ScalingグループとALBを連携させてスケールアウト時に新しいインスタンスへのトラフィックを自動的に振り分けるためには何が必要ですか？",
+    "choices": [
+      {
+        "text": "Auto ScalingグループにALBのターゲットグループを登録する",
+        "correct": true
+      },
+      {
+        "text": "各インスタンス起動後に手動でターゲットグループに登録する",
+        "correct": false
+      },
+      {
+        "text": "ALBのリスナールールにAuto Scalingグループを直接指定する",
+        "correct": false
+      },
+      {
+        "text": "Route 53のヘルスチェックと組み合わせて設定する",
+        "correct": false
+      }
+    ],
+    "explanation": "Auto ScalingグループのロードバランシングセクションにALBのターゲットグループを登録すると、スケールアウト時に新しいインスタンスが自動的にターゲットグループに追加されトラフィックを受け取ります。スケールイン時は接続ドレイン（Deregistration Delay）の後にターゲットグループから外れます。この連携はECSサービスでも同様の仕組みで使われます。",
+    "reference": "https://docs.aws.amazon.com/autoscaling/ec2/userguide/attach-load-balancer-asg.html"
   }
 ]

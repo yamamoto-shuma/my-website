@@ -104,30 +104,30 @@
     "reference": "https://aws.amazon.com/ec2/instance-types/"
   },
   {
-    "id": "ec2-006",
+    "id": "ec2-015",
     "phase": 2,
     "service": "EC2",
-    "question": "EC2のプレイスメントグループのうち、同一ラックに配置してネットワーク遅延を最小化するタイプはどれですか？",
+    "question": "常時稼働するステートフルなWebアプリサーバーのコスト削減を検討しています。ワークロードが安定しており1〜3年の長期利用が確定している場合、最も適した購入オプションはどれですか？",
     "choices": [
       {
-        "text": "クラスタープレイスメントグループ",
+        "text": "Compute Savings Plans または リザーブドインスタンス",
         "correct": true
       },
       {
-        "text": "スプレッドプレイスメントグループ",
+        "text": "スポットインスタンス",
         "correct": false
       },
       {
-        "text": "パーティションプレイスメントグループ",
+        "text": "オンデマンドインスタンス",
         "correct": false
       },
       {
-        "text": "アフィニティプレイスメントグループ",
+        "text": "Dedicated Hosts",
         "correct": false
       }
     ],
-    "explanation": "クラスタープレイスメントグループは同一AZ内の同一ラックにインスタンスを配置し、低レイテンシ・高スループットのネットワーク通信を実現します。HPC（高性能計算）や機械学習トレーニングに適しています。スプレッドは異なるハードウェアに分散、パーティションはラック障害の影響を分離します。",
-    "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-groups.html"
+    "explanation": "常時稼働・長期利用が確定している場合はCompute Savings Plans（最大66%割引、インスタンスタイプ・リージョン・OS変更が柔軟）またはリザーブドインスタンス（最大72%割引、条件が厳密）が適切です。スポットは中断リスクがありステートフルなWebサーバーには不向きです。Savings PlansはEC2以外（Fargate・Lambda）にも適用できる柔軟性が魅力です。",
+    "reference": "https://docs.aws.amazon.com/savingsplans/latest/userguide/what-is-savings-plans.html"
   },
   {
     "id": "ec2-008",

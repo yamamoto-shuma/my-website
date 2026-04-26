@@ -260,29 +260,29 @@
     "reference": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/using_awslogs.html"
   },
   {
-    "id": "ecs-011",
+    "id": "ecs-012",
     "phase": 2,
     "service": "ECS",
-    "question": "ECSクラスターでEC2インスタンスをECSクラスターに登録させるために必要なコンポーネントはどれですか？",
+    "question": "ECSタスクでAmazon ECRのプライベートリポジトリからコンテナイメージをプルするために必要な設定はどれですか？",
     "choices": [
       {
-        "text": "ECSエージェント（ECS Agent）",
+        "text": "タスク実行ロールにECRのプル権限（ecr:GetAuthorizationToken等）を付与する",
         "correct": true
       },
       {
-        "text": "AWS Systems Manager Agent",
+        "text": "タスクIAMロールにECRのプル権限を付与する",
         "correct": false
       },
       {
-        "text": "CloudWatch Agent",
+        "text": "ECRリポジトリをパブリックに設定する",
         "correct": false
       },
       {
-        "text": "Docker Daemon",
+        "text": "ECSクラスターにECRへのVPCエンドポイントを設定する",
         "correct": false
       }
     ],
-    "explanation": "ECSエージェントはEC2インスタンス上で動作し、ECSコントロールプレーンとの通信を担当します。クラスターへの登録、タスクの起動・停止、リソース使用状況の報告を行います。ECS最適化AMIにはECSエージェントとDockerがプリインストールされています。",
-    "reference": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_agent.html"
+    "explanation": "ECRからのイメージプルはECSコントロールプレーン側の処理であり、タスク実行ロール（Task Execution Role）にecr:GetAuthorizationToken、ecr:BatchGetImage、ecr:GetDownloadUrlForLayerの権限が必要です。タスクIAMロールはコンテナ内アプリのAWSアクセス用であり、ECRプルには使われません。AWSマネージドポリシー「AmazonECSTaskExecutionRolePolicy」に必要な権限が含まれています。",
+    "reference": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_execution_IAM_role.html"
   }
 ]
