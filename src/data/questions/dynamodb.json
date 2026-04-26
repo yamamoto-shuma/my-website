@@ -174,11 +174,11 @@
         "correct": false
       },
       {
-        "text": "TTLはDynamoDBのプロビジョンドキャパシティに影響せずWCUを消費しない",
+        "text": "TTLで削除されたアイテムはDynamoDB Streamsには流れないため変更イベントとして検知できない",
         "correct": false
       }
     ],
-    "explanation": "TTLは指定した属性（エポック秒のUnixタイムスタンプ）を期限として、期限切れアイテムを追加のWCUコストなしでバックグラウンドで削除します。削除は期限切れ後48時間以内に行われます（即時ではありません）。セッションデータ・一時トークン・キャッシュデータなどの自動クリーンアップに使われ、ストレージコストの削減と管理の自動化に役立ちます。TTL削除イベントはDynamoDB Streamsに流れるため、削除後の処理もトリガーできます。",
+    "explanation": "TTLは指定した属性（エポック秒のUnixタイムスタンプ）を期限として、期限切れアイテムを追加のWCUコストなしでバックグラウンドで削除します。削除は期限切れ後48時間以内に行われます（即時ではありません）。セッションデータ・一時トークン・キャッシュデータなどの自動クリーンアップに使われ、ストレージコストの削減と管理の自動化に役立ちます。TTL削除イベントはDynamoDB Streamsに流れるため（userIdentityがdynamodb.amazonaws.comとして記録）、削除後の処理もトリガーできます。",
     "reference": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/TTL.html"
   },
   {

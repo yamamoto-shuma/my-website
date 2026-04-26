@@ -36,7 +36,7 @@
         "correct": true
       },
       {
-        "text": "最大I/OはすべてのユースケースでGPが上位互換のため最大I/Oを常に選択すべき",
+        "text": "最大I/OはすべてのユースケースでGPより高性能なため、常に最大I/Oを選択すべき",
         "correct": false
       },
       {
@@ -144,7 +144,7 @@
         "correct": false
       },
       {
-        "text": "EFSをLambdaにマウントすると/tmpの512MB制限を超えたストレージとして使える",
+        "text": "EFSをマウントするとLambdaのコールドスタート時間が短縮され関数の実行効率が上がる",
         "correct": false
       },
       {
