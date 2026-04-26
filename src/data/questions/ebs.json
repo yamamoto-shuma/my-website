@@ -1,31 +1,5 @@
 [
   {
-    "id": "ebs-001",
-    "phase": 2,
-    "service": "EBS",
-    "question": "EBSボリュームタイプのうち、最大64,000 IOPSを提供し、レイテンシに敏感なトランザクション処理に最適なのはどれですか？",
-    "choices": [
-      {
-        "text": "io2 Block Express（プロビジョンドIOPS SSD）",
-        "correct": true
-      },
-      {
-        "text": "gp3（汎用SSD）",
-        "correct": false
-      },
-      {
-        "text": "st1（スループット最適化HDD）",
-        "correct": false
-      },
-      {
-        "text": "sc1（コールドHDD）",
-        "correct": false
-      }
-    ],
-    "explanation": "io2 Block Expressは最大256,000 IOPSと4,000 MB/sのスループットを提供し、ミッションクリティカルなデータベース（Oracle、SAP HANA）に適しています。gp3は最大16,000 IOPSでコスト効率が高く、汎用ワークロードに推奨されます。",
-    "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html"
-  },
-  {
     "id": "ebs-002",
     "phase": 2,
     "service": "EBS",
@@ -284,5 +258,31 @@
     ],
     "explanation": "EBSスナップショットアーカイブを使用すると、スナップショットをアーカイブ層に移動して標準ストレージより最大75%のコスト削減ができます。アーカイブ済みスナップショットを使用するには復元（24〜72時間）が必要です。90日間の最低保存期間があります。",
     "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/snapshot-archive.html"
+  },
+  {
+    "id": "ebs-012",
+    "phase": 2,
+    "service": "EBS",
+    "question": "EC2インスタンスを終了（Terminate）するとデータが消えてしまうストレージはどれですか？",
+    "choices": [
+      {
+        "text": "インスタンスストア（エフェメラルストレージ）",
+        "correct": true
+      },
+      {
+        "text": "EBSボリューム（ルートボリュームのDeleteOnTermination=falseの場合）",
+        "correct": false
+      },
+      {
+        "text": "EFSファイルシステム",
+        "correct": false
+      },
+      {
+        "text": "S3バケット",
+        "correct": false
+      }
+    ],
+    "explanation": "インスタンスストアはEC2ホストサーバーの物理ディスクを使用するエフェメラルストレージです。インスタンスの停止・終了・ハードウェア障害でデータが失われます。高いI/Oパフォーマンスが必要な一時データ（キャッシュ、バッファ、スクラッチ領域）に適しています。EBSはインスタンス終了後もデータが保持されます（DeleteOnTermination=falseの場合）。",
+    "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/InstanceStorage.html"
   }
 ]

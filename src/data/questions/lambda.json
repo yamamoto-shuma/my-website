@@ -156,32 +156,6 @@
     "reference": "https://docs.aws.amazon.com/lambda/latest/dg/configuration-vpc.html"
   },
   {
-    "id": "lambda-007",
-    "phase": 2,
-    "service": "Lambda",
-    "question": "Lambda関数のデプロイパッケージサイズの制限として正しいものはどれですか？",
-    "choices": [
-      {
-        "text": "ZIPファイルは50MB（圧縮）、解凍後は250MB。コンテナイメージは最大10GB",
-        "correct": true
-      },
-      {
-        "text": "ZIPファイルは100MB（圧縮）、解凍後は500MB",
-        "correct": false
-      },
-      {
-        "text": "コンテナイメージは最大1GB",
-        "correct": false
-      },
-      {
-        "text": "Lambda Layersを使用すれば制限はない",
-        "correct": false
-      }
-    ],
-    "explanation": "Lambdaのデプロイパッケージ制限はZIPで直接アップロード時50MB（圧縮）、S3経由250MB（解凍後）です。コンテナイメージ形式では最大10GBのイメージを使用でき、大規模な依存ライブラリも含めることができます。Lambda Layersで共有ライブラリを分離しても合計250MBの制限は変わりません。",
-    "reference": "https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html"
-  },
-  {
     "id": "lambda-008",
     "phase": 2,
     "service": "Lambda",
@@ -206,32 +180,6 @@
     ],
     "explanation": "S3バケットのイベント通知設定でLambda関数を宛先として指定すると、オブジェクト作成・削除などのイベント発生時に自動でLambdaが呼び出されます。これは非同期呼び出しです。EventBridge（CloudWatch Events）経由でもS3イベントを処理できますが、より細かいフィルタリングが可能です。",
     "reference": "https://docs.aws.amazon.com/lambda/latest/dg/with-s3.html"
-  },
-  {
-    "id": "lambda-009",
-    "phase": 2,
-    "service": "Lambda",
-    "question": "Lambda関数のタイムアウト設定の最大値はどれですか？",
-    "choices": [
-      {
-        "text": "15分（900秒）",
-        "correct": true
-      },
-      {
-        "text": "5分（300秒）",
-        "correct": false
-      },
-      {
-        "text": "30分（1800秒）",
-        "correct": false
-      },
-      {
-        "text": "1時間（3600秒）",
-        "correct": false
-      }
-    ],
-    "explanation": "Lambda関数のタイムアウトは最大15分（900秒）です。それ以上の処理が必要な場合はStep FunctionsやSQSと組み合わせて処理を分割するか、EC2やECSのバッチ処理を検討します。デフォルトのタイムアウトは3秒です。",
-    "reference": "https://docs.aws.amazon.com/lambda/latest/dg/configuration-timeout.html"
   },
   {
     "id": "lambda-010",
@@ -284,5 +232,57 @@
     ],
     "explanation": "Lambda LayersはZIPアーカイブとして共通の依存ライブラリ、カスタムランタイム、設定ファイルを複数関数で共有できます。各レイヤーは最大250MBで、関数ごとに最大5つのレイヤーをアタッチできます。デプロイパッケージのサイズ削減と共通ライブラリの一元管理が可能です。EFSも共有には使えますが、レイテンシの増加があります。",
     "reference": "https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html"
+  },
+  {
+    "id": "lambda-012",
+    "phase": 2,
+    "service": "Lambda",
+    "question": "Lambda関数を定期的に実行したい場合（例：毎日AM2時にバッチ処理）、最も適切なトリガーはどれですか？",
+    "choices": [
+      {
+        "text": "Amazon EventBridge（CloudWatch Events）のスケジュールルール",
+        "correct": true
+      },
+      {
+        "text": "CloudWatch Alarmsのアクション",
+        "correct": false
+      },
+      {
+        "text": "SNSトピックへの定期パブリッシュ",
+        "correct": false
+      },
+      {
+        "text": "Step FunctionsのWaitステート",
+        "correct": false
+      }
+    ],
+    "explanation": "EventBridgeのスケジュールルールはcron式またはrate式（例: rate(1 day)）でLambdaを定期実行できます。サーバーレスなCronジョブとして広く使われており、設定もシンプルです。バッチ処理、定期レポート生成、リソースのクリーンアップなど実務でもっとも多いLambdaの使い方の一つです。",
+    "reference": "https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-run-lambda-schedule.html"
+  },
+  {
+    "id": "lambda-013",
+    "phase": 2,
+    "service": "Lambda",
+    "question": "Lambda関数のメモリを512MBから1024MBに増やしたところ、実行時間が半分になりました。この変更のコストへの影響として正しいものはどれですか？",
+    "choices": [
+      {
+        "text": "メモリが2倍・実行時間が半分のためコストはほぼ同じになる",
+        "correct": true
+      },
+      {
+        "text": "メモリが2倍になるためコストは2倍になる",
+        "correct": false
+      },
+      {
+        "text": "実行時間が半分になるためコストは半分になる",
+        "correct": false
+      },
+      {
+        "text": "メモリ増加はコストに関係ない",
+        "correct": false
+      }
+    ],
+    "explanation": "Lambda の課金はGB秒（メモリ × 実行時間）で計算されます。512MB × 2秒 = 1 GB秒、1024MB × 1秒 = 1 GB秒となり、コストはほぼ同じです。CPU処理がボトルネックの場合はメモリ増加で実行時間が短縮され、コスト中立または削減になることがあります。AWS Lambda Power Tuning ツールで最適なメモリ設定を見つけることが推奨されます。",
+    "reference": "https://docs.aws.amazon.com/lambda/latest/dg/configuration-memory.html"
   }
 ]

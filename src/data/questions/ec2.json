@@ -1,31 +1,5 @@
 [
   {
-    "id": "ec2-001",
-    "phase": 2,
-    "service": "EC2",
-    "question": "EC2インスタンスのメタデータをインスタンス内から取得するために使用するエンドポイントはどれですか？",
-    "choices": [
-      {
-        "text": "http://169.254.169.254/latest/meta-data/",
-        "correct": true
-      },
-      {
-        "text": "http://169.254.169.253/latest/meta-data/",
-        "correct": false
-      },
-      {
-        "text": "http://metadata.amazonaws.com/latest/",
-        "correct": false
-      },
-      {
-        "text": "http://ec2.amazonaws.com/latest/meta-data/",
-        "correct": false
-      }
-    ],
-    "explanation": "EC2インスタンスメタデータサービス（IMDS）はリンクローカルアドレス 169.254.169.254 で提供されます。IMDSv2ではPUTリクエストでトークンを取得してから使用するセッション指向の方式が推奨されています。",
-    "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html"
-  },
-  {
     "id": "ec2-002",
     "phase": 2,
     "service": "EC2",
@@ -156,32 +130,6 @@
     "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-groups.html"
   },
   {
-    "id": "ec2-007",
-    "phase": 2,
-    "service": "EC2",
-    "question": "EC2インスタンスを停止（Stop）した場合とhibernate（休止）した場合の違いとして正しいものはどれですか？",
-    "choices": [
-      {
-        "text": "hibernateではRAMの内容がEBSに保存され、再起動時に復元される",
-        "correct": true
-      },
-      {
-        "text": "hibernateではインスタンスIDが変更される",
-        "correct": false
-      },
-      {
-        "text": "停止中もEBSのストレージ料金は発生しない",
-        "correct": false
-      },
-      {
-        "text": "hibernateはすべてのインスタンスタイプで利用可能である",
-        "correct": false
-      }
-    ],
-    "explanation": "EC2 hibernateはRAMの内容をルートEBSボリュームに保存します。再起動時にRAMが復元されるため、アプリケーションの起動時間を短縮できます。停止中もEBSボリュームの料金は発生します。hibernateはC3/C4/C5、M3/M4/M5、R3/R4/R5など特定のインスタンスタイプのみで利用可能です。",
-    "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/Hibernate.html"
-  },
-  {
     "id": "ec2-008",
     "phase": 2,
     "service": "EC2",
@@ -310,5 +258,57 @@
     ],
     "explanation": "EC2インスタンスのAZは変更できません。別のAZへ移動するにはAMI（Amazon Machine Image）を作成し、ターゲットのAZを指定して新しいインスタンスを起動します。EBSスナップショットを経由してEBSボリュームを別AZに複製する方法もあります。",
     "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/creating-an-ami-ebs.html"
+  },
+  {
+    "id": "ec2-013",
+    "phase": 2,
+    "service": "EC2",
+    "question": "SSHキーペアを使わずにEC2インスタンスへ安全に接続するためのAWSサービスはどれですか？",
+    "choices": [
+      {
+        "text": "AWS Systems Manager Session Manager",
+        "correct": true
+      },
+      {
+        "text": "AWS Direct Connect",
+        "correct": false
+      },
+      {
+        "text": "EC2 Instance Connect",
+        "correct": false
+      },
+      {
+        "text": "AWS VPN",
+        "correct": false
+      }
+    ],
+    "explanation": "Session Managerはキーペアもインバウンドセキュリティグループルール（ポート22）も不要でEC2インスタンスのシェルに接続できます。接続ログはCloudTrailやS3に記録でき、踏み台サーバーも不要になります。IAMポリシーでアクセス制御できるため、セキュリティ強化とオペレーション簡略化を両立する現代的なベストプラクティスです。",
+    "reference": "https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html"
+  },
+  {
+    "id": "ec2-014",
+    "phase": 2,
+    "service": "EC2",
+    "question": "稼働中のEC2インスタンスのインスタンスタイプを変更したい場合、正しい手順はどれですか？",
+    "choices": [
+      {
+        "text": "インスタンスを停止してからインスタンスタイプを変更し、再起動する",
+        "correct": true
+      },
+      {
+        "text": "インスタンスが起動中のままインスタンスタイプをコンソールから変更できる",
+        "correct": false
+      },
+      {
+        "text": "AMIを作成して新しいインスタンスタイプで起動しなければならない",
+        "correct": false
+      },
+      {
+        "text": "インスタンスタイプ変更はサポートに依頼が必要である",
+        "correct": false
+      }
+    ],
+    "explanation": "インスタンスタイプの変更はインスタンスを一度停止（Stop）する必要があります。停止後にコンソール・CLIでインスタンスタイプを変更し、再起動します。ただしインスタンスストアを持つインスタンスタイプへの変更はできないなど制約があります。変更後のパブリックIPは変わるため（Elastic IPを使っていない場合）注意が必要です。",
+    "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-resize.html"
   }
 ]
