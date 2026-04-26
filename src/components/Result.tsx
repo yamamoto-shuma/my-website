@@ -3,9 +3,10 @@ import type { ResultItem } from '../types/quiz';
 interface ResultProps {
   results: ResultItem[];
   onRetry: () => void;
+  onBackToTop: () => void;
 }
 
-function Result({ results, onRetry }: ResultProps) {
+function Result({ results, onRetry, onBackToTop }: ResultProps) {
   const total = results.length;
   const correctCount = results.filter((r) => r.correct).length;
   const rate = total === 0 ? 0 : Math.round((correctCount / total) * 100);
@@ -94,7 +95,23 @@ function Result({ results, onRetry }: ResultProps) {
           </table>
         </div>
 
-        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <button
+            onClick={onBackToTop}
+            style={{
+              padding: '10px 20px',
+              fontSize: 14,
+              fontWeight: 500,
+              background: 'transparent',
+              color: '#8A9199',
+              border: '1.5px solid #D5DBDB',
+              borderRadius: 8,
+              cursor: 'pointer',
+              fontFamily: 'inherit',
+            }}
+          >
+            サービス選択に戻る
+          </button>
           <button
             onClick={onRetry}
             className="aws-btn"

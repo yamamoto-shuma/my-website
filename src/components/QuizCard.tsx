@@ -6,10 +6,20 @@ interface QuizCardProps {
   current: number;
   total: number;
   onNext: (correct: boolean) => void;
+  onBack: () => void;
 }
 
-function QuizCard({ question, current, total, onNext }: QuizCardProps) {
+function QuizCard({ question, current, total, onNext, onBack }: QuizCardProps) {
   const [selected, setSelected] = useState<number | null>(null);
+
+  const [shuffledChoices] = useState(() => {
+    const arr = [...question.choices];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  });
 
   const handleSelect = (index: number) => {
     if (selected !== null) return;
@@ -18,7 +28,7 @@ function QuizCard({ question, current, total, onNext }: QuizCardProps) {
 
   const handleNext = () => {
     if (selected === null) return;
-    onNext(selected === question.answer);
+    onNext(shuffledChoices[selected].correct);
   };
 
   const progress = Math.round((current / total) * 100);
@@ -40,19 +50,24 @@ function QuizCard({ question, current, total, onNext }: QuizCardProps) {
       fontFamily: 'inherit',
     };
     if (selected === null) return base;
-    if (index === question.answer) return { ...base, background: '#E9F5EC', border: '1.5px solid #1D8348', color: '#1D8348', fontWeight: 600 };
+    if (shuffledChoices[index].correct) return { ...base, background: '#E9F5EC', border: '1.5px solid #1D8348', color: '#1D8348', fontWeight: 600 };
     if (index === selected) return { ...base, background: '#FDEDEC', border: '1.5px solid #C0392B', color: '#C0392B' };
     return { ...base, opacity: 0.4 };
   };
 
-  const isCorrect = selected === question.answer;
+  const isCorrect = selected !== null && shuffledChoices[selected].correct;
 
   return (
     <div>
       {/* Header */}
       <div style={{ background: '#232F3E', padding: '16px 32px', display: 'flex', alignItems: 'center', gap: 12 }}>
-        <span style={{ color: '#FF9900', fontWeight: 700, fontSize: 20 }}>AWS</span>
-        <span style={{ color: '#fff', fontSize: 18, fontWeight: 500 }}>Quiz</span>
+        <button
+          onClick={onBack}
+          style={{ background: 'transparent', border: 'none', padding: 0, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8 }}
+        >
+          <span style={{ color: '#FF9900', fontWeight: 700, fontSize: 20 }}>AWS</span>
+          <span style={{ color: '#fff', fontSize: 18, fontWeight: 500 }}>Quiz</span>
+        </button>
         <span style={{ marginLeft: 'auto', color: '#9BA7B4', fontSize: 13 }}>{question.service}</span>
       </div>
 
@@ -73,9 +88,9 @@ function QuizCard({ question, current, total, onNext }: QuizCardProps) {
           </p>
 
           <div>
-            {question.choices.map((choice, index) => (
+            {shuffledChoices.map((choice, index) => (
               <button
-                key={index}
+                key={choice.text}
                 onClick={() => handleSelect(index)}
                 disabled={selected !== null}
                 className={`choice-btn${selected === null ? ' choice-btn--interactive' : ''}`}
@@ -84,7 +99,7 @@ function QuizCard({ question, current, total, onNext }: QuizCardProps) {
                 <span style={{ marginRight: 10, fontWeight: 700, color: '#8A9199', fontSize: 13 }}>
                   {String.fromCharCode(65 + index)}.
                 </span>
-                {choice}
+                {choice.text}
               </button>
             ))}
           </div>
@@ -119,7 +134,23 @@ function QuizCard({ question, current, total, onNext }: QuizCardProps) {
           </div>
         )}
 
-        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <button
+            onClick={onBack}
+            style={{
+              padding: '10px 20px',
+              fontSize: 14,
+              fontWeight: 500,
+              background: 'transparent',
+              color: '#8A9199',
+              border: '1.5px solid #D5DBDB',
+              borderRadius: 8,
+              cursor: 'pointer',
+              fontFamily: 'inherit',
+            }}
+          >
+            やめる
+          </button>
           <button
             onClick={handleNext}
             disabled={selected === null}

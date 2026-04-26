@@ -87,17 +87,23 @@ export default defineConfig({
 ### D4: 問題データスキーマ
 
 ```typescript
+interface Choice {
+  text: string;         // 選択肢のテキスト
+  correct: boolean;     // 正解かどうか（正解は true、不正解は false）
+}
+
 interface Question {
   id: string;           // "{service}-{連番3桁}" 例: "vpc-001"
   service: string;      // サービス名 例: "VPC", "IAM", "KMS"
   phase: number;        // Phaseの番号（1〜6）※将来のフィルタリング拡張用
   question: string;     // 問題文
-  choices: string[];    // 4要素の配列（選択肢）
-  answer: number;       // 正解のインデックス（0〜3）
+  choices: Choice[];    // 4要素の配列（correct: true の要素を先頭に記載する規約）
   explanation: string;  // 解説文
   reference?: string;   // AWS公式ドキュメントのURL（省略可）
 }
 ```
+
+**設計の意図**: 選択肢はUIで毎回ランダムにシャッフルして表示されるため、インデックスで正解を指定する方式（`answer: number`）はシャッフルと相性が悪い。各選択肢が自身の正誤情報（`correct` フラグ）を持つことで、シャッフル後も正解判定が壊れない。
 
 サービスごとに JSON ファイルを分割することで、問題追加時の差分が局所化される。
 

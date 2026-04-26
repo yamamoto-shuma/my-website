@@ -14,15 +14,15 @@
 
 ## 3. クイズUIコンポーネント実装（MWS-009）
 
-- [ ] 3.1 `src/types/quiz.ts` に `Question` 型を定義する
-- [ ] 3.2 `src/components/ServiceSelector.tsx` を実装する（サービス別フィルタリング、問題0件時の開始ボタン無効化）
-- [ ] 3.3 `src/components/QuizCard.tsx` を実装する（4択表示、正誤フィードバック、解説表示、次へボタン）
-- [ ] 3.4 `src/components/Result.tsx` を実装する（正解数・正答率・サービス別内訳、もう一度ボタン）
-- [ ] 3.5 `src/data/questions/` にダミー問題データ（各サービス1問）を配置してローカル動作確認する
+- [x] 3.1 `src/types/quiz.ts` に `Question` 型を定義する
+- [x] 3.2 `src/components/ServiceSelector.tsx` を実装する（サービス別フィルタリング、問題0件時の開始ボタン無効化）
+- [x] 3.3 `src/components/QuizCard.tsx` を実装する（4択表示、正誤フィードバック、解説表示、次へボタン）
+- [x] 3.4 `src/components/Result.tsx` を実装する（正解数・正答率・サービス別内訳、もう一度ボタン、サービス選択に戻るボタン）
+- [x] 3.5 `src/data/questions/` にダミー問題データ（各サービス1問）を配置してローカル動作確認する
 
 ## 4. Phase1問題データ作成（MWS-010）
 
-- [ ] 4.1 `src/data/questions/vpc.json` を作成する（VPC問題10問以上、実務レベル）
-- [ ] 4.2 `src/data/questions/iam.json` を作成する（IAM問題10問以上、実務レベル）
-- [ ] 4.3 `src/data/questions/kms.json` を作成する（KMS問題10問以上、実務レベル）
-- [ ] 4.4 ローカルでPhase1の全問題が正しく表示・採点されることを確認する
+- [x] 4.1 `src/data/questions/vpc.json` を作成する（VPC問題10問以上、実務レベル）
+- [x] 4.2 `src/data/questions/iam.json` を作成する（IAM問題10問以上、実務レベル）
+- [x] 4.3 `src/data/questions/kms.json` を作成する（KMS問題10問以上、実務レベル）
+- [x] 4.4 ローカルでPhase1の全問題が正しく表示・採点されることを確認する
