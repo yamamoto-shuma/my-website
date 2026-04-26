@@ -1,12 +1,20 @@
-interface ServiceSelectorProps {
+interface PhaseGroup {
+  phase: number;
+  label: string;
   services: string[];
+}
+
+interface ServiceSelectorProps {
+  phaseGroups: PhaseGroup[];
   selected: string[];
   onChange: (selected: string[]) => void;
   onStart: () => void;
   questionCount: number;
 }
 
-function ServiceSelector({ services, selected, onChange, onStart, questionCount }: ServiceSelectorProps) {
+function ServiceSelector({ phaseGroups, selected, onChange, onStart, questionCount }: ServiceSelectorProps) {
+  const allServices = phaseGroups.flatMap((g) => g.services);
+
   const toggle = (service: string) => {
     if (selected.includes(service)) {
       onChange(selected.filter((s) => s !== service));
@@ -15,8 +23,18 @@ function ServiceSelector({ services, selected, onChange, onStart, questionCount 
     }
   };
 
-  const allSelected = selected.length === services.length;
-  const toggleAll = () => onChange(allSelected ? [] : [...services]);
+  const allSelected = selected.length === allServices.length;
+  const toggleAll = () => onChange(allSelected ? [] : [...allServices]);
+
+  const togglePhase = (services: string[]) => {
+    const allPhaseSelected = services.every((s) => selected.includes(s));
+    if (allPhaseSelected) {
+      onChange(selected.filter((s) => !services.includes(s)));
+    } else {
+      const toAdd = services.filter((s) => !selected.includes(s));
+      onChange([...selected, ...toAdd]);
+    }
+  };
 
   return (
     <div>
@@ -37,7 +55,7 @@ function ServiceSelector({ services, selected, onChange, onStart, questionCount 
 
           {/* Card body */}
           <div style={{ padding: 28 }}>
-            <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 14 }}>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 20 }}>
               <button
                 onClick={toggleAll}
                 className="aws-btn"
@@ -47,32 +65,63 @@ function ServiceSelector({ services, selected, onChange, onStart, questionCount 
               </button>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 28 }}>
-              {services.map((service) => {
-                const checked = selected.includes(service);
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 24, marginBottom: 28 }}>
+              {phaseGroups.map((group) => {
+                const allPhaseSelected = group.services.every((s) => selected.includes(s));
                 return (
-                  <label
-                    key={service}
-                    className={`service-label${checked ? '' : ' service-label--unchecked'}`}
-                    style={{
+                  <div key={group.phase}>
+                    {/* Phase section header */}
+                    <div style={{
                       display: 'flex',
                       alignItems: 'center',
-                      gap: 12,
-                      padding: '12px 16px',
-                      border: `2px solid ${checked ? '#FF9900' : '#D5DBDB'}`,
-                      borderRadius: 10,
-                      cursor: 'pointer',
-                      background: checked ? '#FFF8EC' : '#FAFAFA',
-                    }}
-                  >
-                    <input
-                      type="checkbox"
-                      checked={checked}
-                      onChange={() => toggle(service)}
-                      style={{ width: 16, height: 16, accentColor: '#FF9900' }}
-                    />
-                    <span style={{ fontWeight: 600, fontSize: 15, color: '#16191F' }}>{service}</span>
-                  </label>
+                      justifyContent: 'space-between',
+                      marginBottom: 10,
+                      paddingBottom: 6,
+                      borderBottom: '2px solid #F0F2F3',
+                    }}>
+                      <span style={{ fontSize: 12, fontWeight: 700, color: '#5F6B7A', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                        {group.label}
+                      </span>
+                      <button
+                        onClick={() => togglePhase(group.services)}
+                        className="aws-btn"
+                        style={{ background: 'none', border: 'none', padding: 0, color: '#0073BB', fontSize: 12, cursor: 'pointer', fontWeight: 500, fontFamily: 'inherit' }}
+                      >
+                        {allPhaseSelected ? '解除' : '選択'}
+                      </button>
+                    </div>
+
+                    {/* Service checkboxes */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                      {group.services.map((service) => {
+                        const checked = selected.includes(service);
+                        return (
+                          <label
+                            key={service}
+                            className={`service-label${checked ? '' : ' service-label--unchecked'}`}
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: 12,
+                              padding: '12px 16px',
+                              border: `2px solid ${checked ? '#FF9900' : '#D5DBDB'}`,
+                              borderRadius: 10,
+                              cursor: 'pointer',
+                              background: checked ? '#FFF8EC' : '#FAFAFA',
+                            }}
+                          >
+                            <input
+                              type="checkbox"
+                              checked={checked}
+                              onChange={() => toggle(service)}
+                              style={{ width: 16, height: 16, accentColor: '#FF9900' }}
+                            />
+                            <span style={{ fontWeight: 600, fontSize: 15, color: '#16191F' }}>{service}</span>
+                          </label>
+                        );
+                      })}
+                    </div>
+                  </div>
                 );
               })}
             </div>

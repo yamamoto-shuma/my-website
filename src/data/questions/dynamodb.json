@@ -1,0 +1,288 @@
+[
+  {
+    "id": "dynamodb-001",
+    "phase": 4,
+    "service": "DynamoDB",
+    "question": "DynamoDBでホットパーティション問題（特定パーティションにトラフィックが集中してスロットリングが発生する）を防ぐためのパーティションキー設計として正しいものはどれですか？",
+    "choices": [
+      {
+        "text": "カーディナリティが高く（値の種類が多い）アクセスが均等に分散されるキーを選択する",
+        "correct": true
+      },
+      {
+        "text": "タイムスタンプをパーティションキーにすることでデータが時系列に整列される",
+        "correct": false
+      },
+      {
+        "text": "ユーザーIDをパーティションキーにすれば常に均等分散される",
+        "correct": false
+      },
+      {
+        "text": "パーティションキーは任意の値でよく、ソートキーの設計が重要",
+        "correct": false
+      }
+    ],
+    "explanation": "DynamoDBはパーティションキーのハッシュ値でデータを分散します。タイムスタンプや連番などの単調増加する値はすべてのトラフィックが最新パーティションに集中（ホットパーティション）して502/429エラーが発生します。UUIDやユーザーIDでも特定ユーザーへのアクセスが極端に多い場合は問題になります。対策としてキーにランダムサフィックスを追加（シャーディング）するか、DAXやキャッシュを組み合わせます。",
+    "reference": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-partition-key-design.html"
+  },
+  {
+    "id": "dynamodb-002",
+    "phase": 4,
+    "service": "DynamoDB",
+    "question": "DynamoDBのプロビジョンドキャパシティモードとオンデマンドモードの使い分けとして正しいものはどれですか？",
+    "choices": [
+      {
+        "text": "トラフィックが予測可能で安定している場合はプロビジョンド（Auto Scaling併用）が安価で、予測困難なスパイクがある場合はオンデマンドが適している",
+        "correct": true
+      },
+      {
+        "text": "オンデマンドモードはプロビジョンドより常に安価なため、すべてのユースケースでオンデマンドを選ぶべき",
+        "correct": false
+      },
+      {
+        "text": "オンデマンドモードではスロットリングが発生しない",
+        "correct": false
+      },
+      {
+        "text": "プロビジョンドモードではAuto Scalingが利用できない",
+        "correct": false
+      }
+    ],
+    "explanation": "プロビジョンドモードはキャパシティユニットを事前に設定し、Auto Scalingで自動調整できます。トラフィックが予測可能な場合はオンデマンドより安価です。オンデマンドモードはキャパシティ管理が不要で、急激なトラフィックスパイクに自動対応します（直前のピークの2倍まで即対応）。ただしオンデマンドは同じリクエスト数でプロビジョンドの約6〜7倍のコストになるため、安定したトラフィックにはプロビジョンドが有利です。",
+    "reference": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.ReadWriteCapacityMode.html"
+  },
+  {
+    "id": "dynamodb-003",
+    "phase": 4,
+    "service": "DynamoDB",
+    "question": "DynamoDBのグローバルセカンダリインデックス（GSI）を作成する主な目的はどれですか？",
+    "choices": [
+      {
+        "text": "プライマリキー以外の属性（例: メールアドレスやステータス）を検索キーにしてQueryオペレーションを実行できるようにする",
+        "correct": true
+      },
+      {
+        "text": "GSIはデータの重複を防ぐためのユニーク制約として機能する",
+        "correct": false
+      },
+      {
+        "text": "GSIを作成するとScanオペレーションが高速化される",
+        "correct": false
+      },
+      {
+        "text": "GSIはテーブル作成時にのみ設定でき、後から追加できない",
+        "correct": false
+      }
+    ],
+    "explanation": "DynamoDBはテーブルのプライマリキー（パーティションキー±ソートキー）でしかQueryできません。別の属性での検索にはGSIを使います。GSIは独立したパーティションキーとソートキーを持ち、元のテーブルとは別にデータが複製されます（追加のストレージとRCU/WCUが必要）。ローカルセカンダリインデックス（LSI）と異なりGSIはテーブル作成後でも追加でき、パーティションキーも変更できます。",
+    "reference": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GSI.html"
+  },
+  {
+    "id": "dynamodb-004",
+    "phase": 4,
+    "service": "DynamoDB",
+    "question": "DynamoDB Streamsを有効にした場合に取得できる情報として正しいものはどれですか？",
+    "choices": [
+      {
+        "text": "テーブルへの変更（INSERT・UPDATE・DELETE）のイベントが時系列で記録され、Lambdaトリガーで処理できる",
+        "correct": true
+      },
+      {
+        "text": "DynamoDB Streamsはテーブルのバックアップを自動的にS3に保存する機能",
+        "correct": false
+      },
+      {
+        "text": "DynamoDB StreamsはReadオペレーションも記録するためアクセス分析に使える",
+        "correct": false
+      },
+      {
+        "text": "DynamoDB Streamsのレコードは24時間後に削除されLambdaで処理できない",
+        "correct": false
+      }
+    ],
+    "explanation": "DynamoDB Streamsはテーブルへの変更（追加・更新・削除）を24時間保持し、変更前後のデータを含むイベントをストリームとして提供します。LambdaのイベントソースとしてStreamsを指定することで、変更を検知して処理を実行できます（データ変換・別テーブルへの集計・OpenSearchへのインデックス・他リージョンへのレプリケーションなど）。Kinesis Data Streamsとも統合でき、より長い保持期間と高度な処理が可能です。",
+    "reference": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Streams.html"
+  },
+  {
+    "id": "dynamodb-005",
+    "phase": 4,
+    "service": "DynamoDB",
+    "question": "DynamoDB Accelerator（DAX）を使用する主な目的はどれですか？",
+    "choices": [
+      {
+        "text": "DynamoDBの読み取りをマイクロ秒レベルにキャッシュし、読み取り集約型ワークロードのレイテンシーを大幅に削減する",
+        "correct": true
+      },
+      {
+        "text": "DAXはDynamoDBへの書き込みを高速化するための書き込みキャッシュ",
+        "correct": false
+      },
+      {
+        "text": "DAXはDynamoDBのパーティションキー設計の問題を自動的に解決する",
+        "correct": false
+      },
+      {
+        "text": "DAXはDynamoDBのスロットリングを解消するためにキャパシティを自動で増加させる",
+        "correct": false
+      }
+    ],
+    "explanation": "DAXはDynamoDB互換のインメモリキャッシュクラスターで、GetItem・BatchGetItem・QueryなどのReadオペレーションをマイクロ秒（DynamoDBのデフォルトは1〜数ミリ秒）でレスポンスします。アプリケーションのDynamoDB SDKをDAX SDKに変更するだけで透過的に動作します。読み取りが頻繁でヒット率が高い場合にコスト削減とパフォーマンス向上の両方を実現できます。書き込みはDynamoDBに直接書き込まれ、DAXのキャッシュは非同期で更新されます。",
+    "reference": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.html"
+  },
+  {
+    "id": "dynamodb-006",
+    "phase": 4,
+    "service": "DynamoDB",
+    "question": "DynamoDBのトランザクション（TransactWriteItems）を使用する際のコスト上の注意点として正しいものはどれですか？",
+    "choices": [
+      {
+        "text": "トランザクションは通常のオペレーションと比べて2倍のWCU/RCUを消費する",
+        "correct": true
+      },
+      {
+        "text": "DynamoDBのトランザクションは無制限に使用でき追加コストはない",
+        "correct": false
+      },
+      {
+        "text": "トランザクションは最大100アイテムまで含められるが、コストへの影響はない",
+        "correct": false
+      },
+      {
+        "text": "トランザクションはプロビジョンドモードでのみ使用できる",
+        "correct": false
+      }
+    ],
+    "explanation": "DynamoDBトランザクション（TransactWriteItems・TransactGetItems）は2フェーズコミット処理のため、通常のGetItem・PutItemと比べて2倍のRCU/WCUを消費します。1回のトランザクションで最大100アイテム・4MBまで操作できます。複数テーブルまたは同一テーブルの複数アイテムをACID保証付きで更新する必要がある場合（注文と在庫の同時更新など）に使用しますが、コストへの影響を考慮して必要な場合のみ使用することが推奨されます。",
+    "reference": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/transaction-apis.html"
+  },
+  {
+    "id": "dynamodb-007",
+    "phase": 4,
+    "service": "DynamoDB",
+    "question": "DynamoDBのTTL（Time to Live）機能を使用する主な目的はどれですか？",
+    "choices": [
+      {
+        "text": "各アイテムに有効期限のエポック秒を設定し、期限切れアイテムを追加コストなしで自動削除する",
+        "correct": true
+      },
+      {
+        "text": "TTLを設定するとアイテムのキャッシュ有効期限がDAXに反映される",
+        "correct": false
+      },
+      {
+        "text": "TTLが切れたアイテムは即座に削除され、削除後すぐに読み取れなくなる",
+        "correct": false
+      },
+      {
+        "text": "TTLはDynamoDBのプロビジョンドキャパシティに影響せずWCUを消費しない",
+        "correct": false
+      }
+    ],
+    "explanation": "TTLは指定した属性（エポック秒のUnixタイムスタンプ）を期限として、期限切れアイテムを追加のWCUコストなしでバックグラウンドで削除します。削除は期限切れ後48時間以内に行われます（即時ではありません）。セッションデータ・一時トークン・キャッシュデータなどの自動クリーンアップに使われ、ストレージコストの削減と管理の自動化に役立ちます。TTL削除イベントはDynamoDB Streamsに流れるため、削除後の処理もトリガーできます。",
+    "reference": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/TTL.html"
+  },
+  {
+    "id": "dynamodb-008",
+    "phase": 4,
+    "service": "DynamoDB",
+    "question": "DynamoDBのQueryとScanオペレーションの違いとして正しいものはどれですか？",
+    "choices": [
+      {
+        "text": "QueryはパーティションキーまたはGSIキーを指定して効率的に検索し、ScanはテーブルまたはGSI全体を読み取るため大量のRCUを消費する",
+        "correct": true
+      },
+      {
+        "text": "Queryはすべての属性で検索でき、Scanはキー属性のみで検索できる",
+        "correct": false
+      },
+      {
+        "text": "ScanはQueryより高速で大量データの取得に適している",
+        "correct": false
+      },
+      {
+        "text": "QueryとScanは同じキャパシティを消費するため使い分けは不要",
+        "correct": false
+      }
+    ],
+    "explanation": "Queryはパーティションキーとオプションのソートキー条件を指定して対象データのみを取得するため効率的です。Scanはテーブルまたはインデックスのすべてのアイテムを読み取るため、大きなテーブルでは大量のRCUを消費してコストが高くなります。本番環境でのScanは原則避け、適切なインデックス設計（GSI）でQueryに置き換えることが推奨されます。Filter式はScan後に結果を絞り込むものであり、消費RCUは変わりません。",
+    "reference": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Query.html"
+  },
+  {
+    "id": "dynamodb-009",
+    "phase": 4,
+    "service": "DynamoDB",
+    "question": "DynamoDBのポイントインタイムリカバリ（PITR）に関する正しい説明はどれですか？",
+    "choices": [
+      {
+        "text": "過去35日以内の任意の時点にテーブルを復元でき、誤ったデータ変更からの保護に使用する",
+        "correct": true
+      },
+      {
+        "text": "PITRは手動でスナップショットを作成したタイミングにのみ復元できる",
+        "correct": false
+      },
+      {
+        "text": "PITRで復元すると元のテーブルが上書きされて復元時点の状態になる",
+        "correct": false
+      },
+      {
+        "text": "PITRはDynamoDB Streamsが有効な場合のみ利用できる",
+        "correct": false
+      }
+    ],
+    "explanation": "PITRを有効にするとDynamoDBが継続的にバックアップを取得し、過去35日以内の任意の時点（秒単位）に復元できます。復元は元のテーブルを上書きせず、新しいテーブルとして作成されます。テーブル作成後に元のテーブルのデータをマージするか、アプリケーションを新テーブルに向け替える必要があります。誤ったPutItem・DeleteItemや大量データ削除からの復旧に使います。追加料金は保存したデータ量に基づきます。",
+    "reference": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/PointInTimeRecovery.html"
+  },
+  {
+    "id": "dynamodb-010",
+    "phase": 4,
+    "service": "DynamoDB",
+    "question": "DynamoDBのConditionExpressionを使用する主な目的はどれですか？",
+    "choices": [
+      {
+        "text": "楽観的ロック（Optimistic Locking）を実装し、他のプロセスによる変更がない場合にのみ更新を実行する",
+        "correct": true
+      },
+      {
+        "text": "ConditionExpressionはQueryオペレーションのフィルタ条件として使用する",
+        "correct": false
+      },
+      {
+        "text": "ConditionExpressionはDynamoDBのスキーマバリデーションを行う",
+        "correct": false
+      },
+      {
+        "text": "ConditionExpressionを使うと条件に一致しない場合のみデータを返す",
+        "correct": false
+      }
+    ],
+    "explanation": "ConditionExpressionはPutItem・UpdateItem・DeleteItem時に条件を指定し、条件が満たされない場合はオペレーションを失敗させます（ConditionalCheckFailedExceptionがスロー）。楽観的ロックでは「現在のversion属性が自分が読み取った値と同じ場合のみ更新」というパターンで複数プロセスからの競合書き込みを防ぎます。「アイテムが存在しない場合のみ作成」（attribute_not_exists）なども一般的なパターンです。",
+    "reference": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.OperatorsAndFunctions.html"
+  },
+  {
+    "id": "dynamodb-011",
+    "phase": 4,
+    "service": "DynamoDB",
+    "question": "DynamoDBのグローバルテーブル（Global Tables）を使用する目的として正しいものはどれですか？",
+    "choices": [
+      {
+        "text": "複数のリージョンでアクティブ-アクティブ構成を実現し、最寄りのリージョンへの低レイテンシー書き込みと自動レプリケーションを提供する",
+        "correct": true
+      },
+      {
+        "text": "グローバルテーブルはリードレプリカを複数リージョンに作成して読み取りを分散する機能",
+        "correct": false
+      },
+      {
+        "text": "グローバルテーブルではすべてのリージョンのデータが単一のテーブルに統合される",
+        "correct": false
+      },
+      {
+        "text": "グローバルテーブルはDynamoDB Streamsなしで利用できる",
+        "correct": false
+      }
+    ],
+    "explanation": "グローバルテーブルは複数リージョン（最大で全リージョン）でアクティブ-アクティブ書き込みが可能で、各リージョンへの書き込みは自動的に他リージョンにレプリケートされます（通常1秒以内）。競合書き込みは「最終書き込み優先（Last Write Wins）」で解決されます。グローバルユーザー向けの低レイテンシーサービスやリージョン障害への耐障害性強化に使われます。DynamoDB Streamsを内部的に使用するため、Streamsの有効化が前提です。",
+    "reference": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GlobalTables.html"
+  }
+]

@@ -16,6 +16,17 @@ import albNlbQuestions from '../data/questions/alb-nlb.json';
 import route53Questions from '../data/questions/route53.json';
 import cloudfrontQuestions from '../data/questions/cloudfront.json';
 import apiGatewayQuestions from '../data/questions/api-gateway.json';
+import s3Questions from '../data/questions/s3.json';
+import efsQuestions from '../data/questions/efs.json';
+import auroraQuestions from '../data/questions/aurora.json';
+import dynamodbQuestions from '../data/questions/dynamodb.json';
+
+const PHASE_GROUPS = [
+  { phase: 1, label: 'Phase 1 — セキュリティ・ネットワーク基礎', services: ['VPC', 'IAM', 'KMS'] },
+  { phase: 2, label: 'Phase 2 — コンピューティング', services: ['EC2', 'Auto Scaling', 'EBS', 'ECS', 'Lambda'] },
+  { phase: 3, label: 'Phase 3 — ネットワーキング・配信', services: ['ALB/NLB', 'Route 53', 'CloudFront', 'API Gateway'] },
+  { phase: 4, label: 'Phase 4 — ストレージ・データベース', services: ['S3', 'EFS', 'Aurora', 'DynamoDB'] },
+];
 
 const ALL_QUESTIONS: Question[] = [
   ...(vpcQuestions as Question[]),
@@ -30,12 +41,15 @@ const ALL_QUESTIONS: Question[] = [
   ...(route53Questions as Question[]),
   ...(cloudfrontQuestions as Question[]),
   ...(apiGatewayQuestions as Question[]),
+  ...(s3Questions as Question[]),
+  ...(efsQuestions as Question[]),
+  ...(auroraQuestions as Question[]),
+  ...(dynamodbQuestions as Question[]),
 ];
 
-const ALL_SERVICES = [...new Set(ALL_QUESTIONS.map((q) => q.service))];
+const ALL_SERVICES = PHASE_GROUPS.flatMap((g) => g.services);
 
 type Phase = 'selecting' | 'quizzing' | 'result';
-
 
 function shuffle<T>(arr: T[]): T[] {
   const copy = [...arr];
@@ -87,7 +101,7 @@ function AwsQuiz() {
   if (phase === 'selecting') {
     return (
       <ServiceSelector
-        services={ALL_SERVICES}
+        phaseGroups={PHASE_GROUPS}
         selected={selectedServices}
         onChange={setSelectedServices}
         onStart={startQuiz}
