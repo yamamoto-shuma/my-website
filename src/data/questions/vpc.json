@@ -336,5 +336,31 @@
     ],
     "explanation": "S3 Gateway Endpointにはエンドポイントポリシー（IAMリソースポリシーと同形式）をアタッチできます。デフォルトは全S3アクセスを許可しますが、ポリシーで許可するバケットやオペレーションを制限できます。「このVPCから自社バケット以外へのデータ送信を禁止する」というデータ漏洩防止（DLP）の要件を実現する際に有効です。S3のIPアドレスは定期的に変化するためSGによるIP制限は実運用できません。",
     "reference": "https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-s3.html#edit-vpc-endpoint-policy-s3"
+  },
+  {
+    "id": "vpc-014",
+    "phase": 1,
+    "service": "VPC",
+    "question": "EC2インスタンス間の通信が届いていないかどうかをIPレベルで確認したい場合、最初に確認すべきAWSの機能はどれですか？",
+    "choices": [
+      {
+        "text": "VPCフローログ（VPC Flow Logs）",
+        "correct": true
+      },
+      {
+        "text": "CloudTrail",
+        "correct": false
+      },
+      {
+        "text": "AWS Config",
+        "correct": false
+      },
+      {
+        "text": "CloudWatch メトリクス",
+        "correct": false
+      }
+    ],
+    "explanation": "VPCフローログはENIを通過するIPトラフィックのメタデータ（送信元・宛先IP、ポート、プロトコル、ACCEPT/REJECTなど）を記録します。セキュリティグループやネットワークACLの設定ミスで通信が拒否されているかどうかをREJECTレコードで確認でき、「通信が届いているのか届いていないのか」を切り分ける最初のステップです。CloudTrailはAWS APIコールの記録であり、IPレベルの通信可否は確認できません。",
+    "reference": "https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs.html"
   }
 ]
