@@ -12,12 +12,13 @@
 - 問題データを JSON で管理し、追加・編集が容易な設計にする
 - 既存の `public/` ディレクトリを廃止し、`dist/` をデプロイ成果物とする
 - ADR-004 としてこの技術選定を記録する
+- Phase 1〜4（VPC/IAM/KMS、EC2/AutoScaling/EBS/ECS/Lambda、ALB/NLB/Route53/CloudFront/APIGateway、S3/EFS/Aurora/DynamoDB）の問題データを作成する
+- サービス選択画面をPhaseブロック別に整理し、Phase単位の一括選択/解除ボタンを追加する
 
 **Non-Goals:**
 - バックエンド・認証・スコア永続化（ローカルステートのみ）
 - モバイルアプリ対応
-- Phase別フィルタリング（Phase1のみ実装の間は意味がないため、サービス別のみ）
-- Phase1以外の問題データ作成（MWS-010スコープ外）
+- Phase単位でのフィルタリング（個別のPhaseのみ出題する機能）— Phaseブロック表示UI（MWS-013）は実装済みだが、Phase単位の絞り込み起動は実装しない
 
 ## Decisions
 
@@ -156,6 +157,23 @@ if (!uri.includes('.', uri.lastIndexOf('/'))) {
 ```
 
 この変更は Terraform で管理されており、`terraform apply` が必要。
+
+### D7: Phase別サービスグループ化UI（MWS-013）
+
+**決定**: `ServiceSelector` のpropsを `services: string[]` から `phaseGroups: PhaseGroup[]` に変更し、Phaseごとにブロックを分けて表示する。
+
+**理由**: Phase 2〜4の問題が追加されサービス数が16になり、フラットリストでは選択画面が見づらくなった。PhaseGroupを親（`AwsQuiz.tsx`）で定義することで、将来のPhase追加時にコンポーネント側を変更せず `PHASE_GROUPS` 定数を更新するだけで対応できる。
+
+```typescript
+const PHASE_GROUPS = [
+  { phase: 1, label: 'Phase 1 — セキュリティ・ネットワーク基礎', services: ['VPC', 'IAM', 'KMS'] },
+  { phase: 2, label: 'Phase 2 — コンピューティング', services: ['EC2', 'Auto Scaling', 'EBS', 'ECS', 'Lambda'] },
+  { phase: 3, label: 'Phase 3 — ネットワーキング・配信', services: ['ALB/NLB', 'Route 53', 'CloudFront', 'API Gateway'] },
+  { phase: 4, label: 'Phase 4 — ストレージ・データベース', services: ['S3', 'EFS', 'Aurora', 'DynamoDB'] },
+];
+```
+
+各Phaseブロックにはフェーズ名ヘッダー・サービス一覧チェックボックス・Phase単位の一括選択/解除ボタンを表示する。グローバルの「すべて選択/解除」ボタンも維持する。
 
 ## Risks / Trade-offs
 

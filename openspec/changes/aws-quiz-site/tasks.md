@@ -26,3 +26,31 @@
 - [x] 4.2 `src/data/questions/iam.json` を作成する（IAM問題10問以上、実務レベル）
 - [x] 4.3 `src/data/questions/kms.json` を作成する（KMS問題10問以上、実務レベル）
 - [x] 4.4 ローカルでPhase1の全問題が正しく表示・採点されることを確認する
+
+## 5. Phase1レビュー改善 + Phase2問題データ作成（MWS-011）
+
+- [x] 5.1 VPC・IAM・KMSの全問題を3ラウンドのレビューで品質改善する（試験トリビア・数値暗記を実務・設計判断問題に差し替え）
+- [x] 5.2 `src/data/questions/ec2.json` を作成する（EC2問題10問以上、実務レベル）
+- [x] 5.3 `src/data/questions/autoscaling.json` を作成する（Auto Scaling問題10問以上、実務レベル）
+- [x] 5.4 `src/data/questions/ebs.json` を作成する（EBS問題10問以上、実務レベル）
+- [x] 5.5 `src/data/questions/ecs.json` を作成する（ECS問題10問以上、実務レベル）
+- [x] 5.6 `src/data/questions/lambda.json` を作成する（Lambda問題10問以上、実務レベル）
+- [x] 5.7 Phase2各サービスの問題を3ラウンドのレビューで品質確認する
+
+## 6. Phase3問題データ作成（MWS-012）
+
+- [x] 6.1 `src/data/questions/alb-nlb.json` を作成する（ALB/NLB問題10問以上、実務レベル）
+- [x] 6.2 `src/data/questions/route53.json` を作成する（Route 53問題10問以上、実務レベル）
+- [x] 6.3 `src/data/questions/cloudfront.json` を作成する（CloudFront問題10問以上、実務レベル）
+- [x] 6.4 `src/data/questions/api-gateway.json` を作成する（API Gateway問題10問以上、実務レベル）
+- [x] 6.5 Phase3各サービスの問題を3ラウンドのレビューで品質確認する
+
+## 7. Phase4問題データ作成 + Phase別UIグループ化（MWS-013）
+
+- [x] 7.1 `src/data/questions/s3.json` を作成する（S3問題10問以上、実務レベル）
+- [x] 7.2 `src/data/questions/efs.json` を作成する（EFS問題10問以上、実務レベル）
+- [x] 7.3 `src/data/questions/aurora.json` を作成する（Aurora問題10問以上、実務レベル）
+- [x] 7.4 `src/data/questions/dynamodb.json` を作成する（DynamoDB問題10問以上、実務レベル）
+- [x] 7.5 `src/components/ServiceSelector.tsx` をPhaseブロック別表示に変更する（`phaseGroups` propsに変更、Phase別ヘッダー・一括選択/解除ボタン追加）
+- [x] 7.6 `src/pages/AwsQuiz.tsx` に `PHASE_GROUPS` 定数を定義しPhase4インポートを追加する
+- [x] 7.7 Phase4各サービスの問題を3ラウンドのレビューで品質確認する（factual errorを含む選択肢を修正）
