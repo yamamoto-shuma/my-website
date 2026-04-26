@@ -35,9 +35,9 @@ interface Question {
 - **WHEN** `src/data/questions/` を参照する
 - **THEN** サービスごと（例: `vpc.json`, `iam.json`）にファイルが存在する
 
-#### Scenario: phaseフィールドが将来のフィルタリングに対応できる
+#### Scenario: phaseフィールドがPhaseグループ表示に利用される
 - **WHEN** 問題データの `phase` フィールドを参照する
-- **THEN** `phase: 1` のように数値で識別でき、将来のPhase別フィルタリング実装に利用可能である（現時点ではUIでのPhase絞り込みは実装しない）
+- **THEN** `phase: 1〜4` のように数値で識別でき、`PHASE_GROUPS` 定数とサービス名の一致によってUIのPhaseブロック表示に利用される
 
 ### Requirement: Phase1の問題データが充実している
 VPC・IAM・KMSの各サービスについて、実務レベルの問題が各10問以上作成されていなければならない（SHALL）。
@@ -45,3 +45,24 @@ VPC・IAM・KMSの各サービスについて、実務レベルの問題が各10
 #### Scenario: 各サービスの問題数が充足している
 - **WHEN** Phase1の問題データを読み込む
 - **THEN** VPC・IAM・KMSそれぞれ10問以上存在する
+
+### Requirement: Phase2の問題データが充実している
+EC2・Auto Scaling・EBS・ECS・Lambdaの各サービスについて、実務レベルの問題が各10問以上作成されていなければならない（SHALL）。
+
+#### Scenario: 各サービスの問題数が充足している
+- **WHEN** Phase2の問題データを読み込む
+- **THEN** EC2・Auto Scaling・EBS・ECS・Lambdaそれぞれ10問以上存在する
+
+### Requirement: Phase3の問題データが充実している
+ALB/NLB・Route 53・CloudFront・API Gatewayの各サービスについて、実務レベルの問題が各10問以上作成されていなければならない（SHALL）。
+
+#### Scenario: 各サービスの問題数が充足している
+- **WHEN** Phase3の問題データを読み込む
+- **THEN** ALB/NLB・Route 53・CloudFront・API Gatewayそれぞれ10問以上存在する
+
+### Requirement: Phase4の問題データが充実している
+S3・EFS・Aurora・DynamoDBの各サービスについて、実務レベルの問題が各10問以上作成されていなければならない（SHALL）。
+
+#### Scenario: 各サービスの問題数が充足している
+- **WHEN** Phase4の問題データを読み込む
+- **THEN** S3・EFS・Aurora・DynamoDBそれぞれ10問以上存在する
