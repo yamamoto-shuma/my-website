@@ -284,5 +284,31 @@
     ],
     "explanation": "スティッキーセッションはALBがクッキー（AWSALBまたはアプリケーション独自）を使って同一クライアントのリクエストを同じターゲットにルーティングします。セッション情報をサーバー側に持つステートフルなアプリ（旧来のWebアプリなど）で使われますが、スケールイン時にセッションが失われるリスクがあります。現代的な設計ではセッションをElastiCacheやDynamoDBに保持してステートレスにすることが推奨されます。",
     "reference": "https://docs.aws.amazon.com/elasticloadbalancing/latest/application/sticky-sessions.html"
+  },
+  {
+    "id": "alb-nlb-012",
+    "phase": 3,
+    "service": "ALB/NLB",
+    "question": "ALBの1つのリスナールールで新バージョン（v2）へ10%・旧バージョン（v1）へ90%のトラフィックを振り分けてカナリアリリースを実施したい場合の正しい設定はどれですか？",
+    "choices": [
+      {
+        "text": "1つのルールのForwardアクションで複数のターゲットグループに重みを付けて指定する（Weighted Target Groups）",
+        "correct": true
+      },
+      {
+        "text": "Route 53の加重ルーティングでALBを2つ作成して振り分ける",
+        "correct": false
+      },
+      {
+        "text": "ALBのリスナーを2つ作成してそれぞれ異なるターゲットグループに転送する",
+        "correct": false
+      },
+      {
+        "text": "ALBはカナリアリリースをサポートしていない",
+        "correct": false
+      }
+    ],
+    "explanation": "ALBのリスナールールのForwardアクションでは複数のターゲットグループに重みを設定できます（Weighted Target Groups）。重み90のv1ターゲットグループと重み10のv2ターゲットグループを設定するだけでカナリアリリースが実現できます。ECSのBlue/Greenデプロイ（CodeDeploy統合）やAuto ScalingのInstance Refreshと組み合わせて、安全な段階的リリースを実施できます。",
+    "reference": "https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-listeners.html#forward-actions"
   }
 ]

@@ -263,26 +263,26 @@
     "id": "route53-011",
     "phase": 3,
     "service": "Route 53",
-    "question": "Route 53のトラフィックポリシー（Traffic Policy）を使用する主な利点はどれですか？",
+    "question": "Route 53ヘルスチェックで、EC2インスタンスのHTTPエンドポイントではなくCloudWatchアラームの状態（メモリ使用率など）に基づいてフェイルオーバーを制御したい場合、どのタイプのヘルスチェックを使用しますか？",
     "choices": [
       {
-        "text": "複雑なルーティングルールをビジュアルエディタで設定し、バージョン管理してロールバックできる",
+        "text": "CloudWatchアラーム連携型ヘルスチェック（CloudWatch Alarm Health Check）",
         "correct": true
       },
       {
-        "text": "レコードのTTLを自動的に最適化する",
+        "text": "エンドポイントヘルスチェックでCloudWatchのメトリクスAPIを監視する",
         "correct": false
       },
       {
-        "text": "Route 53の料金を削減できる",
+        "text": "Route 53はCloudWatchとの連携をサポートしていない",
         "correct": false
       },
       {
-        "text": "複数のAWSアカウントにまたがるDNSを一元管理できる",
+        "text": "Lambda関数でCloudWatchを監視しRoute 53のレコードを動的に更新する",
         "correct": false
       }
     ],
-    "explanation": "トラフィックポリシーはフェイルオーバー・加重・レイテンシーなど複数のルーティングポリシーを組み合わせた複雑なルーティングロジックをビジュアルエディタで設定できます。ポリシーはバージョン管理され、変更前のバージョンに素早くロールバック可能です。1つのポリシーを複数のドメイン名（トラフィックポリシーレコード）で再利用することもできます。",
-    "reference": "https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/traffic-policies.html"
+    "explanation": "CloudWatchアラーム連携型ヘルスチェックは、HTTPエンドポイントへのアクセスではなくCloudWatchアラームの状態（OK/ALARM/INSUFFICIENT_DATA）をヘルスチェックの結果として使用します。EC2のメモリ使用率・カスタムメトリクス・SQSのキュー深度など、HTTPエンドポイントでは確認できないアプリケーション内部の状態に基づくフェイルオーバー制御が可能です。プライベートサブネットのリソース（外部からHTTPアクセスできない）のヘルスチェックにも有効です。",
+    "reference": "https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/health-checks-creating-values.html#health-checks-creating-values-cloudwatch"
   }
 ]
