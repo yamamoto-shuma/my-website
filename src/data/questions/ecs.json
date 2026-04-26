@@ -208,30 +208,30 @@
     "reference": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cluster-capacity-providers.html"
   },
   {
-    "id": "ecs-009",
+    "id": "ecs-013",
     "phase": 2,
     "service": "ECS",
-    "question": "ECSのサービスにおけるタスク配置戦略（Placement Strategy）のうち、すべてのAZにタスクを均等に分散させるのはどれですか？",
+    "question": "ECSサービスのタスク数をリクエスト数に応じて自動でスケールさせるために使用するサービスはどれですか？",
     "choices": [
       {
-        "text": "spread（属性: attribute:ecs.availability-zone）",
+        "text": "Application Auto Scaling",
         "correct": true
       },
       {
-        "text": "binpack",
+        "text": "EC2 Auto Scaling",
         "correct": false
       },
       {
-        "text": "random",
+        "text": "AWS Lambda Auto Scaling",
         "correct": false
       },
       {
-        "text": "distinctInstance",
+        "text": "ECSサービスに自動スケーリング機能はない",
         "correct": false
       }
     ],
-    "explanation": "spreadはAZやインスタンスID等の属性に基づきタスクを均等分散します。AZスプレッドにより高可用性を実現できます。binpackはCPUまたはメモリの消費を最小インスタンス数に集約してコストを最適化します。randomはランダム配置、distinctInstanceは各タスクを異なるインスタンスに配置します。",
-    "reference": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-placement-strategies.html"
+    "explanation": "ECSサービスはApplication Auto Scalingと統合されており、ALBリクエスト数・CPU使用率・メモリ使用率などに基づいてタスク数を自動増減できます。ターゲット追跡スケーリングポリシーを使うとALBTargetGroupRequestCountPerTargetを目標値に設定してリクエスト数に比例したスケーリングが可能です。Fargateでもタスク数のスケーリングは同様に設定できます。",
+    "reference": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/service-auto-scaling.html"
   },
   {
     "id": "ecs-010",

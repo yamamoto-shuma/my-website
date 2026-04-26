@@ -130,30 +130,30 @@
     "reference": "https://docs.aws.amazon.com/savingsplans/latest/userguide/what-is-savings-plans.html"
   },
   {
-    "id": "ec2-008",
+    "id": "ec2-016",
     "phase": 2,
     "service": "EC2",
-    "question": "同一VPC内のEC2インスタンス間通信において、最高帯域幅を実現するために有効にすべきネットワーク機能はどれですか？",
+    "question": "EC2インスタンスのCPU使用率を1分間隔で監視してアラートを出したい場合、必要な設定はどれですか？",
     "choices": [
       {
-        "text": "拡張ネットワーキング（Enhanced Networking）",
+        "text": "CloudWatchの詳細モニタリング（Detailed Monitoring）を有効にする",
         "correct": true
       },
       {
-        "text": "Elastic Network Interface（ENI）の追加",
+        "text": "CloudWatch Agentをインストールする",
         "correct": false
       },
       {
-        "text": "Elastic IP の割り当て",
+        "text": "CloudTrailを有効にする",
         "correct": false
       },
       {
-        "text": "VPCピアリング",
+        "text": "VPCフローログを有効にする",
         "correct": false
       }
     ],
-    "explanation": "拡張ネットワーキングはSR-IOV（Single Root I/O Virtualization）を使用してより高いI/Oパフォーマンス、低いCPU使用率、低いレイテンシを実現します。Intel VFまたはENA（Elastic Network Adapter）ドライバをサポートするインスタンスで使用でき、最大100Gbpsの帯域幅を提供します。",
-    "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/enhanced-networking.html"
+    "explanation": "EC2のCloudWatchモニタリングはデフォルトで5分間隔（基本モニタリング）です。詳細モニタリングを有効にすると1分間隔になり、障害発生時の迅速な検知や細かいスケーリングトリガーが可能になります。詳細モニタリングは有料（基本は無料）ですが、本番環境では有効にしておくことが推奨されます。CloudWatch Agentはメモリ使用率など標準では取得できないOSレベルのメトリクスに使用します。",
+    "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-cloudwatch-new.html"
   },
   {
     "id": "ec2-009",

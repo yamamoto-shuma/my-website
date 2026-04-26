@@ -208,30 +208,30 @@
     "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/requesting-ebs-volume-modifications.html"
   },
   {
-    "id": "ebs-010",
+    "id": "ebs-013",
     "phase": 2,
     "service": "EBS",
-    "question": "EBSのパフォーマンス指標「バースト残高（Burst Balance）」が重要なのはどのボリュームタイプですか？",
+    "question": "EC2インスタンスのディスクI/Oが遅くなっているとき、EBSのパフォーマンス問題を診断するために最初に確認すべきCloudWatchメトリクスはどれですか？",
     "choices": [
       {
-        "text": "gp2（汎用SSD）",
+        "text": "VolumeQueueLength（I/O待ちキュー長）",
         "correct": true
       },
       {
-        "text": "gp3（汎用SSD）",
+        "text": "VolumeReadBytes",
         "correct": false
       },
       {
-        "text": "io2（プロビジョンドIOPS SSD）",
+        "text": "BurstBalance",
         "correct": false
       },
       {
-        "text": "st1（スループット最適化HDD）",
+        "text": "DiskReadOps",
         "correct": false
       }
     ],
-    "explanation": "gp2ではバーストバランスの概念があり、1TBを超えるボリュームではベースラインIOPSで連続動作しますが、小さいボリュームはバケツモデルでバーストできます。バーストバランスが0になるとベースラインIOPS（最低100 IOPS、3 IOPS/GB）に制限されます。gp3はバーストなしの一定IOPSを提供するため、バーストバランスの管理は不要です。",
-    "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html"
+    "explanation": "VolumeQueueLengthはEBSへのI/O待ちキューの長さを示します。この値が継続的に高い（1以上）場合、ボリュームのIOPS/スループット上限に達してリクエストが詰まっている可能性があります。対処法としてgp3のIOPS増加、io2への変更、またはEBSの最適化（EBS-Optimized）インスタンスへの変更が有効です。VolumeReadBytesはデータ量、DiskReadOpsはEC2のインスタンスストア用メトリクスです。",
+    "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using_cloudwatch_ebs.html"
   },
   {
     "id": "ebs-011",
