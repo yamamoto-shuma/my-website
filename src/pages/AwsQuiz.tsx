@@ -20,12 +20,17 @@ import s3Questions from '../data/questions/s3.json';
 import efsQuestions from '../data/questions/efs.json';
 import auroraQuestions from '../data/questions/aurora.json';
 import dynamodbQuestions from '../data/questions/dynamodb.json';
+import wafQuestions from '../data/questions/waf.json';
+import secretsManagerQuestions from '../data/questions/secrets-manager.json';
+import cloudwatchQuestions from '../data/questions/cloudwatch.json';
+import cloudtrailQuestions from '../data/questions/cloudtrail.json';
 
 const PHASE_GROUPS = [
   { phase: 1, label: 'Phase 1 — セキュリティ・ネットワーク基礎', services: ['VPC', 'IAM', 'KMS'] },
   { phase: 2, label: 'Phase 2 — コンピューティング', services: ['EC2', 'Auto Scaling', 'EBS', 'ECS', 'Lambda'] },
   { phase: 3, label: 'Phase 3 — ネットワーキング・配信', services: ['ALB/NLB', 'Route 53', 'CloudFront', 'API Gateway'] },
   { phase: 4, label: 'Phase 4 — ストレージ・データベース', services: ['S3', 'EFS', 'Aurora', 'DynamoDB'] },
+  { phase: 5, label: 'Phase 5 — セキュリティ運用・モニタリング', services: ['WAF', 'Secrets Manager', 'CloudWatch', 'CloudTrail'] },
 ];
 
 const ALL_QUESTIONS: Question[] = [
@@ -45,6 +50,10 @@ const ALL_QUESTIONS: Question[] = [
   ...(efsQuestions as Question[]),
   ...(auroraQuestions as Question[]),
   ...(dynamodbQuestions as Question[]),
+  ...(wafQuestions as Question[]),
+  ...(secretsManagerQuestions as Question[]),
+  ...(cloudwatchQuestions as Question[]),
+  ...(cloudtrailQuestions as Question[]),
 ];
 
 const ALL_SERVICES = PHASE_GROUPS.flatMap((g) => g.services);
