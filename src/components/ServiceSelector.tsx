@@ -10,9 +10,10 @@ interface ServiceSelectorProps {
   onChange: (selected: string[]) => void;
   onStart: () => void;
   questionCount: number;
+  questionCountByService: Record<string, number>;
 }
 
-function ServiceSelector({ phaseGroups, selected, onChange, onStart, questionCount }: ServiceSelectorProps) {
+function ServiceSelector({ phaseGroups, selected, onChange, onStart, questionCount, questionCountByService }: ServiceSelectorProps) {
   const allServices = phaseGroups.flatMap((g) => g.services);
 
   const toggle = (service: string) => {
@@ -116,7 +117,10 @@ function ServiceSelector({ phaseGroups, selected, onChange, onStart, questionCou
                               onChange={() => toggle(service)}
                               style={{ width: 16, height: 16, accentColor: '#FF9900' }}
                             />
-                            <span style={{ fontWeight: 600, fontSize: 15, color: '#16191F' }}>{service}</span>
+                            <span style={{ fontWeight: 600, fontSize: 15, color: '#16191F', flex: 1 }}>{service}</span>
+                            <span style={{ fontSize: 12, color: checked ? '#B06000' : '#9BA7B4', fontWeight: 500 }}>
+                              {questionCountByService[service] ?? 0}問
+                            </span>
                           </label>
                         );
                       })}

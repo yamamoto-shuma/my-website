@@ -49,6 +49,11 @@ const ALL_QUESTIONS: Question[] = [
 
 const ALL_SERVICES = PHASE_GROUPS.flatMap((g) => g.services);
 
+const QUESTION_COUNT_BY_SERVICE: Record<string, number> = ALL_QUESTIONS.reduce(
+  (acc, q) => ({ ...acc, [q.service]: (acc[q.service] ?? 0) + 1 }),
+  {} as Record<string, number>
+);
+
 type Phase = 'selecting' | 'quizzing' | 'result';
 
 function shuffle<T>(arr: T[]): T[] {
@@ -106,6 +111,7 @@ function AwsQuiz() {
         onChange={setSelectedServices}
         onStart={startQuiz}
         questionCount={filteredCount}
+        questionCountByService={QUESTION_COUNT_BY_SERVICE}
       />
     );
   }
