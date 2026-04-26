@@ -492,5 +492,31 @@
     ],
     "explanation": "aws:MultiFactorAuthPresent条件キーはリクエストがMFA認証済みセッションから行われた場合にtrueになります。重要な操作（EC2インスタンス削除・IAMユーザー変更・本番データ操作など）に対して`Deny + aws:MultiFactorAuthPresent: false`を設定することで「MFAなしでは実行できない操作」を強制できます。Denyにfalseを使う（MFAが存在しない場合にDeny）という二重否定のパターンを正しく理解することが実装のポイントです。",
     "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_condition-keys.html#condition-keys-multifactorauthpresent"
+  },
+  {
+    "id": "iam-020",
+    "phase": 1,
+    "service": "IAM",
+    "question": "GitHub ActionsからAWSリソースにアクセスする際、長期的なアクセスキーをGitHub Secretsに保存せずに認証する最も推奨される方法はどれですか？",
+    "choices": [
+      {
+        "text": "GitHub ActionsをOIDCプロバイダーとして登録し、sts:AssumeRoleWithWebIdentityでIAMロールを引き受けさせる",
+        "correct": true
+      },
+      {
+        "text": "GitHub SecretsにIAMユーザーのアクセスキーを保存してAWS CLIで使用する",
+        "correct": false
+      },
+      {
+        "text": "GitHubのIPレンジをセキュリティグループで許可した上でアクセスキーを使用する",
+        "correct": false
+      },
+      {
+        "text": "GitHub ActionsからAWSへのキーレスアクセスは現在サポートされていない",
+        "correct": false
+      }
+    ],
+    "explanation": "GitHub ActionsはOIDC（OpenID Connect）トークンを発行できます。AWS側でGitHub ActionsをIAMのOIDCプロバイダーとして登録し、信頼ポリシーで `token.actions.githubusercontent.com` からのAssumeRoleWithWebIdentityを許可することで、長期的なアクセスキーなしにIAMロールの一時認証情報を取得できます。CircleCI・GitLab CI・Bitbucketなど他のCIサービスでも同様のOIDC連携が可能で、CI/CD環境でのアクセスキー管理リスクを根本から排除できるモダンな手法です。",
+    "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_create_oidc.html"
   }
 ]

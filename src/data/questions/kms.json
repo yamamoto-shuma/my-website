@@ -182,7 +182,7 @@
     "reference": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingKMSEncryption.html"
   },
   {
-    "id": "kms-009",
+    "id": "kms-008",
     "phase": 1,
     "service": "KMS",
     "question": "Amazon EBSのデフォルト暗号化を有効にした場合の動作として正しいものはどれですか？",
@@ -208,7 +208,7 @@
     "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html#encryption-by-default"
   },
   {
-    "id": "kms-011",
+    "id": "kms-009",
     "phase": 1,
     "service": "KMS",
     "question": "アカウントAのLambdaからアカウントBのCMKを使ってデータを暗号化するために必要な設定はどれですか？",
@@ -234,7 +234,7 @@
     "reference": "https://docs.aws.amazon.com/kms/latest/developerguide/key-policy-modifying-external-accounts.html"
   },
   {
-    "id": "kms-012",
+    "id": "kms-010",
     "phase": 1,
     "service": "KMS",
     "question": "AWS KMSキーのローテーション実行後、既存の暗号化データはどうなりますか？",
@@ -260,7 +260,7 @@
     "reference": "https://docs.aws.amazon.com/kms/latest/developerguide/rotate-keys.html"
   },
   {
-    "id": "kms-013",
+    "id": "kms-011",
     "phase": 1,
     "service": "KMS",
     "question": "KMS APIのスロットリングが多発する場合の根本的な対策として最も効果的なものはどれですか？",
@@ -286,7 +286,7 @@
     "reference": "https://docs.aws.amazon.com/encryption-sdk/latest/developer-guide/data-key-caching.html"
   },
   {
-    "id": "kms-014",
+    "id": "kms-012",
     "phase": 1,
     "service": "KMS",
     "question": "AWS Secrets ManagerがKMSを使用してシークレットを暗号化する場合のデフォルト動作として正しいものはどれですか？",
@@ -312,7 +312,7 @@
     "reference": "https://docs.aws.amazon.com/secretsmanager/latest/userguide/security-encryption.html"
   },
   {
-    "id": "kms-015",
+    "id": "kms-013",
     "phase": 1,
     "service": "KMS",
     "question": "KMSキーポリシーの Condition に `kms:ViaService` を設定した場合の効果として正しいものはどれですか？",
@@ -338,7 +338,7 @@
     "reference": "https://docs.aws.amazon.com/kms/latest/developerguide/policy-conditions.html#conditions-kms-via-service"
   },
   {
-    "id": "kms-017",
+    "id": "kms-014",
     "phase": 1,
     "service": "KMS",
     "question": "AWSマネージドキー（aws/rds）で暗号化されたRDSスナップショットを別のAWSアカウントと共有しようとした場合、何が起きますか？",
@@ -364,7 +364,7 @@
     "reference": "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ShareSnapshot.html"
   },
   {
-    "id": "kms-018",
+    "id": "kms-015",
     "phase": 1,
     "service": "KMS",
     "question": "SSE-KMS（CMK）が設定されたS3バケットにオブジェクトをアップロードするIAMロールに必要な権限の組み合わせとして正しいものはどれですか？",
@@ -390,7 +390,7 @@
     "reference": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingKMSEncryption.html"
   },
   {
-    "id": "kms-019",
+    "id": "kms-016",
     "phase": 1,
     "service": "KMS",
     "question": "RDSインスタンスの暗号化設定に関する正しい説明はどれですか？",
@@ -416,7 +416,7 @@
     "reference": "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.Encryption.html"
   },
   {
-    "id": "kms-020",
+    "id": "kms-017",
     "phase": 1,
     "service": "KMS",
     "question": "S3バケットのサーバーサイド暗号化方式（SSE-S3、SSE-KMS、SSE-C）を選択する際の説明として正しいものはどれですか？",
