@@ -12,6 +12,10 @@ import autoscalingQuestions from '../data/questions/autoscaling.json';
 import ebsQuestions from '../data/questions/ebs.json';
 import ecsQuestions from '../data/questions/ecs.json';
 import lambdaQuestions from '../data/questions/lambda.json';
+import albNlbQuestions from '../data/questions/alb-nlb.json';
+import route53Questions from '../data/questions/route53.json';
+import cloudfrontQuestions from '../data/questions/cloudfront.json';
+import apiGatewayQuestions from '../data/questions/api-gateway.json';
 
 const ALL_QUESTIONS: Question[] = [
   ...(vpcQuestions as Question[]),
@@ -22,6 +26,10 @@ const ALL_QUESTIONS: Question[] = [
   ...(ebsQuestions as Question[]),
   ...(ecsQuestions as Question[]),
   ...(lambdaQuestions as Question[]),
+  ...(albNlbQuestions as Question[]),
+  ...(route53Questions as Question[]),
+  ...(cloudfrontQuestions as Question[]),
+  ...(apiGatewayQuestions as Question[]),
 ];
 
 const ALL_SERVICES = [...new Set(ALL_QUESTIONS.map((q) => q.service))];
