@@ -1,0 +1,288 @@
+[
+  {
+    "id": "eventbridge-001",
+    "phase": 6,
+    "service": "EventBridge",
+    "question": "複数のAWSサービス・アプリケーション間のイベント駆動アーキテクチャで、送信元と受信側を完全に疎結合にしつつ高度なフィルタリングとルーティングが必要な場合に最も適したサービスはどれですか？",
+    "choices": [
+      {
+        "text": "Amazon EventBridgeを使用してイベントバス上のイベントをルールでフィルタリングし、送信元が受信側を意識しない疎結合アーキテクチャを実現する",
+        "correct": true
+      },
+      {
+        "text": "SNSは送信元がトピックARNを指定するため疎結合度が低く、EventBridgeが唯一の選択肢",
+        "correct": false
+      },
+      {
+        "text": "SQSはPushモデルをサポートしていないためルーティングには不向き",
+        "correct": false
+      },
+      {
+        "text": "Lambda関数が各サービスのAPIを定期ポーリングして変更を検知するのが最も確実な方法",
+        "correct": false
+      }
+    ],
+    "explanation": "EventBridgeはイベントバスにルールを設定して、パターンに一致するイベントを指定したターゲット（Lambda・SQS・SNS・Step Functions・API Gatewayなど20以上）にルーティングします。AWSサービスイベント（EC2状態変化・RDSイベント等）・カスタムアプリイベント・SaaSパートナーイベントをすべて同一バスで扱えます。送信元はイベントを発行するだけでどのサービスが受信するかを知らなくてよいため、新しい受信側の追加が送信元コードの変更なしに可能です。",
+    "reference": "https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-what-is.html"
+  },
+  {
+    "id": "eventbridge-002",
+    "phase": 6,
+    "service": "EventBridge",
+    "question": "EventBridgeルールで「EC2インスタンスがRunning状態に遷移した」イベントのみをフィルタリングするイベントパターンとして正しいものはどれですか？",
+    "choices": [
+      {
+        "text": "`{\"source\": [\"aws.ec2\"], \"detail-type\": [\"EC2 Instance State-change Notification\"], \"detail\": {\"state\": [\"running\"]}}`",
+        "correct": true
+      },
+      {
+        "text": "EventBridgeはEC2の状態変化イベントを受信できないためCloudTrailを経由する",
+        "correct": false
+      },
+      {
+        "text": "CloudWatchアラームのメトリクスフィルターパターンと同じ記法で文字列マッチングを記述する",
+        "correct": false
+      },
+      {
+        "text": "イベントパターンはソースIPアドレスのみ指定でき、状態値などの詳細条件は設定できない",
+        "correct": false
+      }
+    ],
+    "explanation": "EventBridgeのイベントパターンはイベントのJSONと同じ構造を持ちます。`source`はイベントを発行したAWSサービス（例: aws.ec2）、`detail-type`はイベントの種類、`detail`はサービス固有のイベント詳細を指定します。条件に指定したフィールドが配列で記述されていればいずれかの値にマッチします。文字列マッチ以外にもプレフィックス一致・数値範囲・IPアドレスCIDR・存在確認・ANYマッチなどの条件演算子が使用可能です。",
+    "reference": "https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-event-patterns.html"
+  },
+  {
+    "id": "eventbridge-003",
+    "phase": 6,
+    "service": "EventBridge",
+    "question": "スケジュールされたタスク実行でタイムゾーン（例: Asia/Tokyo）を直接指定してJST 09:00に毎日実行したい場合に適したサービスはどれですか？",
+    "choices": [
+      {
+        "text": "Amazon EventBridge Schedulerを使用するとタイムゾーンを直接指定してcronまたはrateスケジュールを定義できる（EventBridgeルールのスケジュールはUTCのみ）",
+        "correct": true
+      },
+      {
+        "text": "EventBridgeルール（旧CloudWatch Events）のcron式はタイムゾーンを直接指定できる",
+        "correct": false
+      },
+      {
+        "text": "EventBridgeのcron式に`cron(0 9 * * ? * Asia/Tokyo)`のようにタイムゾーンIDを追記できる",
+        "correct": false
+      },
+      {
+        "text": "Lambda関数の環境変数にTZ=Asia/Tokyoを設定すればUTCスケジュールでも自動的にJSTに合わせて実行される",
+        "correct": false
+      }
+    ],
+    "explanation": "EventBridgeルール（スケジュール式）はUTCのみをサポートし、JST 09:00はUTC 00:00として`cron(0 0 * * ? *)`と記述する必要があります。一方、Amazon EventBridge Scheduler（2022年11月に導入）はIANA標準のタイムゾーン識別子（例: Asia/Tokyo）を直接指定できるため、夏時間を含むタイムゾーン変換をSchedulerが自動処理します。EventBridge Schedulerはone-time・recurring・rateスケジュールをサポートし、140以上のAWSサービスをターゲットにできます。",
+    "reference": "https://docs.aws.amazon.com/scheduler/latest/UserGuide/schedule-types.html"
+  },
+  {
+    "id": "eventbridge-004",
+    "phase": 6,
+    "service": "EventBridge",
+    "question": "EventBridgeのカスタムイベントバスを作成する主な目的はどれですか？",
+    "choices": [
+      {
+        "text": "アプリケーション固有のカスタムイベントをAWSサービスイベント（デフォルトバス）から分離して管理し、イベントのソースとルールの役割を明確にする",
+        "correct": true
+      },
+      {
+        "text": "カスタムイベントバスはAWSサービスイベント（EC2状態変化・S3イベントなど）を受信するために必要",
+        "correct": false
+      },
+      {
+        "text": "カスタムイベントバスはデフォルトバスよりスループット上限が高く高負荷な本番環境向け",
+        "correct": false
+      },
+      {
+        "text": "カスタムイベントバスを作成するとAWSサービスからのイベントも自動的に転送される",
+        "correct": false
+      }
+    ],
+    "explanation": "デフォルトイベントバス（default）はAWSサービスからのイベントを受信します。カスタムイベントバスはアプリケーションが独自のイベント（注文イベント・ユーザー操作イベント等）をPutEventsで送信するための専用バスです。デフォルトバスとカスタムバスを分けることでAWSサービスイベントとアプリイベントのルールが混在せず管理が容易になります。また別アカウントのEventBridgeからクロスアカウントでカスタムバスに転送する構成も可能です。",
+    "reference": "https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-event-bus.html"
+  },
+  {
+    "id": "eventbridge-005",
+    "phase": 6,
+    "service": "EventBridge",
+    "question": "EventBridgeスキーマレジストリを活用する主な目的はどれですか？",
+    "choices": [
+      {
+        "text": "イベントのスキーマを自動検出・登録して、各言語向けのコードバインディング（型情報付きクラス）を自動生成しイベント駆動アプリの開発効率を向上する",
+        "correct": true
+      },
+      {
+        "text": "スキーマレジストリはEventBridgeルールのイベントパターンをバリデーションするための機能",
+        "correct": false
+      },
+      {
+        "text": "スキーマレジストリはSNSトピックとの統合メタデータを管理するためのサービス",
+        "correct": false
+      },
+      {
+        "text": "スキーマレジストリを設定するとイベントが自動的に圧縮されて転送コストを削減できる",
+        "correct": false
+      }
+    ],
+    "explanation": "EventBridgeスキーマレジストリはイベントバスを流れるイベントのJSONスキーマを自動的に検出・登録する機能です。登録されたスキーマからJava・Python・TypeScript向けのコードバインディング（型安全なイベントオブジェクトクラス）を自動生成できます。VS Codeのツールキット拡張との統合でIDE上でのスキーマ参照・コード補完も可能になります。マイクロサービス間のイベント契約（コントラクト）の共有とドキュメントとしても活用できます。",
+    "reference": "https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-schema.html"
+  },
+  {
+    "id": "eventbridge-006",
+    "phase": 6,
+    "service": "EventBridge",
+    "question": "EventBridgeのアーカイブと再生（Archive and Replay）機能の主な用途はどれですか？",
+    "choices": [
+      {
+        "text": "過去のイベントをアーカイブしておき、新しいコンシューマー追加後や障害復旧後に過去イベントを再生して未処理分を補完する",
+        "correct": true
+      },
+      {
+        "text": "アーカイブはEventBridgeのログをS3に定期的にエクスポートするためのバックアップ機能",
+        "correct": false
+      },
+      {
+        "text": "再生機能はEventBridgeルールのテスト環境でのシミュレーション実行機能",
+        "correct": false
+      },
+      {
+        "text": "アーカイブを有効にするとターゲットへの配信失敗時に自動的にイベントが再送される",
+        "correct": false
+      }
+    ],
+    "explanation": "EventBridgeのアーカイブはイベントバスを流れるイベントをイベントデータストアに保存します（保持期間は1日〜無制限）。再生（Replay）では保存したイベントを指定した期間・パターンで同じイベントバスに再送信することで、新規追加されたLambda関数や修正後のコンシューマーで過去データを処理できます。マイクロサービスの新機能追加時のバックフィル処理やインシデント後の復旧処理に使われます。",
+    "reference": "https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-archive-event.html"
+  },
+  {
+    "id": "eventbridge-007",
+    "phase": 6,
+    "service": "EventBridge",
+    "question": "アカウントAで発生したEventBridgeイベントをアカウントBのイベントバスに転送して処理する設定として正しいものはどれですか？",
+    "choices": [
+      {
+        "text": "アカウントAのEventBridgeルールのターゲットにアカウントBのイベントバスARNを指定し、アカウントBのイベントバスにアカウントAからのPutEvents権限を付与するリソースポリシーを設定する",
+        "correct": true
+      },
+      {
+        "text": "EventBridgeはクロスアカウントのイベント転送をサポートしていない",
+        "correct": false
+      },
+      {
+        "text": "アカウントAとBでVPCピアリングを設定してEventBridgeのエンドポイント経由で転送する",
+        "correct": false
+      },
+      {
+        "text": "EventBridgeはクロスアカウントに対応しておらずSNSを経由してアカウントBに転送する必要がある",
+        "correct": false
+      }
+    ],
+    "explanation": "EventBridgeのクロスアカウントイベント転送は、アカウントAのルールのターゲットとしてアカウントBのイベントバスARNを指定することで実現します。アカウントBのイベントバスにはアカウントAからのPutEventsを許可するリソースポリシー（イベントバスポリシー）が必要です。転送されたイベントはアカウントBのイベントバス上のルールで処理されます。AWS OrganizationsとEventBridgeを組み合わせてOrganization全体のイベントを中央アカウントに集約するパターンもよく使われます。",
+    "reference": "https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-cross-account.html"
+  },
+  {
+    "id": "eventbridge-008",
+    "phase": 6,
+    "service": "EventBridge",
+    "question": "Amazon EventBridge Pipesの主な用途はどれですか？",
+    "choices": [
+      {
+        "text": "SQS・DynamoDB Streams・Kinesisなどのソースからターゲット（Lambda・SNS・Step Functionsなど）へのイベントをフィルタリング・変換を挟んで直接接続し、統合コードを削減する",
+        "correct": true
+      },
+      {
+        "text": "EventBridge PipesはCI/CDパイプラインをEventBridgeで管理するCodePipelineの代替サービス",
+        "correct": false
+      },
+      {
+        "text": "EventBridge PipesはEventBridgeルールとターゲットの設定をビジュアルエディタで管理する機能",
+        "correct": false
+      },
+      {
+        "text": "EventBridge PipesはStep Functionsと同等の機能を持つワークフロー実行エンジン",
+        "correct": false
+      }
+    ],
+    "explanation": "Amazon EventBridge Pipes（2022年12月）はソース（SQS・DynamoDB Streams・Kinesis Streams・Kafka・MQ・RDS等）からターゲット（Lambda・SNS・SQS・EventBridge・Step Functions・API Gateway等）を直接接続するポイントツーポイント統合サービスです。パイプのステージとしてフィルタリング（不要イベントの除外）・エンリッチメント（Lambda/Step Functionsでのデータ補完）・変換（入力変換）を設定できます。SQS→Lambdaなどの従来のイベントソースマッピングより柔軟な変換が可能です。",
+    "reference": "https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-pipes.html"
+  },
+  {
+    "id": "eventbridge-009",
+    "phase": 6,
+    "service": "EventBridge",
+    "question": "EventBridgeルールのターゲット（Lambda関数など）への配信が繰り返し失敗した場合にイベントを保持する設定はどれですか？",
+    "choices": [
+      {
+        "text": "EventBridgeルールのターゲット設定でDead Letter Queue（SQSキュー）を指定して配信失敗イベントを保持する",
+        "correct": true
+      },
+      {
+        "text": "EventBridgeは配信失敗イベントを自動的にS3に保存するため設定不要",
+        "correct": false
+      },
+      {
+        "text": "EventBridgeは失敗したイベントを24時間リトライし続け最終的に自動削除するためDLQ設定は不要",
+        "correct": false
+      },
+      {
+        "text": "CloudWatch LogsにEventBridge配信ログが自動記録されるためDLQは不要",
+        "correct": false
+      }
+    ],
+    "explanation": "EventBridgeはターゲットへの配信失敗時に最大24時間・最大185回のリトライを行います。リトライをすべて使い果たしてもイベントは消失します。ターゲット設定でSQSキューをDLQ（Dead Letter Queue）として指定することで、最終的に配信できなかったイベントをDLQに保存して調査・再送が可能になります。DLQには配信失敗の理由もメッセージ属性として記録されます。",
+    "reference": "https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-rule-dlq.html"
+  },
+  {
+    "id": "eventbridge-010",
+    "phase": 6,
+    "service": "EventBridge",
+    "question": "SalesforceやGitHubなどのSaaSサービスのイベントをAWS上で直接受信して処理したい場合のEventBridge機能はどれですか？",
+    "choices": [
+      {
+        "text": "EventBridgeのパートナーイベントソース機能を使い、SaaSプロバイダーからEventBridgeに直接イベントを受信してAWSサービスに連携する",
+        "correct": true
+      },
+      {
+        "text": "SaaSサービスのWebhookをEC2上のHTTPSエンドポイントで受信してSQSに転送するカスタム実装が必要",
+        "correct": false
+      },
+      {
+        "text": "EventBridgeはAWSサービスイベントのみ対応しSaaS統合は別途AWS AppFlowを使う必要がある",
+        "correct": false
+      },
+      {
+        "text": "AWS AppFlowを使ってSaaSデータをS3に定期的に同期してからEventBridgeで処理する",
+        "correct": false
+      }
+    ],
+    "explanation": "EventBridgeはSalesforce・GitHub・Zendesk・Datadog・Stripe・PagerDutyなど100以上のSaaSパートナーからのイベントをパートナーイベントソースとして直接受信できます。SaaS側でEventBridgeとの連携を設定すると、SaaSイベントが自動的にパートナーイベントバスに配信されます。Webhookエンドポイントの管理・スケーリング・TLS証明書管理などのインフラ管理が不要となり、SaaSイベントをLambda・Step Functions等で直接処理できます。",
+    "reference": "https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-saas.html"
+  },
+  {
+    "id": "eventbridge-011",
+    "phase": 6,
+    "service": "EventBridge",
+    "question": "EventBridgeルールに複数のターゲット（Lambda・SQS・Step Functionsなど）を設定した場合の動作として正しいものはどれですか？",
+    "choices": [
+      {
+        "text": "マッチしたイベントはすべてのターゲットに対して並行して配信される（ターゲット間に処理順序や依存関係はない）",
+        "correct": true
+      },
+      {
+        "text": "ターゲットは設定した順番に直列で実行され、前のターゲットが成功した場合のみ次が実行される",
+        "correct": false
+      },
+      {
+        "text": "EventBridgeルールはターゲットを1つしか設定できないため複数ターゲットにはStep Functionsを使う",
+        "correct": false
+      },
+      {
+        "text": "最初にマッチしたターゲットのみが実行され残りはスキップされる",
+        "correct": false
+      }
+    ],
+    "explanation": "EventBridgeルールには複数のターゲットを設定でき、ルールにマッチしたイベントはすべてのターゲットに並行して配信されます。各ターゲットは独立して実行され、1つのターゲットの失敗が他のターゲットの配信に影響しません。各ターゲットにはInputTransformerで異なるメッセージ形式に変換することも可能です。ターゲット間の順序制御や依存関係が必要な場合はStep Functionsのワークフローをターゲットにして実現します。",
+    "reference": "https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-targets.html"
+  }
+]
