@@ -204,7 +204,7 @@
         "correct": false
       }
     ],
-    "explanation": "Distributed Map（2022年12月）は数百万件規模のデータセット処理向けに設計されたMapステートの拡張版です。S3オブジェクトリスト・JSONLファイル・CSVファイルを直接ソースとして指定でき、最大10,000の並列子ワークフロー（実行）を同時実行できます。通常のMapステートの最大同時実行数は40のため、大規模処理にはDistributed Mapが必要です。各子ワークフローはExpress Workflowとして実行されコスト効率も高くなります。",
+    "explanation": "Distributed Map（2022年12月）は数百万件規模のデータセット処理向けに設計されたMapステートの拡張版です。S3オブジェクトリスト・JSONLファイル・CSVファイルを直接ソースとして指定でき、各反復処理を独立したExpress Workflowの子実行として最大10,000並列で起動できます。通常のMapステートは同一ステートマシン実行内でインライン処理するためメモリ・実行履歴上限の制約を受けますが、Distributed Mapは各反復が独立した実行として扱われるため大規模データ処理に適しています。各子ワークフローはExpress Workflowとして実行されコスト効率も高くなります。",
     "reference": "https://docs.aws.amazon.com/step-functions/latest/dg/concepts-asl-use-amazon-s3-for-large-datasets.html"
   },
   {
