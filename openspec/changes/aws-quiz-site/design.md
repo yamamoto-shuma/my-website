@@ -12,7 +12,7 @@
 - 問題データを JSON で管理し、追加・編集が容易な設計にする
 - 既存の `public/` ディレクトリを廃止し、`dist/` をデプロイ成果物とする
 - ADR-004 としてこの技術選定を記録する
-- Phase 1〜4（VPC/IAM/KMS、EC2/AutoScaling/EBS/ECS/Lambda、ALB/NLB/Route53/CloudFront/APIGateway、S3/EFS/Aurora/DynamoDB）の問題データを作成する
+- Phase 1〜6（VPC/IAM/KMS、EC2/AutoScaling/EBS/ECS/Lambda、ALB/NLB/Route53/CloudFront/APIGateway、S3/EFS/Aurora/DynamoDB、WAF/SecretsManager/CloudWatch/CloudTrail、SQS/SNS/EventBridge/StepFunctions）の問題データを作成する
 - サービス選択画面をPhaseブロック別に整理し、Phase単位の一括選択/解除ボタンを追加する
 
 **Non-Goals:**
@@ -170,6 +170,8 @@ const PHASE_GROUPS = [
   { phase: 2, label: 'Phase 2 — コンピューティング', services: ['EC2', 'Auto Scaling', 'EBS', 'ECS', 'Lambda'] },
   { phase: 3, label: 'Phase 3 — ネットワーキング・配信', services: ['ALB/NLB', 'Route 53', 'CloudFront', 'API Gateway'] },
   { phase: 4, label: 'Phase 4 — ストレージ・データベース', services: ['S3', 'EFS', 'Aurora', 'DynamoDB'] },
+  { phase: 5, label: 'Phase 5 — セキュリティ運用・モニタリング', services: ['WAF', 'Secrets Manager', 'CloudWatch', 'CloudTrail'] },
+  { phase: 6, label: 'Phase 6 — メッセージング・統合', services: ['SQS', 'SNS', 'EventBridge', 'Step Functions'] },
 ];
 ```
 

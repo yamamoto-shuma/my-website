@@ -54,3 +54,21 @@
 - [x] 7.5 `src/components/ServiceSelector.tsx` をPhaseブロック別表示に変更する（`phaseGroups` propsに変更、Phase別ヘッダー・一括選択/解除ボタン追加）
 - [x] 7.6 `src/pages/AwsQuiz.tsx` に `PHASE_GROUPS` 定数を定義しPhase4インポートを追加する
 - [x] 7.7 Phase4各サービスの問題を3ラウンドのレビューで品質確認する（factual errorを含む選択肢を修正）
+
+## 8. Phase5問題データ作成（MWS-014）
+
+- [x] 8.1 `src/data/questions/waf.json` を作成する（WAF問題11問、実務レベル）
+- [x] 8.2 `src/data/questions/secrets-manager.json` を作成する（Secrets Manager問題11問、実務レベル）
+- [x] 8.3 `src/data/questions/cloudwatch.json` を作成する（CloudWatch問題11問、実務レベル）
+- [x] 8.4 `src/data/questions/cloudtrail.json` を作成する（CloudTrail問題11問、実務レベル）
+- [x] 8.5 `src/pages/AwsQuiz.tsx` にPhase5インポートとPHASE_GROUPSエントリを追加する
+- [x] 8.6 Phase5各サービスの問題を3ラウンドのレビューで品質確認する（secrets-manager-003の誤記を修正）
+
+## 9. Phase6問題データ作成（MWS-015）
+
+- [ ] 9.1 `src/data/questions/sqs.json` を作成する（SQS問題11問、実務レベル）
+- [ ] 9.2 `src/data/questions/sns.json` を作成する（SNS問題11問、実務レベル）
+- [ ] 9.3 `src/data/questions/eventbridge.json` を作成する（EventBridge問題11問、実務レベル）
+- [ ] 9.4 `src/data/questions/step-functions.json` を作成する（Step Functions問題11問、実務レベル）
+- [ ] 9.5 `src/pages/AwsQuiz.tsx` にPhase6インポートとPHASE_GROUPSエントリを追加する
+- [ ] 9.6 Phase6各サービスの問題を3ラウンドのレビューで品質確認する

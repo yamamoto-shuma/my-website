@@ -24,6 +24,10 @@ import wafQuestions from '../data/questions/waf.json';
 import secretsManagerQuestions from '../data/questions/secrets-manager.json';
 import cloudwatchQuestions from '../data/questions/cloudwatch.json';
 import cloudtrailQuestions from '../data/questions/cloudtrail.json';
+import sqsQuestions from '../data/questions/sqs.json';
+import snsQuestions from '../data/questions/sns.json';
+import eventbridgeQuestions from '../data/questions/eventbridge.json';
+import stepFunctionsQuestions from '../data/questions/step-functions.json';
 
 const PHASE_GROUPS = [
   { phase: 1, label: 'Phase 1 — セキュリティ・ネットワーク基礎', services: ['VPC', 'IAM', 'KMS'] },
@@ -31,6 +35,7 @@ const PHASE_GROUPS = [
   { phase: 3, label: 'Phase 3 — ネットワーキング・配信', services: ['ALB/NLB', 'Route 53', 'CloudFront', 'API Gateway'] },
   { phase: 4, label: 'Phase 4 — ストレージ・データベース', services: ['S3', 'EFS', 'Aurora', 'DynamoDB'] },
   { phase: 5, label: 'Phase 5 — セキュリティ運用・モニタリング', services: ['WAF', 'Secrets Manager', 'CloudWatch', 'CloudTrail'] },
+  { phase: 6, label: 'Phase 6 — メッセージング・統合', services: ['SQS', 'SNS', 'EventBridge', 'Step Functions'] },
 ];
 
 const ALL_QUESTIONS: Question[] = [
@@ -54,6 +59,10 @@ const ALL_QUESTIONS: Question[] = [
   ...(secretsManagerQuestions as Question[]),
   ...(cloudwatchQuestions as Question[]),
   ...(cloudtrailQuestions as Question[]),
+  ...(sqsQuestions as Question[]),
+  ...(snsQuestions as Question[]),
+  ...(eventbridgeQuestions as Question[]),
+  ...(stepFunctionsQuestions as Question[]),
 ];
 
 const ALL_SERVICES = PHASE_GROUPS.flatMap((g) => g.services);

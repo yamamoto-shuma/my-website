@@ -66,3 +66,17 @@ S3・EFS・Aurora・DynamoDBの各サービスについて、実務レベルの�
 #### Scenario: 各サービスの問題数が充足している
 - **WHEN** Phase4の問題データを読み込む
 - **THEN** S3・EFS・Aurora・DynamoDBそれぞれ10問以上存在する
+
+### Requirement: Phase5の問題データが充実している
+WAF・Secrets Manager・CloudWatch・CloudTrailの各サービスについて、実務レベルの問題が各10問以上作成されていなければならない（SHALL）。
+
+#### Scenario: 各サービスの問題数が充足している
+- **WHEN** Phase5の問題データを読み込む
+- **THEN** WAF・Secrets Manager・CloudWatch・CloudTrailそれぞれ10問以上存在する
+
+### Requirement: Phase6の問題データが充実している
+SQS・SNS・EventBridge・Step Functionsの各サービスについて、実務レベルの問題が各10問以上作成されていなければならない（SHALL）。
+
+#### Scenario: 各サービスの問題数が充足している
+- **WHEN** Phase6の問題データを読み込む
+- **THEN** SQS・SNS・EventBridge・Step Functionsそれぞれ10問以上存在する
