@@ -3,520 +3,156 @@
     "id": "iam-001",
     "phase": 1,
     "service": "IAM",
-    "question": "AWSマネージドポリシーとカスタマーマネージドポリシーの違いとして正しいものはどれですか？",
+    "question": "EC2インスタンスからS3バケットにアクセスしたい。アクセスキーをEC2に置かずに実現する方法として正しいものはどれか？",
     "choices": [
       {
-        "text": "AWSマネージドポリシーはAWSが管理するためユーザーが内容を変更・カスタマイズできない",
+        "text": "IAMロールを作成してEC2インスタンスにアタッチする。EC2はロールを通じて一時的な認証情報を自動取得するため、アクセスキーの管理が不要になる",
         "correct": true
       },
       {
-        "text": "カスタマーマネージドポリシーはAWSが作成・管理する",
+        "text": "EC2のユーザーデータスクリプトにアクセスキーを書いて起動時に環境変数に設定する",
         "correct": false
       },
       {
-        "text": "AWSマネージドポリシーは1つのエンティティにのみアタッチできる",
+        "text": "S3バケットをパブリックに設定して認証情報なしでアクセスできるようにする",
         "correct": false
       },
       {
-        "text": "カスタマーマネージドポリシーは一度作成したら変更できない",
+        "text": "EC2とS3を同じVPCに配置すれば自動的にアクセスできる",
         "correct": false
       }
     ],
-    "explanation": "AWSマネージドポリシーはAWSが作成・管理するポリシーで、ユーザーは内容を変更できません。一般的なユースケース（ReadOnlyAccess・AdministratorAccessなど）向けに用意されています。カスタマーマネージドポリシーはユーザーが独自に作成・管理でき、自社要件に合わせた細かな権限設定が可能です。どちらも複数のIAMエンティティ（ユーザー・グループ・ロール）にアタッチできます。",
-    "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_managed-vs-inline.html"
+    "explanation": "IAMロールはAWSサービス（EC2・Lambda・ECSなど）に対して「このサービスが何をできるか」を定義する仕組みです。EC2にロールをアタッチするとEC2内のアプリはAWS SDKを通じて一時的な認証情報を自動取得します。アクセスキーと違い、有効期限が短く自動更新されるため、キーの漏洩リスクや定期ローテーションの手間がありません。",
+    "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html"
   },
   {
     "id": "iam-002",
     "phase": 1,
     "service": "IAM",
-    "question": "IAMロールに関する説明として正しいものはどれですか？",
+    "question": "IAMロールに「何ができるか・何にアクセスできるか」を定義するものはどれか？",
     "choices": [
       {
-        "text": "ロールの認証情報は一時的であり、有効期限がある",
+        "text": "IAMポリシー。Effect（Allow/Deny）・Action（操作）・Resource（対象リソース）をJSONで記述し、ロールやユーザーにアタッチすることで権限を付与する",
         "correct": true
       },
       {
-        "text": "ロールには必ずアクセスキーとシークレットキーが付与される",
+        "text": "セキュリティグループ。インバウンド・アウトバウンドのルールが権限を定義する",
         "correct": false
       },
       {
-        "text": "ロールはEC2などのAWSサービスには割り当てられない",
+        "text": "IAMグループ。グループ名がそのまま許可するサービス名として解釈される",
         "correct": false
       },
       {
-        "text": "ロールは一度に1つのエンティティにのみ使用できる",
+        "text": "リソースタグ。タグの値に基づいてアクセス可否が自動的に判定される",
         "correct": false
       }
     ],
-    "explanation": "IAMロールの認証情報（アクセスキー・シークレットキー・セッショントークン）は一時的で有効期限があります。ロールはEC2インスタンスプロファイルやLambda実行ロールなどAWSサービスに割り当てられ、複数のエンティティが同時に同じロールを引き受けることができます。",
-    "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html"
+    "explanation": "IAMポリシーの基本構造は「誰が（Principal）・何を（Action）・どのリソースに（Resource）・許可/拒否する（Effect）」です。例えば「s3:GetObject を my-bucket/* に Allow」のように記述します。ポリシーはロールやユーザーにアタッチして使います。セキュリティグループはネットワークレベルの通信制御であり、AWSサービスへの操作権限とは別の概念です。",
+    "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html"
   },
   {
     "id": "iam-003",
     "phase": 1,
     "service": "IAM",
-    "question": "EC2インスタンスがS3バケットにアクセスするための最も推奨される方法はどれですか？",
+    "question": "Lambda関数がDynamoDBにアクセスするIAMロールを作成する際、「このロールをLambdaが使える」と設定する部分はどれか？",
     "choices": [
       {
-        "text": "EC2インスタンスにIAMロールをアタッチしてS3への権限を付与する",
+        "text": "信頼ポリシー（Trust Policy）。「誰がこのロールを引き受けられるか（AssumeRoleできるか）」を定義し、ここでLambdaサービスを許可する",
         "correct": true
       },
       {
-        "text": "EC2インスタンスのユーザーデータにIAMユーザーのアクセスキーを記述する",
+        "text": "許可ポリシー（Permission Policy）。DynamoDBへのアクセス権限と合わせてLambdaのARNも記述する",
         "correct": false
       },
       {
-        "text": "S3バケットをパブリックに設定してアクセスキーを不要にする",
+        "text": "ロール名にlambdaを含めることでLambdaからの使用が自動的に許可される",
         "correct": false
       },
       {
-        "text": "環境変数にアクセスキーを設定する",
+        "text": "Lambda関数の設定画面でロールを選ぶ際に自動的に信頼関係が設定される",
         "correct": false
       }
     ],
-    "explanation": "EC2インスタンスにIAMロールをアタッチする（インスタンスプロファイル経由）方法が最も推奨されます。一時的な認証情報がIMDSを通じて自動的に提供されるため、アクセスキーをコードや設定ファイルに埋め込む必要がなく、セキュリティリスクを大幅に低減できます。",
-    "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html"
+    "explanation": "IAMロールには2種類のポリシーがあります。①許可ポリシー（何ができるか）②信頼ポリシー（誰がこのロールを使えるか）。Lambdaにロールを割り当てると信頼ポリシーに「lambda.amazonaws.com」が設定されます。これはAssumeRole（ロールを引き受ける）権限をLambdaサービスに与える設定です。信頼ポリシーがないとロールが存在しても使えません。",
+    "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_terms-and-concepts.html"
   },
   {
     "id": "iam-004",
     "phase": 1,
     "service": "IAM",
-    "question": "IAMポリシーの評価において、明示的なDenyが設定されている場合の動作として正しいものはどれですか？",
+    "question": "新しいLambda関数のIAMロールに「AdministratorAccess」ポリシーをアタッチしようとしたら、コードレビューで指摘された。何が問題か？",
     "choices": [
       {
-        "text": "明示的なDenyは他のすべてのAllowより優先される",
+        "text": "最小権限の原則に違反している。AdministratorAccessは全AWSサービスへの全操作を許可するため、LambdaがDynamoDBへの読み書きしか必要としないならその操作のみに絞るべき",
         "correct": true
       },
       {
-        "text": "同一ポリシー内にAllowが存在する場合はDenyは無視される",
+        "text": "AdministratorAccessはIAMユーザー専用のポリシーでロールにはアタッチできない",
         "correct": false
       },
       {
-        "text": "Denyは同一ポリシー内のAllowのみをオーバーライドする",
+        "text": "ポリシーのサイズが大きいためLambdaの起動時間が遅くなる",
         "correct": false
       },
       {
-        "text": "Denyはリソースベースポリシーには適用されない",
+        "text": "AdministratorAccessを使うと追加料金が発生する",
         "correct": false
       }
     ],
-    "explanation": "IAMポリシーの評価ロジックでは、明示的なDenyが最優先されます。複数のポリシーが評価される場合でも、いずれかのポリシーにDenyが含まれていれば、他のポリシーのAllowに関わらずアクセスは拒否されます。デフォルトは暗黙のDenyです。",
-    "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic.html"
+    "explanation": "最小権限の原則とは「必要な操作だけを許可する」ことです。AdministratorAccessは全サービスへのフルアクセス権限で、万が一認証情報が漏洩したり、コードのバグで意図しないAPIが呼ばれた際の被害が最大になります。実務では「このLambdaが実際に呼ぶAPIは何か」を洗い出し、必要なActionとResourceに絞ったポリシーを作成します。",
+    "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html"
   },
   {
     "id": "iam-005",
     "phase": 1,
     "service": "IAM",
-    "question": "AWS Organizationsのサービスコントロールポリシー（SCP）に関する正しい説明はどれですか？",
+    "question": "IAMポリシーのResourceフィールドに「arn:aws:s3:::my-bucket/*」と書く。このARNという識別子の役割として正しいものはどれか？",
     "choices": [
       {
-        "text": "SCPはOU（組織単位）やアカウントに許可される操作の最大権限の境界を設定する",
+        "text": "AWSリソースを一意に識別するための識別子。ポリシーで「どのリソースへのアクセスを許可・拒否するか」を特定するためにARNを使う",
         "correct": true
       },
       {
-        "text": "SCPはマスターアカウント（管理アカウント）のrootユーザーにも適用される",
+        "text": "S3バケットへのアクセスURLで、クライアントはこのARNを使ってS3にHTTPSアクセスする",
         "correct": false
       },
       {
-        "text": "SCPはIAMポリシーより低い優先度を持ち、IAMポリシーで上書きできる",
+        "text": "リソースの暗号化キーを示す識別子",
         "correct": false
       },
       {
-        "text": "SCPによってIAMエンティティに権限が付与される",
+        "text": "S3バケットが存在するリージョンと所有アカウントを示す情報で、アクセス制御には使われない",
         "correct": false
       }
     ],
-    "explanation": "SCPはアカウントまたはOU内のすべてのIAMエンティティ（ユーザー・ロール）が実行できる操作の上限を設定します。SCPで許可されていない操作はIAMポリシーで許可しても実行できません。ただし管理アカウント自体にはSCPは適用されません。",
-    "reference": "https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html"
+    "explanation": "ARN（Amazon Resource Name）は「arn:aws:サービス名:リージョン:アカウントID:リソース」の形式です。IAMポリシーでResourceにARNを指定することで「このバケットのオブジェクト全て」「このテーブルのみ」のように対象を絞り込めます。「*（ワイルドカード）」を使えば全リソースに適用されます。ARNはコンソール・CLI・ポリシー設定など至る所で使われる基本的な概念です。",
+    "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference-arns.html"
   },
   {
     "id": "iam-006",
     "phase": 1,
     "service": "IAM",
-    "question": "IAMユーザーのアクセスキー管理のベストプラクティスとして推奨されるものはどれですか？",
+    "question": "「アカウントAのLambdaからアカウントBのS3バケットにアクセスしたい」という要件が出た。どのような仕組みで実現するか？",
     "choices": [
       {
-        "text": "アクセスキーを定期的にローテーションし、不要になったら削除する",
+        "text": "アカウントBにIAMロールを作成してアカウントAのLambdaをPrincipalに指定し、アカウントAのLambdaがAssumeRoleで一時的な認証情報を取得してアカウントBのS3にアクセスする",
         "correct": true
       },
       {
-        "text": "アクセスキーはrootアカウントで作成し、チームで共有する",
+        "text": "アカウントBのS3バケットポリシーにアカウントAを追加するだけで、IAMロールの変更は不要",
         "correct": false
       },
       {
-        "text": "1ユーザーに3つ以上のアクセスキーを作成して冗長化する",
+        "text": "アカウントAでアクセスキーを作成してアカウントBのIAMユーザーとして登録し、そのキーをLambdaの環境変数に設定する",
         "correct": false
       },
       {
-        "text": "アクセスキーをソースコードにハードコードしてバージョン管理する",
+        "text": "VPCピアリングを使えばクロスアカウントのS3アクセスが可能になる",
         "correct": false
       }
     ],
-    "explanation": "アクセスキーのセキュリティリスクを最小化するため、定期的なローテーションと不要になったキーの即時削除が推奨されます。rootアカウントのアクセスキー作成は避け、キーは共有せず、コードへのハードコードも禁止です。可能な限りIAMロールを使用してください。",
-    "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html"
-  },
-  {
-    "id": "iam-007",
-    "phase": 1,
-    "service": "IAM",
-    "question": "IAMのアクセス許可の境界（Permission Boundary）に関する正しい説明はどれですか？",
-    "choices": [
-      {
-        "text": "Permission Boundaryを設定すると、アイデンティティベースポリシーの有効な権限がBoundaryの範囲内に制限される",
-        "correct": true
-      },
-      {
-        "text": "Permission Boundaryを設定すると、そのBoundaryで定義した権限がエンティティに付与される",
-        "correct": false
-      },
-      {
-        "text": "Permission BoundaryはS3バケットなどのリソースに対してのみ設定できる",
-        "correct": false
-      },
-      {
-        "text": "Permission BoundaryはSCPと同じ機能であり、Organizationsが必要である",
-        "correct": false
-      }
-    ],
-    "explanation": "Permission Boundaryはエンティティ（ユーザー・ロール）の最大権限の上限を設定します。アイデンティティベースポリシーとPermission Boundaryの両方で許可されている場合のみ操作が可能です。権限を付与するものではなく、既存の権限を制限するためのガードレールです。",
-    "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html"
-  },
-  {
-    "id": "iam-008",
-    "phase": 1,
-    "service": "IAM",
-    "question": "IAMポリシーのConditionキー `aws:RequestedRegion` を使用して実現できることはどれですか？",
-    "choices": [
-      {
-        "text": "特定のAWSリージョンへのAPIリクエストのみを許可または拒否する",
-        "correct": true
-      },
-      {
-        "text": "リクエストを行ったユーザーのIPアドレスに基づくアクセス制御",
-        "correct": false
-      },
-      {
-        "text": "リソースのタグに基づくアクセス制御",
-        "correct": false
-      },
-      {
-        "text": "特定の時間帯のみアクセスを許可する",
-        "correct": false
-      }
-    ],
-    "explanation": "`aws:RequestedRegion` 条件キーを使用すると、APIリクエストが送信されるリージョンを制限できます。例えば東京リージョン以外への操作を拒否するSCPやIAMポリシーを作成でき、データレジデンシー要件やコスト管理に活用できます。",
-    "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_condition-keys.html"
-  },
-  {
-    "id": "iam-009",
-    "phase": 1,
-    "service": "IAM",
-    "question": "AWSアカウントAのLambdaからアカウントBのS3バケットにアクセスするための正しい設定はどれですか？",
-    "choices": [
-      {
-        "text": "アカウントBでIAMロールを作成しアカウントAを信頼ポリシーに追加、アカウントAのLambda実行ロールにAssumeRole権限を付与する",
-        "correct": true
-      },
-      {
-        "text": "アカウントBのS3バケットをパブリックに設定してアクセスキー不要にする",
-        "correct": false
-      },
-      {
-        "text": "アカウントAのLambdaにアカウントBのIAMユーザーのアクセスキーを環境変数で渡す",
-        "correct": false
-      },
-      {
-        "text": "アカウントAとBのVPCをピアリングすれば自動的にS3アクセスが可能になる",
-        "correct": false
-      }
-    ],
-    "explanation": "クロスアカウントアクセスはIAMロールの委任（AssumeRole）で実現します。アカウントBで信頼ポリシーにアカウントAのプリンシパルを許可したロールを作成し、アカウントAのLambda実行ロールにそのロールをAssumeRoleする権限を付与します。加えてS3バケットポリシーでも許可が必要な場合があります。",
+    "explanation": "クロスアカウントアクセスはAssumeRoleで実現します。①アカウントBでロールを作成（信頼ポリシーにアカウントAのプリンシパルを指定）②アカウントBのS3へのアクセス権限ポリシーをそのロールにアタッチ③アカウントAのLambdaがSTS AssumeRoleを呼び出して一時認証情報を取得。アクセスキーを別アカウントのコードに埋め込むのはキー漏洩リスクがあるアンチパターンです。",
     "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/tutorial_cross-account-with-roles.html"
-  },
-  {
-    "id": "iam-010",
-    "phase": 1,
-    "service": "IAM",
-    "question": "AWS IAM Access Analyzerの主な用途として正しいものはどれですか？",
-    "choices": [
-      {
-        "text": "外部エンティティ（他のAWSアカウントやパブリック）からアクセス可能なリソースを自動検出する",
-        "correct": true
-      },
-      {
-        "text": "IAMポリシーの構文エラーを自動修正する",
-        "correct": false
-      },
-      {
-        "text": "90日以上使用されていないIAMユーザーを自動削除する",
-        "correct": false
-      },
-      {
-        "text": "MFAが設定されていないユーザーへのAWSコンソールアクセスを自動ブロックする",
-        "correct": false
-      }
-    ],
-    "explanation": "IAM Access Analyzerは、S3バケット・IAMロール・KMSキー・SQSキューなどのリソースポリシーを分析し、意図せず外部アカウントやパブリックからアクセス可能になっているリソースを検出します。また、ポリシーの検証・未使用アクセスの分析機能も提供します。",
-    "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/what-is-access-analyzer.html"
-  },
-  {
-    "id": "iam-011",
-    "phase": 1,
-    "service": "IAM",
-    "question": "同一アカウント内でS3バケットポリシー（リソースベース）とIAMポリシー（アイデンティティベース）が競合した場合のアクセス評価として正しいものはどれですか？",
-    "choices": [
-      {
-        "text": "どちらか一方にAllowがあればアクセス可能（ただし明示的なDenyがない場合）",
-        "correct": true
-      },
-      {
-        "text": "IAMポリシーが常にリソースベースポリシーより優先される",
-        "correct": false
-      },
-      {
-        "text": "リソースベースポリシーが常にIAMポリシーより優先される",
-        "correct": false
-      },
-      {
-        "text": "両方のポリシーでAllowが必要",
-        "correct": false
-      }
-    ],
-    "explanation": "S3では、同一アカウント内でアイデンティティベースポリシーとリソースベースポリシーはOR評価されます。つまりどちらか一方でAllowがあれば（かつ明示的なDenyがなければ）アクセスできます。一方、クロスアカウントアクセスの場合は両方でAllowが必要です。なお、KMSキーポリシーなど一部のサービスでは同一アカウントでもAND評価が必要な場合があります。",
-    "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic.html#policy-eval-basics"
-  },
-  {
-    "id": "iam-012",
-    "phase": 1,
-    "service": "IAM",
-    "question": "タグを使った属性ベースのアクセス制御（ABAC）の主なメリットはどれですか？",
-    "choices": [
-      {
-        "text": "新しいリソースを追加してもタグさえ付ければポリシー変更なしでアクセス制御が適用される",
-        "correct": true
-      },
-      {
-        "text": "タグはAWSが自動的に付与するため管理コストが発生しない",
-        "correct": false
-      },
-      {
-        "text": "ABACはAWSマネージドポリシーのみで実現でき、カスタムポリシーは不要",
-        "correct": false
-      },
-      {
-        "text": "ABACはS3とEC2のみに適用できる限定的な機能である",
-        "correct": false
-      }
-    ],
-    "explanation": "ABACではポリシーの Condition に `aws:ResourceTag` や `aws:PrincipalTag` などを使い、タグの値でアクセスを制御します。新しいリソースをデプロイする際も正しいタグを付与するだけでポリシー変更なしに権限が適用されるため、大規模環境でのスケーラビリティが高いのが最大の利点です。",
-    "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction_attribute-based-access-control.html"
-  },
-  {
-    "id": "iam-013",
-    "phase": 1,
-    "service": "IAM",
-    "question": "オンプレミスサーバーからAWSリソースに長期的なアクセスキーを使わずにアクセスする方法として正しいものはどれですか？",
-    "choices": [
-      {
-        "text": "IAM Roles Anywhereを使用し、PKI証明書でSTSから一時的な認証情報を取得する",
-        "correct": true
-      },
-      {
-        "text": "オンプレミスサーバーにIAMユーザーのアクセスキーを直接配置する",
-        "correct": false
-      },
-      {
-        "text": "オンプレミスからはVPN接続があれば追加の認証情報なしでアクセスできる",
-        "correct": false
-      },
-      {
-        "text": "オンプレミス環境ではIAMロールを使用できないため、長期的なアクセスキーが必須",
-        "correct": false
-      }
-    ],
-    "explanation": "IAM Roles Anywhereは、オンプレミスやクラウド外の環境でもX.509証明書を使ってSTSから一時的な認証情報を取得できる仕組みです。長期的なアクセスキーを配置するリスクを排除でき、証明書の有効期限管理でアクセス制御できます。",
-    "reference": "https://docs.aws.amazon.com/rolesanywhere/latest/userguide/introduction.html"
-  },
-  {
-    "id": "iam-014",
-    "phase": 1,
-    "service": "IAM",
-    "question": "AWSサービスリンクロール（Service-Linked Role）に関する正しい説明はどれですか？",
-    "choices": [
-      {
-        "text": "AWSサービスが特定の機能を実現するために自動作成するロールで、AWSが管理するポリシーが紐づいている",
-        "correct": true
-      },
-      {
-        "text": "ユーザーが任意のポリシーをアタッチして権限を自由に拡張できる",
-        "correct": false
-      },
-      {
-        "text": "すべてのサービスリンクロールはユーザーが手動で作成する必要がある",
-        "correct": false
-      },
-      {
-        "text": "サービスリンクロールはいつでも自由に削除できる",
-        "correct": false
-      }
-    ],
-    "explanation": "サービスリンクロールはAWSサービス（ECS、RDS、Auto Scalingなど）が自動作成する特殊なIAMロールです。ロールに紐づくポリシーはAWSが管理し、ユーザーは変更できません。削除するには依存するサービスリソースをすべて削除する必要があります。",
-    "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/using-service-linked-roles.html"
-  },
-  {
-    "id": "iam-015",
-    "phase": 1,
-    "service": "IAM",
-    "question": "IAMポリシーで `\"Effect\": \"Deny\", \"NotAction\": [\"s3:GetObject\"]` と記述した場合の動作として正しいものはどれですか？",
-    "choices": [
-      {
-        "text": "s3:GetObject 以外のすべてのアクションが拒否される",
-        "correct": true
-      },
-      {
-        "text": "s3:GetObject のみが拒否される",
-        "correct": false
-      },
-      {
-        "text": "すべてのS3アクションが拒否される",
-        "correct": false
-      },
-      {
-        "text": "NotActionはAllowのみで使用でき、Denyとの組み合わせは無効",
-        "correct": false
-      }
-    ],
-    "explanation": "NotAction は指定したアクション「以外」を対象にします。`Deny + NotAction: [s3:GetObject]` は「s3:GetObject 以外のすべてのアクションをDeny」を意味します。SCPでよく使われるパターンで、例えば「特定のサービス以外はすべて禁止する」ような強力なガードレールを実装できます。",
-    "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_notaction.html"
-  },
-  {
-    "id": "iam-016",
-    "phase": 1,
-    "service": "IAM",
-    "question": "サードパーティSaaSにAWSアカウントへのAssumeRoleを許可するIAMロールを作成する際、「Confused Deputy攻撃」（同じSaaSを使う他顧客が自アカウントに侵入する問題）を防ぐために信頼ポリシーに追加すべき設定はどれですか？",
-    "choices": [
-      {
-        "text": "Conditionに sts:ExternalId を設定し、SaaSから提供される自テナント固有のIDを必須条件にする",
-        "correct": true
-      },
-      {
-        "text": "PrincipalにSaaSのAWSアカウントIDを指定するだけで他顧客からの侵入は防げる",
-        "correct": false
-      },
-      {
-        "text": "SaaSサービスには専用IAMユーザーを作成してアクセスキーを渡す",
-        "correct": false
-      },
-      {
-        "text": "AssumeRoleにMFA条件を追加することでConfused Deputy問題を防げる",
-        "correct": false
-      }
-    ],
-    "explanation": "Confused Deputy問題とは、悪意ある第三者が正規のSaaSを「仲介役」にしてあなたのAWSリソースへ不正アクセスする攻撃です。SaaSのAWSアカウントIDだけをPrincipalに指定すると、同一SaaSを使う他の顧客アカウントへのアクセス権限に悪用されるリスクがあります。sts:ExternalIdはSaaSがあなたのテナント専用に発行する固有IDです。信頼ポリシーのConditionに設定することで、「自テナントのSaaSからのリクエストのみ」に絞り込みができます。",
-    "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/confused-deputy.html"
-  },
-  {
-    "id": "iam-017",
-    "phase": 1,
-    "service": "IAM",
-    "question": "本番環境を変更せずに「このIAMロールは特定のS3バケットへのPutObjectを実行できるか」を事前に検証する最も適切な方法はどれですか？",
-    "choices": [
-      {
-        "text": "IAM Policy Simulatorを使用して、ロールに適用されるすべてのポリシー（SCP・Permission Boundary含む）を評価する",
-        "correct": true
-      },
-      {
-        "text": "テスト用IAMユーザーを作成して実際にPutObjectを試行し、エラーが出なければOKとする",
-        "correct": false
-      },
-      {
-        "text": "CloudTrailのログを確認してPutObjectのAPIコールを探す",
-        "correct": false
-      },
-      {
-        "text": "IAMポリシーのJSONを目視で確認してAllowの記述を探す",
-        "correct": false
-      }
-    ],
-    "explanation": "IAM Policy Simulatorは指定したIAMエンティティにアタッチされたすべてのポリシー（IAMポリシー・SCP・Permission Boundary・リソースベースポリシー）を評価し、特定のAPIアクションが許可されるかを事前確認できるツールです。「なぜアクセスできないか」のデバッグにも有効で、どのポリシーがDenyしているかを特定できます。目視確認はPermission BoundaryやSCPによる上限制限を見落とすリスクがあります。",
-    "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html"
-  },
-  {
-    "id": "iam-018",
-    "phase": 1,
-    "service": "IAM",
-    "question": "複数のAWSアカウントで開発チームが作業する環境で、各アカウントにIAMユーザーを個別作成せずに社内IdP（OktaやAzure AD）でシングルサインオンを実現する最適なサービスはどれですか？",
-    "choices": [
-      {
-        "text": "AWS IAM Identity Center（旧AWS SSO）でIdPと連携し、Permission Setで各アカウントへの権限を一元管理する",
-        "correct": true
-      },
-      {
-        "text": "各AWSアカウントにIAMユーザーを個別作成し、同一のパスワードポリシーを適用して管理する",
-        "correct": false
-      },
-      {
-        "text": "管理アカウントのIAMロールを全メンバーで共有してAWS CLIで使用する",
-        "correct": false
-      },
-      {
-        "text": "全アカウント間にクロスアカウントAssumeRoleを手動で設定する",
-        "correct": false
-      }
-    ],
-    "explanation": "IAM Identity Center（旧AWS SSO）はOrganizations配下の複数アカウントへのアクセスを一元管理するサービスです。社内IdP（Okta・Azure AD・Google Workspaceなど）または組み込みディレクトリと連携し、Permission Setで各アカウントへの権限を定義します。ユーザーはポータルからアクセスするアカウントと権限を選択でき、一時的な認証情報が発行されます。各アカウントにIAMユーザーを管理する手間を排除でき、退職者対応も一箇所で完結します。",
-    "reference": "https://docs.aws.amazon.com/singlesignon/latest/userguide/what-is.html"
-  },
-  {
-    "id": "iam-019",
-    "phase": 1,
-    "service": "IAM",
-    "question": "IAMユーザーがMFAを使用してログインした場合のみ、本番S3バケットの削除操作を許可するポリシーを実装するために使用する条件キーはどれですか？",
-    "choices": [
-      {
-        "text": "aws:MultiFactorAuthPresent: true",
-        "correct": true
-      },
-      {
-        "text": "aws:SecureTransport: true",
-        "correct": false
-      },
-      {
-        "text": "iam:PassedToService: mfa",
-        "correct": false
-      },
-      {
-        "text": "aws:PrincipalType: MFAUser",
-        "correct": false
-      }
-    ],
-    "explanation": "aws:MultiFactorAuthPresent条件キーはリクエストがMFA認証済みセッションから行われた場合にtrueになります。重要な操作（EC2インスタンス削除・IAMユーザー変更・本番データ操作など）に対して`Deny + aws:MultiFactorAuthPresent: false`を設定することで「MFAなしでは実行できない操作」を強制できます。Denyにfalseを使う（MFAが存在しない場合にDeny）という二重否定のパターンを正しく理解することが実装のポイントです。",
-    "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_condition-keys.html#condition-keys-multifactorauthpresent"
-  },
-  {
-    "id": "iam-020",
-    "phase": 1,
-    "service": "IAM",
-    "question": "GitHub ActionsからAWSリソースにアクセスする際、長期的なアクセスキーをGitHub Secretsに保存せずに認証する最も推奨される方法はどれですか？",
-    "choices": [
-      {
-        "text": "GitHub ActionsをOIDCプロバイダーとして登録し、sts:AssumeRoleWithWebIdentityでIAMロールを引き受けさせる",
-        "correct": true
-      },
-      {
-        "text": "GitHub SecretsにIAMユーザーのアクセスキーを保存してAWS CLIで使用する",
-        "correct": false
-      },
-      {
-        "text": "GitHubのIPレンジをセキュリティグループで許可した上でアクセスキーを使用する",
-        "correct": false
-      },
-      {
-        "text": "GitHub ActionsからAWSへのキーレスアクセスは現在サポートされていない",
-        "correct": false
-      }
-    ],
-    "explanation": "GitHub ActionsはOIDC（OpenID Connect）トークンを発行できます。AWS側でGitHub ActionsをIAMのOIDCプロバイダーとして登録し、信頼ポリシーで `token.actions.githubusercontent.com` からのAssumeRoleWithWebIdentityを許可することで、長期的なアクセスキーなしにIAMロールの一時認証情報を取得できます。CircleCI・GitLab CI・Bitbucketなど他のCIサービスでも同様のOIDC連携が可能で、CI/CD環境でのアクセスキー管理リスクを根本から排除できるモダンな手法です。",
-    "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_create_oidc.html"
   }
 ]

@@ -7,62 +7,15 @@ import Result from '../components/Result';
 import vpcQuestions from '../data/questions/vpc.json';
 import iamQuestions from '../data/questions/iam.json';
 import kmsQuestions from '../data/questions/kms.json';
-import ec2Questions from '../data/questions/ec2.json';
-import autoscalingQuestions from '../data/questions/autoscaling.json';
-import ebsQuestions from '../data/questions/ebs.json';
-import ecsQuestions from '../data/questions/ecs.json';
-import lambdaQuestions from '../data/questions/lambda.json';
-import albNlbQuestions from '../data/questions/alb-nlb.json';
-import route53Questions from '../data/questions/route53.json';
-import cloudfrontQuestions from '../data/questions/cloudfront.json';
-import apiGatewayQuestions from '../data/questions/api-gateway.json';
-import s3Questions from '../data/questions/s3.json';
-import efsQuestions from '../data/questions/efs.json';
-import auroraQuestions from '../data/questions/aurora.json';
-import dynamodbQuestions from '../data/questions/dynamodb.json';
-import wafQuestions from '../data/questions/waf.json';
-import secretsManagerQuestions from '../data/questions/secrets-manager.json';
-import cloudwatchQuestions from '../data/questions/cloudwatch.json';
-import cloudtrailQuestions from '../data/questions/cloudtrail.json';
-import sqsQuestions from '../data/questions/sqs.json';
-import snsQuestions from '../data/questions/sns.json';
-import eventbridgeQuestions from '../data/questions/eventbridge.json';
-import stepFunctionsQuestions from '../data/questions/step-functions.json';
 
 const PHASE_GROUPS = [
   { phase: 1, label: 'Phase 1 — セキュリティ・ネットワーク基礎', services: ['VPC', 'IAM', 'KMS'] },
-  { phase: 2, label: 'Phase 2 — コンピューティング', services: ['EC2', 'Auto Scaling', 'EBS', 'ECS', 'Lambda'] },
-  { phase: 3, label: 'Phase 3 — ネットワーキング・配信', services: ['ALB/NLB', 'Route 53', 'CloudFront', 'API Gateway'] },
-  { phase: 4, label: 'Phase 4 — ストレージ・データベース', services: ['S3', 'EFS', 'Aurora', 'DynamoDB'] },
-  { phase: 5, label: 'Phase 5 — セキュリティ運用・モニタリング', services: ['WAF', 'Secrets Manager', 'CloudWatch', 'CloudTrail'] },
-  { phase: 6, label: 'Phase 6 — メッセージング・統合', services: ['SQS', 'SNS', 'EventBridge', 'Step Functions'] },
 ];
 
 const ALL_QUESTIONS: Question[] = [
   ...(vpcQuestions as Question[]),
   ...(iamQuestions as Question[]),
   ...(kmsQuestions as Question[]),
-  ...(ec2Questions as Question[]),
-  ...(autoscalingQuestions as Question[]),
-  ...(ebsQuestions as Question[]),
-  ...(ecsQuestions as Question[]),
-  ...(lambdaQuestions as Question[]),
-  ...(albNlbQuestions as Question[]),
-  ...(route53Questions as Question[]),
-  ...(cloudfrontQuestions as Question[]),
-  ...(apiGatewayQuestions as Question[]),
-  ...(s3Questions as Question[]),
-  ...(efsQuestions as Question[]),
-  ...(auroraQuestions as Question[]),
-  ...(dynamodbQuestions as Question[]),
-  ...(wafQuestions as Question[]),
-  ...(secretsManagerQuestions as Question[]),
-  ...(cloudwatchQuestions as Question[]),
-  ...(cloudtrailQuestions as Question[]),
-  ...(sqsQuestions as Question[]),
-  ...(snsQuestions as Question[]),
-  ...(eventbridgeQuestions as Question[]),
-  ...(stepFunctionsQuestions as Question[]),
 ];
 
 const ALL_SERVICES = PHASE_GROUPS.flatMap((g) => g.services);
