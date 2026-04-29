@@ -570,5 +570,31 @@
     ],
     "explanation": "SidはStatement IDの略で、1つのポリシー内に複数のStatementがある場合に各Statementを区別するためのオプションの識別子です。AWSの評価ロジックには一切影響せず、省略しても動作は変わりません。コンソールでポリシーを作成すると自動で \"Statement1\" のような値が付与されます。「AllowS3Read」「DenyEC2Delete」のように意味のある名前を付けると、ポリシーの意図が読みやすくなります。",
     "reference": "https://docs.aws.amazon.com/iam/latest/userguide/reference_policies_elements_sid.html"
+  },
+  {
+    "id": "iam-023",
+    "phase": 1,
+    "service": "IAM",
+    "question": "IAMマネージドポリシーの「AWSマネージドポリシー」と「カスタマーマネージドポリシー」の違いとして正しいものはどれですか？",
+    "choices": [
+      {
+        "text": "AWSマネージドポリシーはAWSが作成・管理するポリシーでユーザーが編集できない。カスタマーマネージドポリシーはユーザーが自分で作成・編集・管理できるポリシー",
+        "correct": true
+      },
+      {
+        "text": "AWSマネージドポリシーは特定のAWSサービスにのみ使用でき、カスタマーマネージドポリシーはすべてのサービスに使用できる",
+        "correct": false
+      },
+      {
+        "text": "カスタマーマネージドポリシーは1つのユーザーにしかアタッチできず、AWSマネージドポリシーは複数のユーザーにアタッチできる",
+        "correct": false
+      },
+      {
+        "text": "AWSマネージドポリシーは無料だが、カスタマーマネージドポリシーは作成数に応じて課金される",
+        "correct": false
+      }
+    ],
+    "explanation": "AWSマネージドポリシーはAWSが作成・管理するポリシーで、「AdministratorAccess」「ReadOnlyAccess」「AmazonS3FullAccess」などがあります。AWSがAWSサービスのアップデートに合わせて自動的に更新しますが、ユーザーが内容を変更することはできません。カスタマーマネージドポリシーはユーザーが自分で作成・編集・バージョン管理できるポリシーで、組織独自の権限要件をきめ細かく表現できます。どちらも複数のユーザー・グループ・ロールに再利用できます。",
+    "reference": "https://docs.aws.amazon.com/iam/latest/userguide/access_policies_managed-vs-inline.html"
   }
 ]

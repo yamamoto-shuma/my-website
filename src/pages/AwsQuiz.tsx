@@ -6,6 +6,7 @@ import Result from '../components/Result';
 
 import vpcQuestions from '../data/questions/vpc.json';
 import iamQuestions from '../data/questions/iam.json';
+import kmsQuestions from '../data/questions/kms.json';
 
 const PHASE_GROUPS = [
   { phase: 1, label: 'Phase 1 — セキュリティ・ネットワーク基礎', services: ['VPC', 'IAM', 'KMS'] },
@@ -19,6 +20,7 @@ const PHASE_GROUPS = [
 const ALL_QUESTIONS: Question[] = [
   ...(vpcQuestions as Question[]),
   ...(iamQuestions as Question[]),
+  ...(kmsQuestions as Question[]),
 ];
 
 const QUESTION_COUNT_BY_SERVICE: Record<string, number> = ALL_QUESTIONS.reduce(

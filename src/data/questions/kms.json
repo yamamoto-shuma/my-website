@@ -1,0 +1,262 @@
+[
+  {
+    "id": "kms-001",
+    "phase": 1,
+    "service": "KMS",
+    "question": "AWS KMSの正式名称はどれですか？",
+    "choices": [
+      {
+        "text": "Key Management Service",
+        "correct": true
+      },
+      {
+        "text": "Key Management System",
+        "correct": false
+      },
+      {
+        "text": "Keystore Management Service",
+        "correct": false
+      },
+      {
+        "text": "Key Master Service",
+        "correct": false
+      }
+    ],
+    "explanation": "AWS KMSはKey Management Service（キー管理サービス）の略です。暗号化キーを一元管理し、AWSサービスやアプリケーションのデータ暗号化・復号に使用するマネージドサービスです。",
+    "reference": "https://docs.aws.amazon.com/kms/latest/developerguide/overview.html"
+  },
+  {
+    "id": "kms-002",
+    "phase": 1,
+    "service": "KMS",
+    "question": "AWS KMSの主な役割として正しいものはどれですか？",
+    "choices": [
+      {
+        "text": "暗号化キーを一元管理し、AWSサービスやアプリケーションがユーザーに代わってデータの暗号化・復号に使用できるマネージドサービス",
+        "correct": true
+      },
+      {
+        "text": "SSL/TLS証明書を発行・管理するサービス",
+        "correct": false
+      },
+      {
+        "text": "EC2インスタンスへのSSH接続に使用するキーペアを管理するサービス",
+        "correct": false
+      },
+      {
+        "text": "VPN接続の事前共有キーを管理するサービス",
+        "correct": false
+      }
+    ],
+    "explanation": "AWS KMSは暗号化キー（KMSキー）を一元管理するサービスです。S3・EBS・RDSなど多くのAWSサービスがKMSと統合されており、ユーザーに代わってデータを暗号化・復号します。キーがAWS KMSを離れることはなく、誰がいつどのキーを使用したかはCloudTrailに記録されます。SSL証明書はAWS Certificate Manager（ACM）、SSHキーペアはEC2のキーペア機能で管理します。",
+    "reference": "https://docs.aws.amazon.com/kms/latest/developerguide/overview.html"
+  },
+  {
+    "id": "kms-003",
+    "phase": 1,
+    "service": "KMS",
+    "question": "KMSの「AWSマネージド型キー」と「カスタマー管理型のキー」の違いとして正しいものはどれですか？",
+    "choices": [
+      {
+        "text": "カスタマー管理型のキーはユーザーがキーポリシーの設定・ローテーション・削除を管理できる。AWSマネージド型キーはAWSが自動管理し、ユーザーが直接制御できない",
+        "correct": true
+      },
+      {
+        "text": "AWSマネージド型キーはユーザーが自由にキーポリシーを変更できる",
+        "correct": false
+      },
+      {
+        "text": "カスタマー管理型のキーはAWSサービス（S3・EBSなど）から使用できない",
+        "correct": false
+      },
+      {
+        "text": "どちらも機能は同じで名前が異なるだけ",
+        "correct": false
+      }
+    ],
+    "explanation": "AWSマネージド型キーはS3・EBSなどのAWSサービスがデフォルトで使用するキーで、AWSが自動的に作成・ローテーション・管理します。ユーザーはキーポリシーを変更したり削除したりできません。カスタマー管理型のキーはユーザーが作成・管理するキーで、キーポリシーの細かい設定、手動または自動ローテーションの設定、削除などを自分でコントロールできます。より細かいアクセス制御が必要な場合はカスタマー管理型のキーを使用します。",
+    "reference": "https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#key-mgmt"
+  },
+  {
+    "id": "kms-004",
+    "phase": 1,
+    "service": "KMS",
+    "question": "KMSキーのタイプ「対称」と「非対称」の違いとして正しいものはどれですか？",
+    "choices": [
+      {
+        "text": "対称キーは暗号化と復号に同じ単一のキーを使用し、非対称キーはパブリックキーで暗号化してプライベートキーで復号するキーペアを使用する",
+        "correct": true
+      },
+      {
+        "text": "対称キーはAWS KMS外にエクスポートして使用でき、非対称キーはKMS内部でのみ使用できる",
+        "correct": false
+      },
+      {
+        "text": "非対称キーは対称キーより処理速度が速く、大量データの暗号化に適している",
+        "correct": false
+      },
+      {
+        "text": "対称キーは複数のAWSアカウントで共有でき、非対称キーは単一アカウント専用",
+        "correct": false
+      }
+    ],
+    "explanation": "対称キーは暗号化と復号に同じキーを使用します（単一のキー）。AWSサービスとの統合やサーバーサイドの暗号化に広く使われるデフォルトの選択肢です。非対称キーはパブリックキーとプライベートキーのペアで構成されます。パブリックキーで暗号化しプライベートキーで復号する、またはプライベートキーでデジタル署名してパブリックキーで検証するといった用途に使います。AWSの外部とやり取りする場合など、パブリックキーを共有する必要がある場面で使用します。",
+    "reference": "https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#symmetric-cmks"
+  },
+  {
+    "id": "kms-005",
+    "phase": 1,
+    "service": "KMS",
+    "question": "KMSキーの使用法「MACの生成と検証」の用途として正しいものはどれですか？",
+    "choices": [
+      {
+        "text": "HMAC（Hash-based Message Authentication Code）を生成・検証することで、データが改ざんされていないことを確認するために使用する",
+        "correct": true
+      },
+      {
+        "text": "データをハッシュ化して不可逆的に変換し、パスワードを安全に保存するために使用する",
+        "correct": false
+      },
+      {
+        "text": "SSL/TLS証明書のデジタル署名を生成するために使用する",
+        "correct": false
+      },
+      {
+        "text": "ファイルを暗号化してパスワードなしで第三者と共有するために使用する",
+        "correct": false
+      }
+    ],
+    "explanation": "MACの生成と検証はHMAC（Hash-based Message Authentication Code）に特化した使用法です。HMACはキーとデータを組み合わせてハッシュ値を生成し、そのハッシュ値を検証することでデータの完全性（改ざんされていないこと）と送信者の正当性を確認できます。通常のデータ暗号化・復号には「暗号化および復号化」の使用法を選択します。",
+    "reference": "https://docs.aws.amazon.com/kms/latest/developerguide/hmac.html"
+  },
+  {
+    "id": "kms-006",
+    "phase": 1,
+    "service": "KMS",
+    "question": "KMSキーのキーマテリアルオリジンで「外部（キーマテリアルのインポート）」を選択する場面として正しいものはどれですか？",
+    "choices": [
+      {
+        "text": "自社のキー管理インフラで生成したキーマテリアルをAWS KMSにインポートして使用したい場合",
+        "correct": true
+      },
+      {
+        "text": "AWS KMSにキーの生成と管理を完全に任せたい場合",
+        "correct": false
+      },
+      {
+        "text": "AWS CloudHSMクラスターでキーマテリアルを管理したい場合",
+        "correct": false
+      },
+      {
+        "text": "マルチリージョンでキーを複数リージョンにレプリケートしたい場合",
+        "correct": false
+      }
+    ],
+    "explanation": "キーマテリアルオリジンは4種類あります。「KMS（推奨）」はAWS KMSがキーマテリアルを生成・管理する最もシンプルな選択肢です。「外部」は自社や既存のキー管理インフラで生成したキーマテリアルをKMSにインポートする場合に使います。「AWS CloudHSMキーストア」はCloudHSMクラスター内でキーを管理したい場合、「外部キーストア」はAWS外部のキーマネージャーでキーを管理したい場合に使用します。",
+    "reference": "https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#key-origin"
+  },
+  {
+    "id": "kms-007",
+    "phase": 1,
+    "service": "KMS",
+    "question": "KMSキーの「単一リージョンキー」と「マルチリージョンキー」の違いとして正しいものはどれですか？",
+    "choices": [
+      {
+        "text": "マルチリージョンキーは同じキーマテリアルを複数のリージョンにレプリケートでき、あるリージョンで暗号化したデータを別のリージョンで復号できる",
+        "correct": true
+      },
+      {
+        "text": "マルチリージョンキーは1つのキーで複数のAWSアカウントのデータを暗号化できる",
+        "correct": false
+      },
+      {
+        "text": "単一リージョンキーは1つのAZにのみ保存され、AZ障害で失われるリスクがある",
+        "correct": false
+      },
+      {
+        "text": "マルチリージョンキーは非対称キーにのみ対応している",
+        "correct": false
+      }
+    ],
+    "explanation": "単一リージョンキーは1つのAWSリージョン内でのみ使用でき、他のリージョンにレプリケートできません。マルチリージョンキーは同じキーIDとキーマテリアルを複数のリージョンにレプリケートできます。これにより東京リージョンで暗号化したデータをオレゴンリージョンで復号するといったディザスタリカバリや、グローバルなデータレプリケーションのシナリオで役立ちます。なお単一リージョンキーも同一リージョンの複数AZで保護されているため、AZ障害で失われることはありません。",
+    "reference": "https://docs.aws.amazon.com/kms/latest/developerguide/multi-region-keys-overview.html"
+  },
+  {
+    "id": "kms-008",
+    "phase": 1,
+    "service": "KMS",
+    "question": "KMSのキー使用リクエストがAWS CloudTrailに記録される目的として正しいものはどれですか？",
+    "choices": [
+      {
+        "text": "誰が、いつ、どのキーを使用してデータを暗号化・復号したかを追跡・監査できるようにするため",
+        "correct": true
+      },
+      {
+        "text": "不正なキー使用を検知した際にキーを自動で無効化するため",
+        "correct": false
+      },
+      {
+        "text": "CloudTrailがKMSキーを自動でローテーションするトリガーにするため",
+        "correct": false
+      },
+      {
+        "text": "KMSキーのパフォーマンスを最適化するためのメトリクスを収集するため",
+        "correct": false
+      }
+    ],
+    "explanation": "KMSキーの使用リクエスト（暗号化・復号・署名など）はすべてAWS CloudTrailに自動的に記録されます。これにより「誰が、いつ、どのキーを使って、どのデータにアクセスしたか」を追跡・監査できます。コンプライアンス要件の証跡確保や、不審なアクセスパターンの事後調査に活用できます。自動無効化はCloudTrailではなく、CloudWatch Alarmsなどと組み合わせて別途構築する必要があります。",
+    "reference": "https://docs.aws.amazon.com/kms/latest/developerguide/logging-using-cloudtrail.html"
+  },
+  {
+    "id": "kms-009",
+    "phase": 1,
+    "service": "KMS",
+    "question": "KMSの「カスタムキーストア」を使用する目的として正しいものはどれですか？",
+    "choices": [
+      {
+        "text": "キーマテリアルをAWS KMSの内部ストレージではなく、AWS CloudHSMや外部のキー管理システムに保存・管理したい場合",
+        "correct": true
+      },
+      {
+        "text": "KMSキーを複数のAWSアカウントで共有するための機能",
+        "correct": false
+      },
+      {
+        "text": "キーポリシーをカスタマイズするための設定画面",
+        "correct": false
+      },
+      {
+        "text": "キーを特定のVPCからのみアクセス可能に制限するための機能",
+        "correct": false
+      }
+    ],
+    "explanation": "カスタムキーストアは、キーマテリアルをAWS KMS内部ではなく専用のハードウェアや外部システムで管理するための機能です。「AWS CloudHSMキーストア」はFIPS 140-2レベル3準拠のCloudHSMクラスターにキーマテリアルを保存します。「外部キーストア」はAWS外部の既存のキー管理システム（オンプレミスHSMなど）にキーマテリアルを保存します。高度なコンプライアンス要件（特定の規制でキーの保管場所が規定されている場合など）に対応するための機能です。",
+    "reference": "https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html"
+  },
+  {
+    "id": "kms-010",
+    "phase": 1,
+    "service": "KMS",
+    "question": "AWS KMSの「キーがAWS KMSを離れることはない」という特性が意味することとして正しいものはどれですか？",
+    "choices": [
+      {
+        "text": "KMSキーのキーマテリアルは常にAWS KMSが管理するHSM内に保持され、ユーザーや他のサービスがキーマテリアルそのものを取り出すことはできない",
+        "correct": true
+      },
+      {
+        "text": "KMSキーは作成したリージョン内からしか使用できない",
+        "correct": false
+      },
+      {
+        "text": "KMSキーはAWSアカウント外から呼び出すことができない",
+        "correct": false
+      },
+      {
+        "text": "KMSキーをS3やEBSなど他のAWSサービスで使用することはできない",
+        "correct": false
+      }
+    ],
+    "explanation": "「キーがAWS KMSを離れることはない」とは、キーマテリアル（暗号化の実体となる値）がKMSのHSM（Hardware Security Module）の外に出ないことを意味します。データをKMSに送って暗号化・復号するAPIを呼び出す形式になっており、キーマテリアル自体をユーザーが取り出すことはできません。これにより、キーの漏洩リスクを最小化しながら高い可用性とセキュリティを実現しています。S3やEBSなど他のAWSサービスからは、APIを通じてKMSを呼び出す形でキーを利用できます。",
+    "reference": "https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html"
+  }
+]
