@@ -308,14 +308,14 @@
         "correct": false
       }
     ],
-    "explanation": "AWS Site-to-Site VPNは、オンプレミスのデータセンターや拠点とAWS VPCをインターネット経由のIPsec暗号化トンネルで接続するサービスです。各VPN接続には2本のトンネルが作成され、冗長性が確保されます。物理的な専用線でつなぐサービスはAWS Direct Connectです。複数VPC間の接続にはVPCピアリングやTransit Gatewayを使います。",
+    "explanation": "AWS Site-to-Site VPNは、オンプレミスのデータセンターや拠点とAWS VPCをインターネット経由のIPsec暗号化トンネルで接続するサービスです。IPsecはインターネット上の通信を暗号化して安全にやり取りするための標準プロトコルで、「トンネル」とはその暗号化された仮想的な通信路を指します。各VPN接続には2本のトンネルが作成され、冗長性が確保されます。物理的な専用線でつなぐサービスはAWS Direct Connectです。複数VPC間の接続にはVPCピアリングやTransit Gatewayを使います。",
     "reference": "https://docs.aws.amazon.com/vpn/latest/s2svpn/VPC_VPN.html"
   },
   {
     "id": "vpc-013",
     "phase": 1,
     "service": "VPC",
-    "question": "AWS VPNにおける「カスタマーゲートウェイ」とは何を表しますか？",
+    "question": "AWS Site-to-Site VPNにおける「カスタマーゲートウェイ」とは何を表しますか？",
     "choices": [
       {
         "text": "オンプレミス側のVPN対応ルーターやファイアウォールデバイスの情報をAWSに登録したリソース",
