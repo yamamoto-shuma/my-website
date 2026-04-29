@@ -466,5 +466,57 @@
     ],
     "explanation": "VPCエンドポイントはインターネットを経由せずにAWSサービスへアクセスする機能です。Gateway型はルートテーブルにエントリを追加してS3・DynamoDBへのトラフィックをルーティングします（追加料金なし）。Interface型（AWS PrivateLink）はサブネット内にENI（Elastic Network Interface）を作成してプライベートIPアドレスでアクセスします（時間・データ転送量の課金あり）。VPC作成画面の「VPCエンドポイント」でS3ゲートウェイを選択できるのがGateway型の例です。",
     "reference": "https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints.html"
+  },
+  {
+    "id": "vpc-019",
+    "phase": 1,
+    "service": "VPC",
+    "question": "AWSにおける「アベイラビリティゾーン（AZ）」とは何ですか？",
+    "choices": [
+      {
+        "text": "同一リージョン内にある物理的に分離されたデータセンター群で、独立した電源・ネットワーク・冷却設備を持つ",
+        "correct": true
+      },
+      {
+        "text": "AWSのサービスが提供されている国や地域単位の地理的なエリア",
+        "correct": false
+      },
+      {
+        "text": "VPC内でサブネットを分割するための論理的な区画",
+        "correct": false
+      },
+      {
+        "text": "AWSのエッジロケーションで、CloudFrontのコンテンツキャッシュに使用される拠点",
+        "correct": false
+      }
+    ],
+    "explanation": "アベイラビリティゾーン（AZ）は、同一リージョン内に複数存在する物理的に分離されたデータセンター群です。独立した電源・ネットワーク・冷却設備を持つため、1つのAZで障害が発生しても他のAZには影響しません。VPC作成画面でも「可用性を高めるには少なくとも2つのAZをお勧めします」と案内されています。国や地域単位の区分は「リージョン」と呼びます。",
+    "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html"
+  },
+  {
+    "id": "vpc-020",
+    "phase": 1,
+    "service": "VPC",
+    "question": "ネットワークACLのルールは、どのような順序で評価されますか？",
+    "choices": [
+      {
+        "text": "ルール番号が小さい順（昇順）に評価され、最初に一致したルールが適用される",
+        "correct": true
+      },
+      {
+        "text": "ルール番号が大きい順（降順）に評価され、最初に一致したルールが適用される",
+        "correct": false
+      },
+      {
+        "text": "AllowルールとDenyルールを別々に評価し、Denyが優先される",
+        "correct": false
+      },
+      {
+        "text": "すべてのルールを評価し、Allowルールが1つでもあれば通信が許可される",
+        "correct": false
+      }
+    ],
+    "explanation": "ネットワークACLのルールはルール番号の小さい順に評価され、最初に一致したルールが適用されます。例えばルール100でHTTPS（ポート443）を許可していても、それより小さいルール番号（例: 50）で同じポートをDenyしていれば、Denyが先に適用されます。番号が一致しない場合は最後にある「*（アスタリスク）」ルールで全拒否されます。セキュリティグループはすべてのルールを評価してAllowを優先するのとは異なる動作です。",
+    "reference": "https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html#nacl-rules"
   }
 ]
