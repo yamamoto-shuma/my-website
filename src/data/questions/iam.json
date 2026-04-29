@@ -518,5 +518,57 @@
     ],
     "explanation": "MFA（Multi-Factor Authentication / 多要素認証）はパスワード（知っていること）に加えて、認証アプリ（Google AuthenticatorなどのTOTP）やハードウェアデバイス（持っているもの）を組み合わせる認証方法です。パスワードが漏洩しても、MFAデバイスがなければサインインできません。ルートユーザーへのMFA設定はAWSの最重要セキュリティ推奨事項で、管理者権限を持つIAMユーザーにも設定することがベストプラクティスです。",
     "reference": "https://docs.aws.amazon.com/iam/latest/userguide/id_credentials_mfa.html"
+  },
+  {
+    "id": "iam-021",
+    "phase": 1,
+    "service": "IAM",
+    "question": "IAMのアクセスキーとシークレットアクセスキーの用途として正しいものはどれですか？",
+    "choices": [
+      {
+        "text": "AWS CLIやSDKからプログラムでAWSにアクセスする際に使用する認証情報",
+        "correct": true
+      },
+      {
+        "text": "AWSマネジメントコンソールへのサインインに使用する認証情報",
+        "correct": false
+      },
+      {
+        "text": "EC2インスタンスへのSSH接続に使用するキーペア",
+        "correct": false
+      },
+      {
+        "text": "IAMロールを引き受ける際に必要な固定の認証情報",
+        "correct": false
+      }
+    ],
+    "explanation": "アクセスキーはアクセスキーID（公開部分）とシークレットアクセスキー（秘密部分）のペアで構成されます。AWS CLIの設定やSDKからのプログラム的なAPIアクセスに使用します。シークレットアクセスキーは作成時にしか表示されないため、必ず安全な場所に保存する必要があります。漏洩リスクがあるため、EC2やLambdaなどAWSサービスからのアクセスにはアクセスキーではなくIAMロールを使うことが推奨されます。コンソールへのサインインはパスワードを使います。",
+    "reference": "https://docs.aws.amazon.com/iam/latest/userguide/id_credentials_access-keys.html"
+  },
+  {
+    "id": "iam-022",
+    "phase": 1,
+    "service": "IAM",
+    "question": "IAMポリシーのJSONに含まれる「Sid」フィールドの役割として正しいものはどれですか？",
+    "choices": [
+      {
+        "text": "Statement（ステートメント）を識別するための任意のIDで、複数のStatementを区別するラベルとして機能する",
+        "correct": true
+      },
+      {
+        "text": "AWSがポリシーを評価する優先順位を決める番号",
+        "correct": false
+      },
+      {
+        "text": "ポリシーのバージョンを管理するためのシーケンス番号",
+        "correct": false
+      },
+      {
+        "text": "Effect（Allow/Deny）を上書きできる特権フラグ",
+        "correct": false
+      }
+    ],
+    "explanation": "SidはStatement IDの略で、1つのポリシー内に複数のStatementがある場合に各Statementを区別するためのオプションの識別子です。AWSの評価ロジックには一切影響せず、省略しても動作は変わりません。コンソールでポリシーを作成すると自動で \"Statement1\" のような値が付与されます。「AllowS3Read」「DenyEC2Delete」のように意味のある名前を付けると、ポリシーの意図が読みやすくなります。",
+    "reference": "https://docs.aws.amazon.com/iam/latest/userguide/reference_policies_elements_sid.html"
   }
 ]
