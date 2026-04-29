@@ -232,31 +232,5 @@
     ],
     "explanation": "カスタムキーストアは、キーマテリアルをAWS KMS内部ではなく専用のハードウェアや外部システムで管理するための機能です。「AWS CloudHSMキーストア」はFIPS 140-2レベル3準拠のCloudHSMクラスターにキーマテリアルを保存します。「外部キーストア」はAWS外部の既存のキー管理システム（オンプレミスHSMなど）にキーマテリアルを保存します。高度なコンプライアンス要件（特定の規制でキーの保管場所が規定されている場合など）に対応するための機能です。",
     "reference": "https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html"
-  },
-  {
-    "id": "kms-010",
-    "phase": 1,
-    "service": "KMS",
-    "question": "AWS KMSの「キーがAWS KMSを離れることはない」という特性が意味することとして正しいものはどれですか？",
-    "choices": [
-      {
-        "text": "KMSキーのキーマテリアルは常にAWS KMSが管理するHSM内に保持され、ユーザーや他のサービスがキーマテリアルそのものを取り出すことはできない",
-        "correct": true
-      },
-      {
-        "text": "KMSキーは作成したリージョン内からしか使用できない",
-        "correct": false
-      },
-      {
-        "text": "KMSキーはAWSアカウント外から呼び出すことができない",
-        "correct": false
-      },
-      {
-        "text": "KMSキーをS3やEBSなど他のAWSサービスで使用することはできない",
-        "correct": false
-      }
-    ],
-    "explanation": "「キーがAWS KMSを離れることはない」とは、キーマテリアル（暗号化の実体となる値）がKMSのHSM（Hardware Security Module）の外に出ないことを意味します。データをKMSに送って暗号化・復号するAPIを呼び出す形式になっており、キーマテリアル自体をユーザーが取り出すことはできません。これにより、キーの漏洩リスクを最小化しながら高い可用性とセキュリティを実現しています。S3やEBSなど他のAWSサービスからは、APIを通じてKMSを呼び出す形でキーを利用できます。",
-    "reference": "https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html"
   }
 ]
