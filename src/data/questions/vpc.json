@@ -3,182 +3,260 @@
     "id": "vpc-001",
     "phase": 1,
     "service": "VPC",
-    "question": "EC2インスタンスをインターネットから直接アクセスできる場所に置きたい。「パブリックサブネット」とは何が揃っているサブネットか？",
+    "question": "Amazon VPC の正式名称はどれですか？",
     "choices": [
       {
-        "text": "ルートテーブルにインターネットゲートウェイ（IGW）へのルートが含まれているサブネット。これによりインターネットとの双方向通信が可能になる",
+        "text": "Virtual Private Cloud",
         "correct": true
       },
       {
-        "text": "パブリックIPアドレスが割り当てられているサブネット（IPアドレスの種類でパブリック/プライベートが決まる）",
+        "text": "Virtual Processing Center",
         "correct": false
       },
       {
-        "text": "VPCを作成したときに自動生成されるデフォルトサブネット",
+        "text": "Virtual Public Cloud",
         "correct": false
       },
       {
-        "text": "インターネット向けのセキュリティグループルールが設定されているサブネット",
+        "text": "Virtual Protocol Container",
         "correct": false
       }
     ],
-    "explanation": "パブリック/プライベートはIPアドレスではなくルートテーブルで決まります。サブネットのルートテーブルに「0.0.0.0/0 → igw-xxx」のルートがあればパブリック、なければプライベートです。EC2インスタンス自体にパブリックIPが割り当てられていても、IGWへのルートがなければインターネットから到達できません。",
-    "reference": "https://docs.aws.amazon.com/vpc/latest/userguide/configure-subnets.html"
+    "explanation": "VPCはVirtual Private Cloudの略です。AWSクラウド内に論理的に隔離されたプライベートなネットワーク空間を作成するサービスで、IPアドレス範囲・サブネット・ルートテーブル・ゲートウェイなどを自由に設定できます。",
+    "reference": "https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html"
   },
   {
     "id": "vpc-002",
     "phase": 1,
     "service": "VPC",
-    "question": "プライベートサブネットのEC2インスタンスから、ソフトウェアのアップデートなどインターネットへのアウトバウンド通信を可能にしたい。何を使うか？",
+    "question": "VPCのサブネットとは何ですか？",
     "choices": [
       {
-        "text": "パブリックサブネットにNATゲートウェイを配置し、プライベートサブネットのルートテーブルに「0.0.0.0/0 → NATゲートウェイ」のルートを追加する",
+        "text": "VPC内のIPアドレス範囲をさらに分割した区画で、必ず1つのアベイラビリティゾーン（AZ）に属する",
         "correct": true
       },
       {
-        "text": "プライベートサブネットにインターネットゲートウェイ（IGW）を直接アタッチする",
+        "text": "複数のVPCを相互に接続するためのネットワーク経路",
         "correct": false
       },
       {
-        "text": "EC2インスタンスにElastic IPを付与すれば、プライベートサブネットでもインターネットに出られる",
+        "text": "VPCとインターネットの境界で通信を制御するコンポーネント",
         "correct": false
       },
       {
-        "text": "セキュリティグループのアウトバウンドルールに「0.0.0.0/0 を許可」を追加する",
+        "text": "複数のAZにまたがってトラフィックを分散するための設定単位",
         "correct": false
       }
     ],
-    "explanation": "IGWはインターネットとの双方向通信を可能にしますが、プライベートサブネットにはルートがないため使えません。NATゲートウェイはアウトバウンド（内→外）のみを通し、インターネット側からの直接接続（インバウンド）は遮断します。「プライベートサブネットに置きつつ、ソフトウェア更新だけしたい」という要件に対応する定番の構成です。",
-    "reference": "https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html"
+    "explanation": "サブネットはVPCのCIDRブロックをさらに細かく分割したIPアドレスの区画です。各サブネットは1つのAZに紐づいており、複数のAZにまたがることはできません。サブネットを複数のAZに分散配置することで高可用性構成を実現します。",
+    "reference": "https://docs.aws.amazon.com/vpc/latest/userguide/configure-subnets.html"
   },
   {
     "id": "vpc-003",
     "phase": 1,
     "service": "VPC",
-    "question": "EC2インスタンスへのSSHアクセスを特定のIPアドレスからのみ許可したい。何に対して何を設定するか？",
+    "question": "サブネットが「パブリックサブネット」と呼ばれる条件として正しいものはどれですか？",
     "choices": [
       {
-        "text": "セキュリティグループのインバウンドルールに「プロトコル: TCP・ポート: 22・送信元: 許可するIPアドレス」を追加する",
+        "text": "ルートテーブルにインターネットゲートウェイ（IGW）への0.0.0.0/0ルートが設定されており、リソースにパブリックIPが割り当てられている",
         "correct": true
       },
       {
-        "text": "ルートテーブルに許可するIPアドレスからのSSHルートを追加する",
+        "text": "VPCのDNS設定でenableDnsHostnamesが有効になっている",
         "correct": false
       },
       {
-        "text": "インターネットゲートウェイのアクセスポリシーで送信元IPを制限する",
+        "text": "サブネット内にNATゲートウェイが配置されている",
         "correct": false
       },
       {
-        "text": "EC2インスタンスのIAMロールに接続元IPの制限ポリシーをアタッチする",
+        "text": "セキュリティグループで全インバウンドトラフィックが許可されている",
         "correct": false
       }
     ],
-    "explanation": "セキュリティグループはインスタンスレベルのファイアウォールです。インバウンドルールで「どこから・どのポートへの通信を許可するか」を定義します。許可しないものはデフォルトで拒否されます。ルートテーブルは「どこに通信を転送するか」の経路制御であり、通信の可否（許可・拒否）を制御するものではありません。",
-    "reference": "https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html"
+    "explanation": "パブリックサブネットの要件は2つです。①そのサブネットのルートテーブルにインターネットゲートウェイ（IGW）への0.0.0.0/0ルートが存在すること、②サブネット内のリソースにパブリックIPアドレス（またはElastic IP）が割り当てられていること。どちらか一方だけでは外部からアクセスできません。",
+    "reference": "https://docs.aws.amazon.com/vpc/latest/userguide/configure-subnets.html#subnet-types"
   },
   {
     "id": "vpc-004",
     "phase": 1,
     "service": "VPC",
-    "question": "セキュリティグループは「ステートフル」と言われる。これはどういう意味か？",
+    "question": "インターネットゲートウェイ（IGW）とは何ですか？",
     "choices": [
       {
-        "text": "インバウンドで許可した通信のレスポンス（戻りのアウトバウンド通信）は、アウトバウンドルールに関係なく自動的に許可される",
+        "text": "VPCとインターネットとの間の通信を可能にするVPCコンポーネントで、1つのVPCに1つのみアタッチできる",
         "correct": true
       },
       {
-        "text": "設定変更がすぐに反映されず、一定時間キャッシュされた状態が維持される",
+        "text": "複数のVPCをインターネット経由で接続するためのゲートウェイ",
         "correct": false
       },
       {
-        "text": "ルールが上から順に評価され、最初にマッチしたルールが適用される",
+        "text": "プライベートサブネットからインターネットへのアウトバウンドのみを許可するコンポーネント",
         "correct": false
       },
       {
-        "text": "同じセキュリティグループを複数のインスタンスに適用すると設定が自動同期される",
+        "text": "オンプレミス環境とVPCをVPN経由で接続するゲートウェイ",
         "correct": false
       }
     ],
-    "explanation": "ステートフルとは「接続の状態を記憶している」ことです。例えばHTTPリクエスト（インバウンド80番）を許可すると、そのレスポンス（アウトバウンドの戻りパケット）は自動的に許可されます。アウトバウンドルールに個別に設定する必要はありません。一方ネットワークACL（NACL）はステートレスで、インバウンド・アウトバウンドを独立して設定する必要があります。",
-    "reference": "https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html"
+    "explanation": "インターネットゲートウェイはVPCをインターネットに接続するための水平スケーリング・冗長・高可用性なVPCコンポーネントです。1つのVPCにアタッチできるIGWは1つです。IGWを使うとパブリックサブネットのリソースがインターネットと双方向に通信できます。",
+    "reference": "https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Internet_Gateway.html"
   },
   {
     "id": "vpc-005",
     "phase": 1,
     "service": "VPC",
-    "question": "EC2インスタンスからS3へのアクセスをインターネット経由ではなくAWSの内部ネットワーク経由にしたい。何を使うか？",
+    "question": "NATゲートウェイが必要になる状況はどれですか？",
     "choices": [
       {
-        "text": "VPCエンドポイントを作成する。IGWやNATゲートウェイを経由せず、AWSのプライベートネットワーク経由でS3に接続できる",
+        "text": "プライベートサブネットのEC2インスタンスがインターネットへアウトバウンド通信（ソフトウェアのダウンロードなど）をしたいが、インターネット側からの直接接続は受け付けたくない",
         "correct": true
       },
       {
-        "text": "NATゲートウェイを使えばインターネットを経由しない（NATはプライベートルーティング専用）",
+        "text": "同じVPC内の異なるサブネット間でEC2インスタンスが通信するとき",
         "correct": false
       },
       {
-        "text": "セキュリティグループでS3のIPアドレス範囲のみを許可することでプライベート接続になる",
+        "text": "インターネットから直接プライベートサブネットのEC2にアクセスさせたいとき",
         "correct": false
       },
       {
-        "text": "プライベートサブネットに配置したEC2は自動的にS3へのプライベート経路が使われる",
+        "text": "別のVPCと通信するためのルーティングを設定するとき",
         "correct": false
       }
     ],
-    "explanation": "VPCエンドポイントにはGateway型（S3・DynamoDB向け、ルートテーブルに追加）とInterface型（その他のAWSサービス向け、PrivateLinkベース）の2種類があります。S3へのアクセスはGateway型エンドポイントが一般的で、NATゲートウェイのコストを削減しつつ通信をAWSネットワーク内に閉じることができます。",
-    "reference": "https://docs.aws.amazon.com/vpc/latest/userguide/vpc-endpoints.html"
+    "explanation": "NATゲートウェイはパブリックサブネットに配置し、Elastic IPを割り当てて使います。プライベートサブネットのルートテーブルに「0.0.0.0/0 → NATゲートウェイ」を設定することで、プライベートサブネットのリソースがアウトバウンドのインターネット通信（ソフトウェア更新・外部API呼び出しなど）ができます。NATゲートウェイはアウトバウンドのみを許可し、インターネット側から内部リソースへの接続は遮断します。",
+    "reference": "https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html"
   },
   {
     "id": "vpc-006",
     "phase": 1,
     "service": "VPC",
-    "question": "VPCを作成するときに「CIDRブロック（例: 10.0.0.0/16）」を指定する。これは何を決める設定か？",
+    "question": "セキュリティグループが「ステートフル」であるとはどういう意味ですか？",
     "choices": [
       {
-        "text": "そのVPC内で使えるプライベートIPアドレスの範囲。/16なら65,536個のIPアドレスが使用可能で、サブネットはこの範囲内で分割して作成する",
+        "text": "インバウンドで許可した通信のレスポンスは、アウトバウンドルールに関係なく自動的に許可される",
         "correct": true
       },
       {
-        "text": "VPCが利用できるアベイラビリティゾーンの数（/16なら16個のAZが使える）",
+        "text": "インバウンドとアウトバウンドのルールを個別に設定する必要があり、戻りのトラフィックも明示的に許可が必要",
         "correct": false
       },
       {
-        "text": "VPCに接続できるEC2インスタンスの最大数",
+        "text": "セキュリティグループのルール変更が即座に全インスタンスへ反映される",
         "correct": false
       },
       {
-        "text": "VPCのインターネット回線の帯域幅上限",
+        "text": "すべてのトラフィックのログを自動で記録する",
         "correct": false
       }
     ],
-    "explanation": "CIDRはIPアドレス範囲を表す記法で、「ベースアドレス/プレフィックス長」の形式です。/16は上位16ビットが固定でアドレス空間は65,536個、/24は256個になります。VPCのCIDRを決めると、その範囲内でサブネットを分割します。後からIPアドレスが不足しても縮小はできないため（拡張は可能）、最初の設計が重要です。",
-    "reference": "https://docs.aws.amazon.com/vpc/latest/userguide/vpc-cidr-blocks.html"
+    "explanation": "「ステートフル」とは通信の状態（セッション）を追跡することです。セキュリティグループはインバウンドで許可した通信を記憶しており、そのレスポンストラフィックはアウトバウンドルールで拒否されていても自動的に許可されます。対照的に、ネットワークACL（NACL）はステートレスなため戻りのパケットも明示的にアウトバウンドで許可する必要があります。",
+    "reference": "https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html"
   },
   {
     "id": "vpc-007",
     "phase": 1,
     "service": "VPC",
-    "question": "設計レビューで「WebサーバーはパブリックサブネットにDBはプライベートサブネットに置こう」という話になった。この構成の意図として正しいものはどれか？",
+    "question": "ネットワークACL（NACL）に関する説明として正しいものはどれですか？",
     "choices": [
       {
-        "text": "Webサーバーはインターネットからのリクエストを受け付ける必要があるためパブリックに置き、DBはインターネットから直接到達できないようにプライベートに置いてセキュリティを高める",
+        "text": "サブネットレベルで適用されるステートレスなファイアウォールで、インバウンドとアウトバウンドを個別に評価する",
         "correct": true
       },
       {
-        "text": "パブリックサブネットの方が通信速度が速いためWebサーバーのパフォーマンスが向上する",
+        "text": "インスタンスレベルで適用されるステートフルなファイアウォールで、戻りのトラフィックは自動で許可される",
         "correct": false
       },
       {
-        "text": "DBをプライベートサブネットに置くとバックアップが自動的に暗号化される",
+        "text": "サブネットレベルで適用されるが、セキュリティグループと同様にステートフルに動作する",
         "correct": false
       },
       {
-        "text": "この構成はAWSの要件で、全てのアーキテクチャで必須となっている",
+        "text": "NACLはデフォルトですべてのトラフィックを拒否し、明示的に許可ルールを追加する必要がある",
         "correct": false
       }
     ],
-    "explanation": "パブリック/プライベートの分離はセキュリティの基本です。DBがパブリックサブネットにあるとインターネットから直接接続試行が可能になります。プライベートサブネットに置くことで、DBへのアクセスは同じVPC内のWebサーバー経由に限定できます。WebサーバーとDB間の通信はVPC内のプライベートIPで行われるため、速度・コストへの影響はありません。",
-    "reference": "https://docs.aws.amazon.com/vpc/latest/userguide/vpc-example-private-subnets-nat.html"
+    "explanation": "NACLはサブネットへの入出力を制御するステートレスなファイアウォールです。ステートレスとは通信の状態を記憶しないことで、インバウンドを許可してもアウトバウンドに戻りのトラフィックを明示的に許可するルールが必要です。また番号付きのルールを上から順に評価し、最初に一致したルールが適用されます。デフォルトNACLはすべてのトラフィックを許可します（カスタムNACLは全拒否）。",
+    "reference": "https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html"
+  },
+  {
+    "id": "vpc-008",
+    "phase": 1,
+    "service": "VPC",
+    "question": "稼働中のEC2インスタンスにSSHで接続している状態で、そのサブネットのNACLにSSH（ポート22）のインバウンドDenyルールを追加した場合、どうなりますか？",
+    "choices": [
+      {
+        "text": "NACLはステートレスなため、既存のSSHセッションのパケットもDenyされ接続が即座に切断される",
+        "correct": true
+      },
+      {
+        "text": "セキュリティグループと同様にステートフルなため、既存のSSHセッションは維持される",
+        "correct": false
+      },
+      {
+        "text": "NACLの変更は新規接続にのみ適用され、既存のTCPセッションには影響しない",
+        "correct": false
+      },
+      {
+        "text": "NACLの変更はリージョン全体への伝播に数分かかるため、すぐには切れない",
+        "correct": false
+      }
+    ],
+    "explanation": "NACLはステートレスなため、各パケットを独立して評価します。DenyルールはNACLに追加されると即座に有効になり、既存のSSHセッションのパケットもDenyされるため接続が切断されます。一方、セキュリティグループはステートフルなためルール変更後も既存セッションは維持されます。この違いを知らないと、緊急対応時にNACLを変更して自分自身が接続できなくなるトラブルの原因になります。",
+    "reference": "https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html"
+  },
+  {
+    "id": "vpc-009",
+    "phase": 1,
+    "service": "VPC",
+    "question": "CIDRとは何ですか？",
+    "choices": [
+      {
+        "text": "IPアドレスとプレフィックス長でIPアドレスの範囲を表記する方法（例：10.0.0.0/16 は 10.0.0.0〜10.0.255.255 の65536アドレスを表す）",
+        "correct": true
+      },
+      {
+        "text": "VPC内のDNS名前解決の設定方式",
+        "correct": false
+      },
+      {
+        "text": "セキュリティグループのルールを記述するための構文",
+        "correct": false
+      },
+      {
+        "text": "ルートテーブルのエントリを優先度順に並べるための番号付け方式",
+        "correct": false
+      }
+    ],
+    "explanation": "CIDR（Classless Inter-Domain Routing）はIPアドレスの範囲を「アドレス/プレフィックス長」の形式で表記します。プレフィックス長が大きいほど範囲が狭くなります（/16=65536個、/24=256個、/32=1個）。VPCやサブネット作成時に必ずCIDRブロックを指定する必要があり、一度設定したVPCのCIDRブロックはサブネットCIDRと重複できません。",
+    "reference": "https://docs.aws.amazon.com/vpc/latest/userguide/vpc-cidr-blocks.html"
+  },
+  {
+    "id": "vpc-010",
+    "phase": 1,
+    "service": "VPC",
+    "question": "VPCエンドポイント（ゲートウェイ型）が必要になる状況はどれですか？",
+    "choices": [
+      {
+        "text": "プライベートサブネットのEC2からS3やDynamoDBにインターネットを経由せずアクセスしたい",
+        "correct": true
+      },
+      {
+        "text": "複数のVPCをハブ＆スポーク型で接続したい",
+        "correct": false
+      },
+      {
+        "text": "オンプレミスとVPCを専用線で接続したい",
+        "correct": false
+      },
+      {
+        "text": "別のAWSアカウントのリソースにプライベートIPでアクセスしたい",
+        "correct": false
+      }
+    ],
+    "explanation": "ゲートウェイ型VPCエンドポイントはS3とDynamoDBに対応しており、追加料金なしで使用できます。ルートテーブルにエンドポイントへのルートが自動追加され、インターネットゲートウェイやNATゲートウェイを経由せずにAWSサービスにアクセスできます。プライベートサブネットからのS3アクセスを許可しつつNATゲートウェイコストを削減したい場合にも有効です。",
+    "reference": "https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-s3.html"
   }
 ]

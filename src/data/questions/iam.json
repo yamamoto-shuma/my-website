@@ -3,156 +3,260 @@
     "id": "iam-001",
     "phase": 1,
     "service": "IAM",
-    "question": "EC2インスタンスからS3バケットにアクセスしたい。アクセスキーをEC2に置かずに実現する方法として正しいものはどれか？",
+    "question": "AWS IAM の正式名称はどれですか？",
     "choices": [
       {
-        "text": "IAMロールを作成してEC2インスタンスにアタッチする。EC2はロールを通じて一時的な認証情報を自動取得するため、アクセスキーの管理が不要になる",
+        "text": "Identity and Access Management",
         "correct": true
       },
       {
-        "text": "EC2のユーザーデータスクリプトにアクセスキーを書いて起動時に環境変数に設定する",
+        "text": "Integrated Access Module",
         "correct": false
       },
       {
-        "text": "S3バケットをパブリックに設定して認証情報なしでアクセスできるようにする",
+        "text": "Instance Authentication Manager",
         "correct": false
       },
       {
-        "text": "EC2とS3を同じVPCに配置すれば自動的にアクセスできる",
+        "text": "Internet Access Method",
         "correct": false
       }
     ],
-    "explanation": "IAMロールはAWSサービス（EC2・Lambda・ECSなど）に対して「このサービスが何をできるか」を定義する仕組みです。EC2にロールをアタッチするとEC2内のアプリはAWS SDKを通じて一時的な認証情報を自動取得します。アクセスキーと違い、有効期限が短く自動更新されるため、キーの漏洩リスクや定期ローテーションの手間がありません。",
-    "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html"
+    "explanation": "IAMはIdentity and Access Managementの略です。AWSリソースへのアクセスを安全に管理するサービスで、誰が（認証）・何を（認可）・どのリソースに対して操作できるかを制御します。IAMはグローバルサービスであり、リージョンに依存しません。",
+    "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html"
   },
   {
     "id": "iam-002",
     "phase": 1,
     "service": "IAM",
-    "question": "IAMロールに「何ができるか・何にアクセスできるか」を定義するものはどれか？",
+    "question": "IAMポリシーとは何ですか？",
     "choices": [
       {
-        "text": "IAMポリシー。Effect（Allow/Deny）・Action（操作）・Resource（対象リソース）をJSONで記述し、ロールやユーザーにアタッチすることで権限を付与する",
+        "text": "AWSリソースに対してどのアクション（操作）を許可・拒否するかを定義したJSONドキュメント",
         "correct": true
       },
       {
-        "text": "セキュリティグループ。インバウンド・アウトバウンドのルールが権限を定義する",
+        "text": "AWSリソースへのネットワークアクセスルールを定義するドキュメント",
         "correct": false
       },
       {
-        "text": "IAMグループ。グループ名がそのまま許可するサービス名として解釈される",
+        "text": "AWSアカウントの請求上限を設定するドキュメント",
         "correct": false
       },
       {
-        "text": "リソースタグ。タグの値に基づいてアクセス可否が自動的に判定される",
+        "text": "AWSコンソールのログイン画面に表示される利用規約",
         "correct": false
       }
     ],
-    "explanation": "IAMポリシーの基本構造は「誰が（Principal）・何を（Action）・どのリソースに（Resource）・許可/拒否する（Effect）」です。例えば「s3:GetObject を my-bucket/* に Allow」のように記述します。ポリシーはロールやユーザーにアタッチして使います。セキュリティグループはネットワークレベルの通信制御であり、AWSサービスへの操作権限とは別の概念です。",
+    "explanation": "IAMポリシーはEffect（Allow/Deny）・Action（操作）・Resource（対象リソース）・Condition（条件）を定義したJSON形式のドキュメントです。IAMユーザー・グループ・ロールにアタッチして権限を付与します。ポリシーには「アイデンティティベースポリシー（誰が何をできるか）」と「リソースベースポリシー（誰がそのリソースにアクセスできるか）」の2種類があります。",
     "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html"
   },
   {
     "id": "iam-003",
     "phase": 1,
     "service": "IAM",
-    "question": "Lambda関数がDynamoDBにアクセスするIAMロールを作成する際、「このロールをLambdaが使える」と設定する部分はどれか？",
+    "question": "IAMユーザーとIAMロールの最大の違いはどれですか？",
     "choices": [
       {
-        "text": "信頼ポリシー（Trust Policy）。「誰がこのロールを引き受けられるか（AssumeRoleできるか）」を定義し、ここでLambdaサービスを許可する",
+        "text": "IAMユーザーは永続的な認証情報（パスワード・アクセスキー）を持つのに対し、IAMロールはSTSが発行する有効期限付きの一時的な認証情報を使用する",
         "correct": true
       },
       {
-        "text": "許可ポリシー（Permission Policy）。DynamoDBへのアクセス権限と合わせてLambdaのARNも記述する",
+        "text": "IAMユーザーはEC2インスタンスにアタッチできるが、IAMロールはできない",
         "correct": false
       },
       {
-        "text": "ロール名にlambdaを含めることでLambdaからの使用が自動的に許可される",
+        "text": "IAMロールにはパスワードを設定できるが、IAMユーザーにはできない",
         "correct": false
       },
       {
-        "text": "Lambda関数の設定画面でロールを選ぶ際に自動的に信頼関係が設定される",
+        "text": "IAMロールは1つのユーザーのみが使えるが、IAMユーザーは複数人で共有できる",
         "correct": false
       }
     ],
-    "explanation": "IAMロールには2種類のポリシーがあります。①許可ポリシー（何ができるか）②信頼ポリシー（誰がこのロールを使えるか）。Lambdaにロールを割り当てると信頼ポリシーに「lambda.amazonaws.com」が設定されます。これはAssumeRole（ロールを引き受ける）権限をLambdaサービスに与える設定です。信頼ポリシーがないとロールが存在しても使えません。",
-    "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_terms-and-concepts.html"
+    "explanation": "IAMユーザーはアクセスキー・シークレットキーやパスワードといった永続的な認証情報を持ちます。IAMロールはIAMユーザーとは異なり、引き受けた際にSTSから短期間有効な一時認証情報が発行されます。EC2・Lambda等のAWSサービスにはロールをアタッチし、複数のエンティティが同時に同じロールを引き受けることもできます。長期的な認証情報の管理リスクを避けるため、可能な限りロールの使用が推奨されます。",
+    "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html"
   },
   {
     "id": "iam-004",
     "phase": 1,
     "service": "IAM",
-    "question": "新しいLambda関数のIAMロールに「AdministratorAccess」ポリシーをアタッチしようとしたら、コードレビューで指摘された。何が問題か？",
+    "question": "ARN（Amazon Resource Name）とは何ですか？",
     "choices": [
       {
-        "text": "最小権限の原則に違反している。AdministratorAccessは全AWSサービスへの全操作を許可するため、LambdaがDynamoDBへの読み書きしか必要としないならその操作のみに絞るべき",
+        "text": "AWS上のすべてのリソースを一意に識別するための名前で、IAMポリシーのResourceフィールドなどで使用される（例：arn:aws:s3:::my-bucket）",
         "correct": true
       },
       {
-        "text": "AdministratorAccessはIAMユーザー専用のポリシーでロールにはアタッチできない",
+        "text": "AWSリージョンを識別するための略称（例：ap-northeast-1）",
         "correct": false
       },
       {
-        "text": "ポリシーのサイズが大きいためLambdaの起動時間が遅くなる",
+        "text": "IAMユーザーのコンソールログイン用のURLに含まれるアカウント識別子",
         "correct": false
       },
       {
-        "text": "AdministratorAccessを使うと追加料金が発生する",
+        "text": "S3バケット名に使用できる文字の命名規則",
         "correct": false
       }
     ],
-    "explanation": "最小権限の原則とは「必要な操作だけを許可する」ことです。AdministratorAccessは全サービスへのフルアクセス権限で、万が一認証情報が漏洩したり、コードのバグで意図しないAPIが呼ばれた際の被害が最大になります。実務では「このLambdaが実際に呼ぶAPIは何か」を洗い出し、必要なActionとResourceに絞ったポリシーを作成します。",
-    "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html"
+    "explanation": "ARNはAWSリソースを一意に特定するための識別子で、「arn:partition:service:region:account-id:resource」の形式を持ちます。IAMポリシーのResourceフィールド、信頼ポリシーのPrincipalフィールド、CloudFormationのリソース参照など、AWSのあらゆる設定画面で頻繁に使用します。ワイルドカード（*）も使用でき、例えば「arn:aws:s3:::my-bucket/*」でバケット内の全オブジェクトを指定できます。",
+    "reference": "https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html"
   },
   {
     "id": "iam-005",
     "phase": 1,
     "service": "IAM",
-    "question": "IAMポリシーのResourceフィールドに「arn:aws:s3:::my-bucket/*」と書く。このARNという識別子の役割として正しいものはどれか？",
+    "question": "IAMロールの信頼ポリシー（Trust Policy）とは何ですか？",
     "choices": [
       {
-        "text": "AWSリソースを一意に識別するための識別子。ポリシーで「どのリソースへのアクセスを許可・拒否するか」を特定するためにARNを使う",
+        "text": "そのIAMロールを引き受けられる（AssumeRoleできる）プリンシパル（ユーザー・サービス・アカウント）を定義するポリシー",
         "correct": true
       },
       {
-        "text": "S3バケットへのアクセスURLで、クライアントはこのARNを使ってS3にHTTPSアクセスする",
+        "text": "そのIAMロールが実行できるAWSアクションの一覧を定義するポリシー",
         "correct": false
       },
       {
-        "text": "リソースの暗号化キーを示す識別子",
+        "text": "アカウント内のすべてのIAMエンティティに自動的に適用されるデフォルトポリシー",
         "correct": false
       },
       {
-        "text": "S3バケットが存在するリージョンと所有アカウントを示す情報で、アクセス制御には使われない",
+        "text": "MFAを必須化する条件を定義するセキュリティポリシー",
         "correct": false
       }
     ],
-    "explanation": "ARN（Amazon Resource Name）は「arn:aws:サービス名:リージョン:アカウントID:リソース」の形式です。IAMポリシーでResourceにARNを指定することで「このバケットのオブジェクト全て」「このテーブルのみ」のように対象を絞り込めます。「*（ワイルドカード）」を使えば全リソースに適用されます。ARNはコンソール・CLI・ポリシー設定など至る所で使われる基本的な概念です。",
-    "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference-arns.html"
+    "explanation": "IAMロールには「信頼ポリシー（誰がこのロールを引き受けられるか）」と「権限ポリシー（このロールで何ができるか）」の2種類のポリシーが必要です。信頼ポリシーのPrincipalに指定できるのはIAMユーザー・IAMロール・AWSサービス（ec2.amazonaws.comなど）・他のAWSアカウントです。コンソールのロール作成画面で「信頼されたエンティティを選択」する部分がこの信頼ポリシーの設定に相当します。",
+    "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_terms-and-concepts.html"
   },
   {
     "id": "iam-006",
     "phase": 1,
     "service": "IAM",
-    "question": "「アカウントAのLambdaからアカウントBのS3バケットにアクセスしたい」という要件が出た。どのような仕組みで実現するか？",
+    "question": "EC2インスタンスにIAMロールをアタッチする際に使用する「インスタンスプロファイル」とは何ですか？",
     "choices": [
       {
-        "text": "アカウントBにIAMロールを作成してアカウントAのLambdaをPrincipalに指定し、アカウントAのLambdaがAssumeRoleで一時的な認証情報を取得してアカウントBのS3にアクセスする",
+        "text": "IAMロールをEC2インスタンスに関連付けるためのコンテナで、EC2はこれを通じてIMDS経由で一時的な認証情報を取得する",
         "correct": true
       },
       {
-        "text": "アカウントBのS3バケットポリシーにアカウントAを追加するだけで、IAMロールの変更は不要",
+        "text": "EC2インスタンスのスペック（CPU・メモリ）を定義するテンプレート",
         "correct": false
       },
       {
-        "text": "アカウントAでアクセスキーを作成してアカウントBのIAMユーザーとして登録し、そのキーをLambdaの環境変数に設定する",
+        "text": "IAMユーザーのアクセスキーをEC2のメタデータに登録する仕組み",
         "correct": false
       },
       {
-        "text": "VPCピアリングを使えばクロスアカウントのS3アクセスが可能になる",
+        "text": "複数のEC2インスタンスに同一のセキュリティグループを適用するための設定",
         "correct": false
       }
     ],
-    "explanation": "クロスアカウントアクセスはAssumeRoleで実現します。①アカウントBでロールを作成（信頼ポリシーにアカウントAのプリンシパルを指定）②アカウントBのS3へのアクセス権限ポリシーをそのロールにアタッチ③アカウントAのLambdaがSTS AssumeRoleを呼び出して一時認証情報を取得。アクセスキーを別アカウントのコードに埋め込むのはキー漏洩リスクがあるアンチパターンです。",
-    "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/tutorial_cross-account-with-roles.html"
+    "explanation": "インスタンスプロファイルはIAMロールをEC2インスタンスに渡すためのラッパーです。コンソールからEC2にロールをアタッチすると内部的にインスタンスプロファイルが自動作成されます。EC2内のアプリケーションはIMDS（Instance Metadata Service）のエンドポイント（169.254.169.254）から一時的な認証情報を取得でき、アクセスキーをコードに埋め込む必要がなくなります。",
+    "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2_instance-profiles.html"
+  },
+  {
+    "id": "iam-007",
+    "phase": 1,
+    "service": "IAM",
+    "question": "AssumeRoleが必要になる状況はどれですか？",
+    "choices": [
+      {
+        "text": "別のAWSアカウントのリソースへアクセスするとき、またはLambda・EC2等のAWSサービスがAPI操作を行う際に一時的な権限を得るとき",
+        "correct": true
+      },
+      {
+        "text": "同じアカウント内のS3バケットにIAMユーザーとしてアクセスするとき",
+        "correct": false
+      },
+      {
+        "text": "IAMユーザーのパスワードを変更するとき",
+        "correct": false
+      },
+      {
+        "text": "AWSマネジメントコンソールにブラウザでログインするとき",
+        "correct": false
+      }
+    ],
+    "explanation": "AssumeRoleはSTS（Security Token Service）のAPIで、IAMロールの一時的な認証情報を取得します。主な用途は①クロスアカウントアクセス（アカウントBのロールをアカウントAから引き受ける）②AWSサービス（Lambda・EC2）へのロール付与③別の権限に一時的に切り替える場合です。CLIでの `aws sts assume-role` コマンドや、コンソールのロール切り替え（スイッチロール）もこの仕組みを利用しています。",
+    "reference": "https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html"
+  },
+  {
+    "id": "iam-008",
+    "phase": 1,
+    "service": "IAM",
+    "question": "明示的なDeny（Explicit Deny）をポリシーに設定すると、どのような影響がありますか？",
+    "choices": [
+      {
+        "text": "いずれかのポリシーにDenyがあれば、他のすべてのAllowより優先されてアクセスが拒否される",
+        "correct": true
+      },
+      {
+        "text": "DenyはAllowと同じ優先度で、最後に評価されたポリシーが適用される",
+        "correct": false
+      },
+      {
+        "text": "DenyはアイデンティティベースポリシーのAllowのみを上書きし、リソースベースポリシーのAllowは維持される",
+        "correct": false
+      },
+      {
+        "text": "同じポリシー内にAllowが存在する場合はDenyが無視される",
+        "correct": false
+      }
+    ],
+    "explanation": "IAMのポリシー評価ロジックでは「明示的なDeny > 明示的なAllow > 暗黙のDeny（デフォルト）」の順で評価されます。複数のポリシーが評価される場合も、いずれかにDenyがあれば他の全Allowに関係なくアクセスは拒否されます。この性質を利用して「特定のリソースへのアクセスを絶対に禁止する」ガードレールをSCPやIAMポリシーで実装できます。",
+    "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic.html"
+  },
+  {
+    "id": "iam-009",
+    "phase": 1,
+    "service": "IAM",
+    "question": "IAMユーザーのアクセスキーが流出した場合のリスクとして正しいものはどれですか？",
+    "choices": [
+      {
+        "text": "アクセスキーは有効期限がなく永続するため、無効化するまで第三者に不正利用され続ける可能性がある",
+        "correct": true
+      },
+      {
+        "text": "アクセスキーは30日で自動失効するため、流出しても影響は限定的である",
+        "correct": false
+      },
+      {
+        "text": "アクセスキーが流出してもMFAが設定されていれば悪用できない",
+        "correct": false
+      },
+      {
+        "text": "アクセスキーはコンソールアクセスにのみ使われるため、APIやCLIによる操作は別の認証が必要",
+        "correct": false
+      }
+    ],
+    "explanation": "アクセスキーはAPIやCLIからAWSを操作するための永続的な認証情報です。有効期限がないため、一度流出すると手動で無効化するまで第三者が不正にAWSリソースを操作できます。GitHubへの誤コミットや環境変数の漏洩で流出するケースが多く、発覚したら即時無効化・削除が必要です。MFAはコンソールログインには有効ですが、アクセスキーによるAPI操作には別途Conditionで強制する必要があります。",
+    "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html"
+  },
+  {
+    "id": "iam-010",
+    "phase": 1,
+    "service": "IAM",
+    "question": "IAMにおける「最小権限の原則」とはどういうことですか？",
+    "choices": [
+      {
+        "text": "ユーザー・ロール・サービスには、タスクを実行するのに必要な最低限の権限のみを付与し、不要な権限は与えない設計原則",
+        "correct": true
+      },
+      {
+        "text": "全IAMユーザーに同じポリシーを付与して管理をシンプルにする設計原則",
+        "correct": false
+      },
+      {
+        "text": "管理者権限（AdministratorAccess）は1人のユーザーのみに付与する設計原則",
+        "correct": false
+      },
+      {
+        "text": "IAMポリシーの数を最小化してシンプルに保つ設計原則",
+        "correct": false
+      }
+    ],
+    "explanation": "最小権限の原則はAWSセキュリティの基本です。例えばLambdaが特定のS3バケットから読み込むだけなら「s3:GetObject」と対象バケットのみを許可し、「s3:*」や「*:*」（全リソース全アクション）は付与しません。権限が広すぎると、認証情報の漏洩・バグ・設定ミスによる被害範囲が拡大します。IAM Access Analyzerの「未使用アクセスの分析」機能を使うと、実際に使っていない権限を検出して削除できます。",
+    "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html#grant-least-privilege"
   }
 ]

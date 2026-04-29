@@ -3,156 +3,260 @@
     "id": "kms-001",
     "phase": 1,
     "service": "KMS",
-    "question": "S3バケットの暗号化設定で「SSE-KMS」を選んだ。AWSマネージドキーとCMK（カスタマーマネージドキー）の違いとして正しいものはどれか？",
+    "question": "AWS KMS の正式名称はどれですか？",
     "choices": [
       {
-        "text": "AWSマネージドキーはAWSが管理しキーポリシーを自分で編集できない。CMKは自分で作成・管理でき、キーポリシーで「誰が復号できるか」を制御でき、CloudTrailでキーの使用履歴を追跡できる",
+        "text": "Key Management Service",
         "correct": true
       },
       {
-        "text": "CMKはAWSマネージドキーより強力な暗号化アルゴリズムを使用するためセキュリティが高い",
+        "text": "Key Migration System",
         "correct": false
       },
       {
-        "text": "CMKを使うとS3へのAPIコール数が減りコストが下がる",
+        "text": "Knowledge Management Service",
         "correct": false
       },
       {
-        "text": "AWSマネージドキーはリージョン間で自動共有されるがCMKはリージョンごとに作成が必要",
+        "text": "Kubernetes Management System",
         "correct": false
       }
     ],
-    "explanation": "暗号化アルゴリズム（AES-256）はどちらも同じです。CMKを選ぶ理由はキーの管理権限にあります。CMKはキーポリシーで「このロールだけが復号できる」という細かい制御が可能で、CloudTrailで「誰がいつこのキーを使ったか」を監査できます。コンプライアンス要件でキー管理の証跡が必要な場合はCMKを選びます。",
-    "reference": "https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#key-mgmt"
+    "explanation": "KMSはKey Management Serviceの略です。暗号化キーの作成・管理・使用を一元化するマネージドサービスで、S3・EBS・RDS・Secrets Managerなど多くのAWSサービスと統合されています。すべてのKMS API呼び出しはCloudTrailに自動記録されるため、監査証跡も得られます。",
+    "reference": "https://docs.aws.amazon.com/kms/latest/developerguide/overview.html"
   },
   {
     "id": "kms-002",
     "phase": 1,
     "service": "KMS",
-    "question": "KMSキーを作成したが、特定のIAMロールからそのキーで暗号化・復号できるようにしたい。何を設定する必要があるか？",
+    "question": "カスタマーマネージドキー（CMK）とは何ですか？",
     "choices": [
       {
-        "text": "KMSキーのキーポリシーに対象ロールへのkms:Encrypt・kms:Decryptを許可する設定を追加する。IAMポリシーだけではKMSキーへのアクセスは許可されない",
+        "text": "ユーザー自身が作成・管理する暗号化キーで、キーポリシーの変更・ローテーション設定・無効化・削除スケジュールをカスタマイズできる",
         "correct": true
       },
       {
-        "text": "IAMポリシーにkms:*を追加するだけでよい（キーポリシー側の設定は不要）",
+        "text": "AWSが自動で作成・管理するキーで、ユーザーがポリシーを自由に変更できるもの",
         "correct": false
       },
       {
-        "text": "KMSキーをパブリックキーに変更すれば全員が使えるようになる",
+        "text": "顧客のオンプレミス施設に物理的に保管される暗号化キー",
         "correct": false
       },
       {
-        "text": "KMSキーのタグに対象ロールのARNを追加する",
+        "text": "複数のAWSアカウントで自動的に共有される暗号化キー",
         "correct": false
       }
     ],
-    "explanation": "KMSキーへのアクセスは「IAMポリシー」と「キーポリシー」の両方で制御されます。キーポリシーはKMSキー自体に紐付くリソースベースポリシーで、このポリシーで許可されていないと、IAMポリシーで許可しても使えません。デフォルトのキーポリシーはキー作成者のアカウントのIAMポリシーを有効化しますが、明示的にキーポリシーを設定することで細かく制御できます。",
-    "reference": "https://docs.aws.amazon.com/kms/latest/developerguide/key-policies.html"
+    "explanation": "CMK（現在はKMSキーとも呼ばれる）はユーザーが作成・管理する暗号化キーです。キーポリシーを自由に設定でき、クロスアカウントでのキー共有・無効化・削除スケジュール・自動ローテーション間隔のカスタマイズが可能です。一方AWSマネージドキー（aws/s3など）はAWSが自動で作成・管理し、ユーザーはポリシーを変更できません。",
+    "reference": "https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#key-mgmt"
   },
   {
     "id": "kms-003",
     "phase": 1,
     "service": "KMS",
-    "question": "「KMSはデータを直接暗号化しているわけではない」と聞いた。エンベロープ暗号化の仕組みとして正しいものはどれか？",
+    "question": "KMSのキーポリシーとは何ですか？",
     "choices": [
       {
-        "text": "KMSがデータキー（共通鍵）を生成し、アプリはそのデータキーでデータを暗号化する。KMSはデータキー自体もCMKで暗号化した形で返す。保存するのはデータの暗号文と暗号化されたデータキーのみ",
+        "text": "CMKに必ず存在するリソースベースのアクセスポリシーで、誰がそのキーを使えるかを制御する主要なメカニズム",
         "correct": true
       },
       {
-        "text": "CMKで1回、データキーで1回と計2回暗号化することをエンベロープ（二重）暗号化と呼ぶ",
+        "text": "KMSキーの暗号化アルゴリズム（AES-256など）を選択するための設定",
         "correct": false
       },
       {
-        "text": "アプリが暗号化したいデータをKMSに全量送信し、KMSがそのまま暗号化して返す",
+        "text": "キーの自動ローテーション間隔（日数）を指定するポリシー",
         "correct": false
       },
       {
-        "text": "エンベロープ暗号化はS3専用の機能で、他のサービスでは通常の暗号化が使われる",
+        "text": "複数のCMKをグループ化して一括管理するための設定",
         "correct": false
       }
     ],
-    "explanation": "大きなデータをKMSに直接送って暗号化することはできません（KMSの直接暗号化は最大4KBまで）。そのためエンベロープ暗号化を使います。①KMSからデータキー（平文）と暗号化されたデータキーを受け取る②データキーでデータを暗号化③平文のデータキーはメモリから破棄し、暗号化されたデータキーをデータと一緒に保存。復号時は暗号化されたデータキーをKMSに送って平文データキーを取り出し、それでデータを復号します。",
-    "reference": "https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#enveloping"
+    "explanation": "キーポリシーはすべてのCMKに必ず存在するリソースベースのポリシーです。IAMポリシーだけではCMKへのアクセスは制御できず、キーポリシーでも明示的にアクセスを許可する必要があります。デフォルトのキーポリシーはAWSアカウントのrootに完全なアクセスを許可し、そのアカウントのIAMポリシーによるアクセス制御を可能にします。コンソールのKMSキー作成画面で「キーの管理者」「キーの使用者」を設定する部分がキーポリシーの設定に相当します。",
+    "reference": "https://docs.aws.amazon.com/kms/latest/developerguide/key-policies.html"
   },
   {
     "id": "kms-004",
     "phase": 1,
     "service": "KMS",
-    "question": "KMSキーを削除しようとしたら「即時削除はできず、最短7日間のスケジュール削除になる」と表示された。なぜか？",
+    "question": "エンベロープ暗号化（Envelope Encryption）とはどのような仕組みですか？",
     "choices": [
       {
-        "text": "そのキーで暗号化されたデータが存在する場合、キーを削除するとデータが永久に復号できなくなる。誤削除による取り返しのつかない事態を防ぐため、待機期間を設けて気づいてキャンセルできるようにしている",
+        "text": "データキー（DEK）でデータを暗号化し、そのデータキー自体をCMKで暗号化して一緒に保管する方式",
         "correct": true
       },
       {
-        "text": "KMSキーの削除にはAWSのバックエンドで物理的な処理が必要なため、技術的に即時削除ができない",
+        "text": "複数のCMKで同じデータを二重に暗号化して安全性を高める方式",
         "correct": false
       },
       {
-        "text": "削除前にキーのバックアップをS3に自動保存する処理が走るため時間がかかる",
+        "text": "CMKでデータを直接暗号化する方式（KMSのEncrypt APIを使用）",
         "correct": false
       },
       {
-        "text": "他のAWSリソースからの参照が残っている場合は自動的に削除がブロックされる",
+        "text": "暗号化したデータキーをKMSのストレージに安全に保存する方式",
         "correct": false
       }
     ],
-    "explanation": "KMSキーの削除は元に戻せません。そのキーで暗号化されたデータは二度と復号できなくなります。待機期間（7〜30日）中はキーが無効化された状態になり、削除をキャンセルすることができます。実際の運用では「本当にこのキーを使っているリソースがないか」をCloudTrailで確認してから削除をスケジュールします。",
-    "reference": "https://docs.aws.amazon.com/kms/latest/developerguide/deleting-keys.html"
+    "explanation": "エンベロープ暗号化の流れは①KMSのGenerateDataKey APIでデータキー（平文）を取得②データキーでデータをローカルに暗号化③平文のデータキーを破棄し、CMKで暗号化されたデータキーをデータと一緒に保存④復号時はKMSのDecrypt APIで暗号済みデータキーを復号し、それでデータを復号します。CMKはKMS外に出ないため、大容量データの暗号化もパフォーマンスよく行えます。S3・EBS・RDSのSSE-KMSはすべてこの方式を採用しています。",
+    "reference": "https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#enveloping"
   },
   {
     "id": "kms-005",
     "phase": 1,
     "service": "KMS",
-    "question": "KMSキーの自動ローテーションを有効にした。何が自動化され、何は変わらないか？",
+    "question": "KMSキーの削除スケジュール（Pending Deletion）を設定するとどうなりますか？",
     "choices": [
       {
-        "text": "バッキングキーマテリアル（実際の暗号化素材）が年1回自動更新される。キーIDやARNは変わらないため参照しているサービスの設定変更は不要。古いマテリアルは既存データの復号のため保持される",
+        "text": "7〜30日の待機期間後にキーが削除され、そのキーで暗号化されたすべてのデータが永久に復号不能になる",
         "correct": true
       },
       {
-        "text": "キーが新しいARNで再作成されるため、S3やRDSなど参照しているサービスの暗号化設定を全て更新する必要がある",
+        "text": "キーが無効化（Disabled）され、待機期間後に自動的に元に戻る",
         "correct": false
       },
       {
-        "text": "ローテーションのたびに既存の暗号化データが新しいキーで自動的に再暗号化される",
+        "text": "新しいキーマテリアルが生成されて自動的に置き換えられる（ローテーションが実行される）",
         "correct": false
       },
       {
-        "text": "ローテーション後は古いキーマテリアルが削除されるため、ローテーション前に暗号化したデータは復号できなくなる",
+        "text": "キーは削除されず、過去バージョンとして保管されたまま新しいキーが作成される",
         "correct": false
       }
     ],
-    "explanation": "KMSのキーローテーションはキーID・ARNを変えずにキーマテリアルだけを入れ替えます。AWSがS3やRDSなどに渡しているのはキーIDなので、ローテーションされても既存の参照はそのまま使えます。古いキーマテリアルは保持されるため、ローテーション前に暗号化したデータも復号可能です。これはパスワードの定期変更に相当しますが、サービス側への影響なしに実施できます。",
-    "reference": "https://docs.aws.amazon.com/kms/latest/developerguide/rotate-keys.html"
+    "explanation": "KMSキーの削除は取り消し不可能な操作です。削除すると、そのキーで暗号化されたデータ（S3オブジェクト・EBSボリューム・RDSデータなど）は永久に復号できなくなります。この破滅的な影響を防ぐため、KMSでは即時削除ができず、7〜30日の待機期間（Pending Deletion状態）が必須です。待機期間中はキーポリシーの変更や復元が可能です。削除ではなく「無効化（Disable）」にしておき、必要になったら再有効化するアプローチが推奨されます。",
+    "reference": "https://docs.aws.amazon.com/kms/latest/developerguide/deleting-keys.html"
   },
   {
     "id": "kms-006",
     "phase": 1,
     "service": "KMS",
-    "question": "東京リージョンで作成したKMSキーを使って、バージニアリージョンのS3バケットのデータを暗号化しようとした。何が起きるか？",
+    "question": "KMSキーの自動ローテーションを有効にした場合、以前のキーマテリアルで暗号化されたデータはどうなりますか？",
     "choices": [
       {
-        "text": "エラーになる。KMSキーはリージョン固有のリソースでリージョンをまたいで使用できない。バージニアリージョン用にはバージニアリージョンで別途KMSキーを作成する必要がある",
+        "text": "古いキーマテリアルは保持されるため、ローテーション前のデータもキーIDを変えずに引き続き復号できる",
         "correct": true
       },
       {
-        "text": "KMSキーはグローバルリソースのため、どのリージョンからでも自動的に使用できる",
+        "text": "ローテーション後は古いキーマテリアルが破棄されるため、既存データの再暗号化が必要になる",
         "correct": false
       },
       {
-        "text": "IAMポリシーにクロスリージョンアクセス権限を追加すれば使用できる",
+        "text": "ローテーション後はキーIDとARNが変わるため、アプリケーションの設定変更が必要になる",
         "correct": false
       },
       {
-        "text": "KMSが自動的に宛先リージョンにキーをコピーして暗号化を実行する",
+        "text": "ローテーション後はすべての既存データが新しいキーマテリアルで自動的に再暗号化される",
         "correct": false
       }
     ],
-    "explanation": "KMSキーはリージョンに閉じたリソースです。マルチリージョンキーという機能を使えば複数リージョンに同じキーマテリアルを持つキーを作成できますが、既存のキーをマルチリージョンに変換することはできません。DR構成やクロスリージョンレプリケーションを設計する際は、各リージョンのKMSキーを最初から考慮に入れる必要があります。",
-    "reference": "https://docs.aws.amazon.com/kms/latest/developerguide/multi-region-keys-overview.html"
+    "explanation": "KMSの自動ローテーションでは、新しいキーマテリアルが生成されますが古いキーマテリアルはKMS内部に保持されます。KMSは暗号化に使用したキーマテリアルのバージョンを内部的に追跡しており、古いデータは対応するバージョンのキーマテリアルで自動的に復号されます。キーID・ARN・エイリアスは変わらないため、アプリケーション側の変更も不要です。CMKの自動ローテーション間隔はデフォルト1年で、カスタマイズも可能です。",
+    "reference": "https://docs.aws.amazon.com/kms/latest/developerguide/rotate-keys.html"
+  },
+  {
+    "id": "kms-007",
+    "phase": 1,
+    "service": "KMS",
+    "question": "S3のサーバーサイド暗号化でSSE-KMS（CMK使用）を選ぶべき状況はどれですか？",
+    "choices": [
+      {
+        "text": "「誰がいつどのオブジェクトを復号したか」をCloudTrailで監査する必要がある、またはS3へのアクセス権限とは独立してキーレベルでアクセス制御したい",
+        "correct": true
+      },
+      {
+        "text": "S3へのアクセスを最高速にしたい（SSE-KMSはSSE-S3より高速なため）",
+        "correct": false
+      },
+      {
+        "text": "S3バケットをパブリックに公開しつつ暗号化したい",
+        "correct": false
+      },
+      {
+        "text": "暗号化のコストをゼロにしたい（SSE-KMSは追加料金が発生しないため）",
+        "correct": false
+      }
+    ],
+    "explanation": "S3の暗号化方式の選択ポイントは監査証跡とアクセス制御の要件です。SSE-S3（AES-256）はAWSがキーを管理しコスト追加なし・CloudTrail記録なし。SSE-KMS（CMK）はオブジェクトへのアクセス（Encrypt/Decrypt）ごとにCloudTrailにイベントが記録され、「誰がいつ何を復号したか」が追跡できます。また、S3バケットへのアクセス権限を持つユーザーでもKMSキーのDecrypt権限がなければオブジェクトを読めないため、よりきめ細かなアクセス制御が可能です。その分KMS APIコストが発生します。",
+    "reference": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/serv-side-encryption.html"
+  },
+  {
+    "id": "kms-008",
+    "phase": 1,
+    "service": "KMS",
+    "question": "SSE-KMS（CMK）が設定されたS3バケットへのアップロードに失敗する原因として最も多いものはどれですか？",
+    "choices": [
+      {
+        "text": "IAMポリシーにs3:PutObjectはあるが、kms:GenerateDataKeyの権限が不足している",
+        "correct": true
+      },
+      {
+        "text": "S3バケットのACLでアップロードが明示的に拒否されている",
+        "correct": false
+      },
+      {
+        "text": "アップロードするファイルサイズがKMSの処理上限を超えている",
+        "correct": false
+      },
+      {
+        "text": "バケットと同じリージョンからアップロードしていない",
+        "correct": false
+      }
+    ],
+    "explanation": "SSE-KMSが設定されたバケットへのアップロード時、S3はバックグラウンドでKMSのGenerateDataKey APIを呼び出してデータキーを生成します。そのため、アップロードするIAMエンティティにはs3:PutObjectに加えてkms:GenerateDataKeyの権限が必要です。この権限不足はよく発生するエラーで、「s3:PutObjectは付与したのにアップロードできない」という状況の典型的な原因です。ダウンロード（GetObject）時はkms:Decryptが必要です。",
+    "reference": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingKMSEncryption.html"
+  },
+  {
+    "id": "kms-009",
+    "phase": 1,
+    "service": "KMS",
+    "question": "AWSマネージドキー（aws/rdsなど）ではできないことはどれですか？",
+    "choices": [
+      {
+        "text": "キーポリシーのカスタマイズ・クロスアカウントでのキー共有・手動によるキーの無効化",
+        "correct": true
+      },
+      {
+        "text": "S3やRDSなどのAWSサービスと統合して暗号化に使用すること",
+        "correct": false
+      },
+      {
+        "text": "CloudTrailによるキー使用ログの自動記録",
+        "correct": false
+      },
+      {
+        "text": "AWSによる年1回の自動キーローテーション",
+        "correct": false
+      }
+    ],
+    "explanation": "AWSマネージドキーはAWSが自動で作成・管理するキーで、ユーザーはキーポリシーを変更できません。そのため①クロスアカウントでのキー共有（他アカウントへのDecrypt権限付与）②手動での無効化や削除③キーポリシーのカスタマイズができません。実務でよくハマるのが「AWSマネージドキーで暗号化したRDSスナップショットを別アカウントと共有しようとしたらできなかった」ケースです。クロスアカウント共有が必要な場合はCMKを使う必要があります。",
+    "reference": "https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#key-mgmt"
+  },
+  {
+    "id": "kms-010",
+    "phase": 1,
+    "service": "KMS",
+    "question": "AWSマネージドキー（aws/rds）で暗号化されたRDSスナップショットを別のAWSアカウントと共有しようとした場合、何が起きますか？",
+    "choices": [
+      {
+        "text": "AWSマネージドキーはキーポリシーをカスタマイズできないため共有が失敗する。CMKで再暗号化したスナップショットを作成してから共有する必要がある",
+        "correct": true
+      },
+      {
+        "text": "AWSマネージドキーで暗号化されていてもスナップショットはそのままクロスアカウント共有できる",
+        "correct": false
+      },
+      {
+        "text": "暗号化を解除（非暗号化）してスナップショットを作り直せばクロスアカウント共有できる",
+        "correct": false
+      },
+      {
+        "text": "暗号化されたRDSスナップショットはいかなる方法でもクロスアカウント共有できない",
+        "correct": false
+      }
+    ],
+    "explanation": "AWSマネージドキー（aws/rdsなど）はアカウント固有のキーでキーポリシーを変更できないため、他アカウントへのDecrypt権限を付与できません。解決策は①スナップショットを自アカウントのCMKで暗号化コピーを作成②そのCMKのキーポリシーで共有先アカウントへのkms:Decrypt権限を付与③CMKで暗号化したスナップショットを共有先アカウントと共有、の手順が必要です。DR構成やアカウント分割移行でよく直面するハマりポイントで、設計段階からCMKを使うことが推奨されます。",
+    "reference": "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ShareSnapshot.html"
   }
 ]
