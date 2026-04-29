@@ -289,27 +289,27 @@
     "id": "vpc-012",
     "phase": 1,
     "service": "VPC",
-    "question": "AWS Site-to-Site VPN接続で「動的（BGP）」ルーティングを選択した場合に必要な条件はどれですか？",
+    "question": "AWS Site-to-Site VPNとは何ですか？",
     "choices": [
       {
-        "text": "オンプレミス側のカスタマーゲートウェイデバイスがBGP（Border Gateway Protocol）をサポートしていること",
+        "text": "オンプレミスネットワークとAWS VPCをインターネット経由のIPsec暗号化トンネルで接続するサービス",
         "correct": true
       },
       {
-        "text": "AWS Direct Connectを同時に設定すること",
+        "text": "オンプレミスとAWSを物理的な専用線で接続する高帯域・低レイテンシーサービス",
         "correct": false
       },
       {
-        "text": "Transit Gatewayが必須であること",
+        "text": "複数のAWS VPC同士をプライベートに接続するサービス",
         "correct": false
       },
       {
-        "text": "2本以上のVPNトンネルを手動で設定・管理すること",
+        "text": "VPC内のインスタンス間の通信を暗号化するサービス",
         "correct": false
       }
     ],
-    "explanation": "BGP（Border Gateway Protocol）はインターネットや大規模ネットワークで使われる動的ルーティングプロトコルです。動的ルーティングではBGPを使ってルート情報を自動交換するため、オンプレミスのルーター（カスタマーゲートウェイデバイス）がBGPをサポートしている必要があります。BGPが使えない場合は「静的」ルーティングを選択し、転送するIPアドレス範囲を手動で設定します。動的ルーティングは経路変更を自動で反映できる利点があります。",
-    "reference": "https://docs.aws.amazon.com/vpn/latest/s2svpn/VPNRoutingTypes.html"
+    "explanation": "AWS Site-to-Site VPNは、オンプレミスのデータセンターや拠点とAWS VPCをインターネット経由のIPsec暗号化トンネルで接続するサービスです。各VPN接続には2本のトンネルが作成され、冗長性が確保されます。物理的な専用線でつなぐサービスはAWS Direct Connectです。複数VPC間の接続にはVPCピアリングやTransit Gatewayを使います。",
+    "reference": "https://docs.aws.amazon.com/vpn/latest/s2svpn/VPC_VPN.html"
   },
   {
     "id": "vpc-013",
@@ -336,5 +336,135 @@
     ],
     "explanation": "Site-to-Site VPNを設定するには、AWS側のゲートウェイ（仮想プライベートゲートウェイまたはTransit Gateway）とオンプレミス側のゲートウェイの2つが必要です。カスタマーゲートウェイは、自社データセンターのルーターやファイアウォールのIPアドレスやBGP ASN（Autonomous System Number）をAWSに登録したリソースです。AWSが提供するVPN接続用のマネージドゲートウェイは「仮想プライベートゲートウェイ」です。",
     "reference": "https://docs.aws.amazon.com/vpn/latest/s2svpn/your-cgw.html"
+  },
+  {
+    "id": "vpc-014",
+    "phase": 1,
+    "service": "VPC",
+    "question": "VPCにおける「ルートテーブル」の役割として正しいものはどれですか？",
+    "choices": [
+      {
+        "text": "サブネット内のトラフィックをどこへ転送するかを決める経路ルールの集合",
+        "correct": true
+      },
+      {
+        "text": "VPC内のインスタンスに動的にIPアドレスを割り当てる設定",
+        "correct": false
+      },
+      {
+        "text": "インターネットからのアクセスを許可・拒否するファイアウォールルールの集合",
+        "correct": false
+      },
+      {
+        "text": "VPC間のルーティングを自動で最適化するAWSマネージドサービス",
+        "correct": false
+      }
+    ],
+    "explanation": "ルートテーブルは「宛先（Destination）とターゲット（Target）」のペアで構成されるルール集合です。例えば「0.0.0.0/0 → igw-xxx」はすべての外部向きトラフィックをインターネットゲートウェイへ転送することを意味します。各サブネットは必ず1つのルートテーブルに関連付けられており、サブネットがパブリックかプライベートかはこのルートテーブルの内容で決まります。",
+    "reference": "https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Route_Tables.html"
+  },
+  {
+    "id": "vpc-015",
+    "phase": 1,
+    "service": "VPC",
+    "question": "VPC作成時に指定するIPv4 CIDRブロックの説明として正しいものはどれですか？",
+    "choices": [
+      {
+        "text": "VPCが使用するIPv4アドレスの範囲を表し、/16（最大65,536アドレス）から/28（最小16アドレス）の間で指定する",
+        "correct": true
+      },
+      {
+        "text": "/8から/32の間で任意に指定できる",
+        "correct": false
+      },
+      {
+        "text": "VPC作成後もいつでも自由に変更できる",
+        "correct": false
+      },
+      {
+        "text": "CIDRブロックはAWSが自動で割り当てるため、ユーザーが指定する必要はない",
+        "correct": false
+      }
+    ],
+    "explanation": "CIDRはClassless Inter-Domain Routingの略で、IPアドレスの範囲を表す方式です。「10.0.0.0/16」は「10.0.0.0〜10.0.255.255」の65,536アドレスを意味します。スラッシュ以降の数値（プレフィックス長）が大きいほど範囲は狭くなります。VPCのCIDRは/16から/28の範囲で指定します。一度作成したCIDRブロックは変更できませんが、追加（セカンダリCIDR）は可能です。",
+    "reference": "https://docs.aws.amazon.com/vpc/latest/userguide/vpc-cidr-blocks.html"
+  },
+  {
+    "id": "vpc-016",
+    "phase": 1,
+    "service": "VPC",
+    "question": "VPCのDNSオプション「DNSホスト名を有効化」を有効にする必要がある場面はどれですか？",
+    "choices": [
+      {
+        "text": "EC2インスタンスにパブリックDNSホスト名（例: ec2-xx-xx-xx-xx.compute.amazonaws.com）を付与したい場合",
+        "correct": true
+      },
+      {
+        "text": "VPC内のインスタンス同士がIPアドレスではなくホスト名で通信できるようにしたい場合",
+        "correct": false
+      },
+      {
+        "text": "Route 53のプライベートホストゾーンをVPCに関連付ける場合",
+        "correct": false
+      },
+      {
+        "text": "インターネットゲートウェイを使わずにAWSサービスへアクセスする場合",
+        "correct": false
+      }
+    ],
+    "explanation": "VPCには「DNS解決を有効化」と「DNSホスト名を有効化」の2つのDNSオプションがあります。「DNS解決を有効化」はVPC内でAWSのDNSサーバー（Route 53 Resolver）を使えるようにする設定です。「DNSホスト名を有効化」はパブリックIPを持つインスタンスにパブリックDNSホスト名を付与する設定で、両方を有効にする必要があります。VPC作成画面でデフォルトどちらもチェック済みになっています。",
+    "reference": "https://docs.aws.amazon.com/vpc/latest/userguide/vpc-dns.html"
+  },
+  {
+    "id": "vpc-017",
+    "phase": 1,
+    "service": "VPC",
+    "question": "AWS Site-to-Site VPN接続における「仮想プライベートゲートウェイ（Virtual Private Gateway / VGW）」とは何ですか？",
+    "choices": [
+      {
+        "text": "VPN接続のAWS側エンドポイントで、VPCにアタッチして使用するAWSマネージドのゲートウェイ",
+        "correct": true
+      },
+      {
+        "text": "オンプレミス側のルーターやファイアウォールデバイスをAWSに登録したリソース",
+        "correct": false
+      },
+      {
+        "text": "複数のVPCをハブ＆スポーク型で接続するAWSのルーティングサービス",
+        "correct": false
+      },
+      {
+        "text": "インターネット経由のトラフィックをVPCに引き込むためのゲートウェイ",
+        "correct": false
+      }
+    ],
+    "explanation": "Site-to-Site VPNは「仮想プライベートゲートウェイ（VGW）」と「カスタマーゲートウェイ（CGW）」の2つで構成されます。VGWはAWS側のエンドポイントでVPCにアタッチして使います。CGWはオンプレミス側のルーターをAWSに登録したリソースです。多数のVPCやオンプレミスを接続する場合は、VGWの代わりにTransit Gatewayを使うことも選択肢になります。",
+    "reference": "https://docs.aws.amazon.com/vpn/latest/s2svpn/VPC_VPN.html"
+  },
+  {
+    "id": "vpc-018",
+    "phase": 1,
+    "service": "VPC",
+    "question": "VPCエンドポイントの「Gateway型」と「Interface型」の違いとして正しいものはどれですか？",
+    "choices": [
+      {
+        "text": "Gateway型はルートテーブルに経路を追加する方式でS3とDynamoDBのみ対応し追加料金なし。Interface型はVPC内にENIを作成する方式でほとんどのAWSサービスに対応する",
+        "correct": true
+      },
+      {
+        "text": "Interface型はS3とDynamoDB専用で、Gateway型はその他すべてのAWSサービスに使用する",
+        "correct": false
+      },
+      {
+        "text": "Gateway型はVPC外部のサービスへの接続、Interface型はVPC内部のサービスへの接続に使用する",
+        "correct": false
+      },
+      {
+        "text": "どちらも機能は同じで、Gateway型はInterface型の新しいバージョン",
+        "correct": false
+      }
+    ],
+    "explanation": "VPCエンドポイントはインターネットを経由せずにAWSサービスへアクセスする機能です。Gateway型はルートテーブルにエントリを追加してS3・DynamoDBへのトラフィックをルーティングします（追加料金なし）。Interface型（AWS PrivateLink）はサブネット内にENI（Elastic Network Interface）を作成してプライベートIPアドレスでアクセスします（時間・データ転送量の課金あり）。VPC作成画面の「VPCエンドポイント」でS3ゲートウェイを選択できるのがGateway型の例です。",
+    "reference": "https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints.html"
   }
 ]
