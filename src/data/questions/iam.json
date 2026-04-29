@@ -388,5 +388,135 @@
     ],
     "explanation": "「ウェブアイデンティティ」エンティティは、Amazon Cognito・Google・Facebook・その他のOIDC（OpenID Connect）対応プロバイダで認証されたユーザーがロールを引き受ける場合に使います。OIDCはOAuth 2.0を拡張した認証の標準規格です。主にモバイルアプリやWebアプリのエンドユーザーが一時的にAWSリソース（S3への画像アップロードなど）にアクセスする際のパターンで使われます。企業の社員向けSSOにはSAML 2.0フェデレーションを使います。",
     "reference": "https://docs.aws.amazon.com/iam/latest/userguide/id_roles_providers_oidc.html"
+  },
+  {
+    "id": "iam-016",
+    "phase": 1,
+    "service": "IAM",
+    "question": "AWSルートユーザーとIAMユーザーの違いとして正しいものはどれですか？",
+    "choices": [
+      {
+        "text": "ルートユーザーはAWSアカウント作成時に自動で作られ、すべての権限を持つ特別なユーザーで、日常業務での使用は非推奨",
+        "correct": true
+      },
+      {
+        "text": "ルートユーザーとIAMユーザーは権限が同じで、名前が異なるだけ",
+        "correct": false
+      },
+      {
+        "text": "ルートユーザーはAWSサポートへの問い合わせにのみ使用する特別なユーザー",
+        "correct": false
+      },
+      {
+        "text": "IAMユーザーはAdministratorAccessポリシーを付与すればルートユーザーと完全に同じ操作ができる",
+        "correct": false
+      }
+    ],
+    "explanation": "ルートユーザーはAWSアカウント作成時のメールアドレスとパスワードでサインインできる特別なユーザーで、課金設定の変更・アカウントの解約・サポートプランの変更など、IAMポリシーでも制限できない操作が可能です。漏洩時の影響が最大のため、日常業務には使わない・MFAを必ず設定する・アクセスキーを作成しないことがベストプラクティスです。IAMユーザーにAdministratorAccessを付与してもルートユーザー専用の操作は実行できません。",
+    "reference": "https://docs.aws.amazon.com/iam/latest/userguide/id_root-user.html"
+  },
+  {
+    "id": "iam-017",
+    "phase": 1,
+    "service": "IAM",
+    "question": "IAMの「マネージドポリシー」と「インラインポリシー」の違いとして正しいものはどれですか？",
+    "choices": [
+      {
+        "text": "マネージドポリシーは独立したリソースとして複数のユーザー・グループ・ロールに再利用できる。インラインポリシーは特定のアイデンティティに直接埋め込まれ、そのアイデンティティを削除すると同時に削除される",
+        "correct": true
+      },
+      {
+        "text": "マネージドポリシーはAWSが管理するものだけを指し、ユーザーが作成したものはすべてインラインポリシー",
+        "correct": false
+      },
+      {
+        "text": "インラインポリシーは複数のIAMユーザーに同時に適用でき、マネージドポリシーは1ユーザーにしか適用できない",
+        "correct": false
+      },
+      {
+        "text": "マネージドポリシーとインラインポリシーでは設定できるEffectが異なる",
+        "correct": false
+      }
+    ],
+    "explanation": "マネージドポリシーにはAWSが管理する「AWSマネージドポリシー」と、ユーザーが作成する「カスタマーマネージドポリシー」の2種類があります。どちらも独立したリソースとして管理でき、複数のアイデンティティに再利用できます。インラインポリシーは特定のユーザー・グループ・ロールに1対1で紐付き、アイデンティティを削除すると一緒に削除されます。通常はバージョン管理・再利用・変更追跡がしやすいマネージドポリシーの使用が推奨されます。",
+    "reference": "https://docs.aws.amazon.com/iam/latest/userguide/access_policies_managed-vs-inline.html"
+  },
+  {
+    "id": "iam-018",
+    "phase": 1,
+    "service": "IAM",
+    "question": "IAMポリシーのJSONに含まれる「Resource」フィールドが表すものはどれですか？",
+    "choices": [
+      {
+        "text": "ポリシーのActionが適用される対象リソースをARN（Amazon Resource Name）で指定するフィールド",
+        "correct": true
+      },
+      {
+        "text": "ポリシーを適用するIAMユーザーやロール",
+        "correct": false
+      },
+      {
+        "text": "ポリシーが参照するAWSサービスのエンドポイントURL",
+        "correct": false
+      },
+      {
+        "text": "アクセスを許可するリージョンの指定",
+        "correct": false
+      }
+    ],
+    "explanation": "ResourceフィールドにはAWS内のリソースを一意に識別するARN（Amazon Resource Name）を指定します。ARNは「arn:aws:s3:::my-bucket」のような形式で、すべてのAWSリソースに付与される一意の識別子です。「*」を指定するとすべてのリソースが対象になりますが、最小権限の原則に従い必要なリソースのみに絞ることが推奨されます。例えばS3の特定バケットだけを対象にする場合は「arn:aws:s3:::my-bucket/*」のように指定します。",
+    "reference": "https://docs.aws.amazon.com/iam/latest/userguide/reference_policies_elements_resource.html"
+  },
+  {
+    "id": "iam-019",
+    "phase": 1,
+    "service": "IAM",
+    "question": "IAMポリシーの「Condition（リクエスト条件）」の役割として正しいものはどれですか？",
+    "choices": [
+      {
+        "text": "ポリシーのAllow/Denyが適用される追加条件を指定するフィールドで、特定のIPアドレスからのみ許可・MFA認証済みのみ許可といった細かい制御ができる",
+        "correct": true
+      },
+      {
+        "text": "ポリシーの有効期限を設定するフィールド",
+        "correct": false
+      },
+      {
+        "text": "特定のAWSリージョンにのみポリシーを適用するためのフィールド",
+        "correct": false
+      },
+      {
+        "text": "ポリシーを適用する曜日・時間帯を指定するフィールド",
+        "correct": false
+      }
+    ],
+    "explanation": "Conditionはポリシー作成画面の「リクエスト条件 - オプション」として表示される任意のフィールドです。指定した条件が満たされた場合にのみAllow/Denyを適用します。例えば「aws:MultiFactorAuthPresent: true」を条件にするとMFA認証済みの場合のみ許可、「aws:SourceIp」で特定のIPアドレスからのアクセスのみ許可、「aws:SecureTransport: true」でHTTPS接続のみ許可といった制御が可能です。Conditionを使うことでより精度の高いアクセス制御を実現できます。",
+    "reference": "https://docs.aws.amazon.com/iam/latest/userguide/reference_policies_elements_condition.html"
+  },
+  {
+    "id": "iam-020",
+    "phase": 1,
+    "service": "IAM",
+    "question": "IAMユーザーにMFA（多要素認証）を設定すべき理由として正しいものはどれですか？",
+    "choices": [
+      {
+        "text": "パスワードが漏洩した場合でも、MFAデバイスがなければサインインできないため、不正アクセスのリスクを大幅に低減できる",
+        "correct": true
+      },
+      {
+        "text": "MFAを設定するとIAMポリシーの権限が自動的に最小権限に絞り込まれる",
+        "correct": false
+      },
+      {
+        "text": "MFAを設定しないとAWSサービスの利用に制限がかかる",
+        "correct": false
+      },
+      {
+        "text": "MFAはルートユーザーにしか設定できず、IAMユーザーには不要",
+        "correct": false
+      }
+    ],
+    "explanation": "MFA（Multi-Factor Authentication / 多要素認証）はパスワード（知っていること）に加えて、認証アプリ（Google AuthenticatorなどのTOTP）やハードウェアデバイス（持っているもの）を組み合わせる認証方法です。パスワードが漏洩しても、MFAデバイスがなければサインインできません。ルートユーザーへのMFA設定はAWSの最重要セキュリティ推奨事項で、管理者権限を持つIAMユーザーにも設定することがベストプラクティスです。",
+    "reference": "https://docs.aws.amazon.com/iam/latest/userguide/id_credentials_mfa.html"
   }
 ]
