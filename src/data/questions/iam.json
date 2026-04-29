@@ -237,26 +237,26 @@
     "id": "iam-010",
     "phase": 1,
     "service": "IAM",
-    "question": "IAMにおける「最小権限の原則」とはどういうことですか？",
+    "question": "Lambda関数のIAMロールに「AdministratorAccess」ポリシーをアタッチした場合、どのようなリスクがありますか？",
     "choices": [
       {
-        "text": "ユーザー・ロール・サービスには、タスクを実行するのに必要な最低限の権限のみを付与し、不要な権限は与えない設計原則",
+        "text": "Lambda関数のコードバグや認証情報の漏洩があった場合、そのLambdaがEC2の起動・IAMユーザーの作成・全S3バケットの削除など、あらゆるAWS操作を実行できてしまう",
         "correct": true
       },
       {
-        "text": "全IAMユーザーに同じポリシーを付与して管理をシンプルにする設計原則",
+        "text": "AdministratorAccessはIAMユーザー専用のポリシーのため、ロールにアタッチしても権限は付与されない",
         "correct": false
       },
       {
-        "text": "管理者権限（AdministratorAccess）は1人のユーザーのみに付与する設計原則",
+        "text": "Lambda関数の実行時間が長くなりタイムアウトしやすくなる",
         "correct": false
       },
       {
-        "text": "IAMポリシーの数を最小化してシンプルに保つ設計原則",
+        "text": "AWSが自動的に検出してポリシーを削除するため、実害は生じない",
         "correct": false
       }
     ],
-    "explanation": "最小権限の原則はAWSセキュリティの基本です。例えばLambdaが特定のS3バケットから読み込むだけなら「s3:GetObject」と対象バケットのみを許可し、「s3:*」や「*:*」（全リソース全アクション）は付与しません。権限が広すぎると、認証情報の漏洩・バグ・設定ミスによる被害範囲が拡大します。IAM Access Analyzerの「未使用アクセスの分析」機能を使うと、実際に使っていない権限を検出して削除できます。",
+    "explanation": "最小権限の原則とは「タスクを実行するのに必要な最低限の権限のみを付与する」設計原則です。AdministratorAccessはAWSの全サービス・全操作を許可する最強の権限です。LambdaがDynamoDBへの読み書きしか必要としないなら「dynamodb:GetItem・PutItem」と対象テーブルのみに絞るべきです。広すぎる権限は、コードのバグ・インジェクション攻撃・認証情報の漏洩があった際の被害範囲を最大化します。",
     "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html#grant-least-privilege"
   }
 ]
