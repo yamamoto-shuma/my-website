@@ -1,0 +1,288 @@
+[
+  {
+    "id": "ebs-001",
+    "phase": 2,
+    "service": "EBS",
+    "question": "EBSボリュームのスナップショットに関する説明として正しいものはどれですか？",
+    "choices": [
+      {
+        "text": "S3に増分バックアップとして保存され、最初の完全スナップショット以降は変更分のみが保存される",
+        "correct": true
+      },
+      {
+        "text": "スナップショットは同じAZ内にのみ保存される",
+        "correct": false
+      },
+      {
+        "text": "スナップショット取得中はボリュームを使用できない",
+        "correct": false
+      },
+      {
+        "text": "スナップショットから復元する場合は同じボリュームタイプにしか復元できない",
+        "correct": false
+      }
+    ],
+    "explanation": "EBSスナップショットはS3に増分形式で保存されます。最初のスナップショットはフルコピーですが、以降は変更されたブロックのみが保存されます。スナップショットはリージョンスコープのサービスであり、別AZへのボリューム復元や別リージョンへのコピーが可能です。スナップショット取得中もボリュームは使用できます。",
+    "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSSnapshots.html"
+  },
+  {
+    "id": "ebs-002",
+    "phase": 2,
+    "service": "EBS",
+    "question": "gp3ボリュームとgp2ボリュームの主な違いとして正しいものはどれですか？",
+    "choices": [
+      {
+        "text": "gp3はIOPSとスループットをボリュームサイズとは独立してプロビジョニングできる",
+        "correct": true
+      },
+      {
+        "text": "gp3はgp2より最大IOPSが低い",
+        "correct": false
+      },
+      {
+        "text": "gp3はgp2の2倍のコストがかかる",
+        "correct": false
+      },
+      {
+        "text": "gp3はブート用ボリュームとして使用できない",
+        "correct": false
+      }
+    ],
+    "explanation": "gp2ではIOPSがボリュームサイズに連動（3 IOPS/GB）しますが、gp3では独立してIOPSとスループットを設定できます。gp3はベースライン3,000 IOPS・125 MB/sを提供し、gp2より約20%コストが低く、最大16,000 IOPSまで追加料金でプロビジョニングできます。",
+    "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html"
+  },
+  {
+    "id": "ebs-003",
+    "phase": 2,
+    "service": "EBS",
+    "question": "EBSボリュームを暗号化する際に使用できるキー管理オプションとして正しいものはどれですか？",
+    "choices": [
+      {
+        "text": "AWS管理キー（aws/ebs）またはカスタマー管理KMSキー（CMK）を使用できる",
+        "correct": true
+      },
+      {
+        "text": "AES-128でのみ暗号化できる",
+        "correct": false
+      },
+      {
+        "text": "暗号化後はパフォーマンスが大幅に低下する",
+        "correct": false
+      },
+      {
+        "text": "既存の未暗号化ボリュームを直接暗号化できる",
+        "correct": false
+      }
+    ],
+    "explanation": "EBSボリュームはAES-256で暗号化され、AWS管理キーまたはKMSのCMKを使用できます。暗号化によるパフォーマンスへの影響は最小限です。既存の未暗号化ボリュームを直接暗号化することはできず、スナップショットを作成してから暗号化コピーを作成し、新しいボリュームを作成する必要があります。",
+    "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html"
+  },
+  {
+    "id": "ebs-004",
+    "phase": 2,
+    "service": "EBS",
+    "question": "EBSのマルチアタッチ機能について正しい説明はどれですか？",
+    "choices": [
+      {
+        "text": "io1/io2ボリュームを同一AZ内の複数インスタンスに同時にアタッチできる",
+        "correct": true
+      },
+      {
+        "text": "すべてのEBSボリュームタイプでマルチアタッチが利用できる",
+        "correct": false
+      },
+      {
+        "text": "マルチアタッチは異なるAZをまたいで使用できる",
+        "correct": false
+      },
+      {
+        "text": "マルチアタッチではファイルシステムの種類を選ばない",
+        "correct": false
+      }
+    ],
+    "explanation": "マルチアタッチはio1/io2ボリュームで使用でき、同一AZ内の最大16インスタンスに同時アタッチできます。クラスタリングソフトウェア（Lustre、GFS2など）と組み合わせて高可用性を実現します。クラスタ対応ファイルシステムが必要であり、標準のext4/XFSでは同時書き込みによるデータ破損が発生します。",
+    "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volumes-multi.html"
+  },
+  {
+    "id": "ebs-005",
+    "phase": 2,
+    "service": "EBS",
+    "question": "EBSボリュームを大量データのシーケンシャル読み書き（ビッグデータ、ログ処理）に使用する場合、コスト効率が最も高いボリュームタイプはどれですか？",
+    "choices": [
+      {
+        "text": "st1（スループット最適化HDD）",
+        "correct": true
+      },
+      {
+        "text": "gp3（汎用SSD）",
+        "correct": false
+      },
+      {
+        "text": "io2（プロビジョンドIOPS SSD）",
+        "correct": false
+      },
+      {
+        "text": "sc1（コールドHDD）",
+        "correct": false
+      }
+    ],
+    "explanation": "st1はビッグデータ、データウェアハウス、ログ処理などの大規模シーケンシャルI/Oに最適化されたHDDです。最大500 MB/sのスループットを提供し、gp3やio2よりも低コストです。sc1はアクセス頻度が低いデータ向けでさらにコストが低いですが、スループットは最大250 MB/sです。ブートボリュームにはst1/sc1は使用できません。",
+    "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html"
+  },
+  {
+    "id": "ebs-006",
+    "phase": 2,
+    "service": "EBS",
+    "question": "EBSスナップショットを別リージョンに自動コピーしてDR構成を維持するための推奨サービスはどれですか？",
+    "choices": [
+      {
+        "text": "Amazon Data Lifecycle Manager（DLM）",
+        "correct": true
+      },
+      {
+        "text": "AWS Backup",
+        "correct": false
+      },
+      {
+        "text": "AWS DataSync",
+        "correct": false
+      },
+      {
+        "text": "S3 Cross-Region Replication",
+        "correct": false
+      }
+    ],
+    "explanation": "Amazon Data Lifecycle Managerを使用すると、EBSスナップショットの作成・保持・削除・クロスリージョンコピーをポリシーベースで自動化できます。AWS Backupも有効ですが、EBS特化の操作にはDLMが直接的です。どちらもDR要件を満たすために使用されます。",
+    "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/snapshot-lifecycle.html"
+  },
+  {
+    "id": "ebs-007",
+    "phase": 2,
+    "service": "EBS",
+    "question": "新しいEBSボリュームを初めて使用する際に発生することがある「初期化」（旧：プリウォーム）の説明として正しいものはどれですか？",
+    "choices": [
+      {
+        "text": "S3から復元されたスナップショットベースのボリュームは、最初のアクセス時にレイテンシが増加する場合がある",
+        "correct": true
+      },
+      {
+        "text": "新規作成した空のEBSボリュームは使用前にゼロで初期化する必要がある",
+        "correct": false
+      },
+      {
+        "text": "初期化処理はAWSが自動的に実施し、ユーザーは何もできない",
+        "correct": false
+      },
+      {
+        "text": "初期化はio2ボリュームにのみ必要である",
+        "correct": false
+      }
+    ],
+    "explanation": "スナップショットから復元したEBSボリュームは、ブロックがS3からバックグラウンドで復元されます。最初のアクセス時にレイテンシが高くなる場合があります。これを避けるためにfioやddコマンドでボリューム全体を事前読み取り（プリウォーム）できます。新規の空ボリュームにはこの問題はありません。",
+    "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-initialize.html"
+  },
+  {
+    "id": "ebs-008",
+    "phase": 2,
+    "service": "EBS",
+    "question": "実行中のEC2インスタンスにアタッチされているEBSボリュームのサイズを変更する際の正しい手順はどれですか？",
+    "choices": [
+      {
+        "text": "ボリュームサイズを変更後、OS内でパーティションとファイルシステムを拡張する必要がある",
+        "correct": true
+      },
+      {
+        "text": "インスタンスを停止しないとボリュームサイズを変更できない",
+        "correct": false
+      },
+      {
+        "text": "ボリュームサイズを変更するとOSが自動的にファイルシステムを拡張する",
+        "correct": false
+      },
+      {
+        "text": "ボリュームのサイズは一度設定すると変更できない",
+        "correct": false
+      }
+    ],
+    "explanation": "Elastic VolumesではEBSボリュームのサイズ変更（拡大のみ）、タイプ変更、IOPS変更はインスタンス実行中でも可能です。ただし、AWS側でのサイズ変更後、OS側でgrowpart（パーティション拡張）とresize2fs/xfs_growfs（ファイルシステム拡張）を実行する必要があります。",
+    "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/requesting-ebs-volume-modifications.html"
+  },
+  {
+    "id": "ebs-009",
+    "phase": 2,
+    "service": "EBS",
+    "question": "EC2インスタンスのディスクI/Oが遅くなっているとき、EBSのパフォーマンス問題を診断するために最初に確認すべきCloudWatchメトリクスはどれですか？",
+    "choices": [
+      {
+        "text": "VolumeQueueLength（I/O待ちキュー長）",
+        "correct": true
+      },
+      {
+        "text": "VolumeReadBytes",
+        "correct": false
+      },
+      {
+        "text": "BurstBalance",
+        "correct": false
+      },
+      {
+        "text": "DiskReadOps",
+        "correct": false
+      }
+    ],
+    "explanation": "VolumeQueueLengthはEBSへのI/O待ちキューの長さを示します。この値が継続的に高い（1以上）場合、ボリュームのIOPS/スループット上限に達してリクエストが詰まっている可能性があります。対処法としてgp3のIOPS増加、io2への変更、またはEBSの最適化（EBS-Optimized）インスタンスへの変更が有効です。VolumeReadBytesはデータ量、DiskReadOpsはEC2のインスタンスストア用メトリクスです。",
+    "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using_cloudwatch_ebs.html"
+  },
+  {
+    "id": "ebs-010",
+    "phase": 2,
+    "service": "EBS",
+    "question": "複数のEBSスナップショットをアーカイブ（低コスト長期保存）するための機能はどれですか？",
+    "choices": [
+      {
+        "text": "EBSスナップショットアーカイブ（Snapshot Archive）",
+        "correct": true
+      },
+      {
+        "text": "S3 Glacier への手動コピー",
+        "correct": false
+      },
+      {
+        "text": "EBSスナップショットのコールドストレージ移行",
+        "correct": false
+      },
+      {
+        "text": "EBS Data Lifecycle Manager のアーカイブポリシー",
+        "correct": false
+      }
+    ],
+    "explanation": "EBSスナップショットアーカイブを使用すると、スナップショットをアーカイブ層に移動して標準ストレージより最大75%のコスト削減ができます。アーカイブ済みスナップショットを使用するには復元（24〜72時間）が必要です。90日間の最低保存期間があります。",
+    "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/snapshot-archive.html"
+  },
+  {
+    "id": "ebs-011",
+    "phase": 2,
+    "service": "EBS",
+    "question": "EC2インスタンスを終了（Terminate）するとデータが消えてしまうストレージはどれですか？",
+    "choices": [
+      {
+        "text": "インスタンスストア（エフェメラルストレージ）",
+        "correct": true
+      },
+      {
+        "text": "EBSボリューム（ルートボリュームのDeleteOnTermination=falseの場合）",
+        "correct": false
+      },
+      {
+        "text": "EFSファイルシステム",
+        "correct": false
+      },
+      {
+        "text": "S3バケット",
+        "correct": false
+      }
+    ],
+    "explanation": "インスタンスストアはEC2ホストサーバーの物理ディスクを使用するエフェメラルストレージです。インスタンスの停止・終了・ハードウェア障害でデータが失われます。高いI/Oパフォーマンスが必要な一時データ（キャッシュ、バッファ、スクラッチ領域）に適しています。EBSはインスタンス終了後もデータが保持されます（DeleteOnTermination=falseの場合）。",
+    "reference": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/InstanceStorage.html"
+  }
+]

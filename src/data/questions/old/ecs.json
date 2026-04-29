@@ -1,0 +1,288 @@
+[
+  {
+    "id": "ecs-001",
+    "phase": 2,
+    "service": "ECS",
+    "question": "ECS Fargateを使用する場合とEC2起動タイプを使用する場合の最大の違いはどれですか？",
+    "choices": [
+      {
+        "text": "Fargateではサーバーインフラの管理が不要で、コンテナ実行に必要なリソースのみ指定する",
+        "correct": true
+      },
+      {
+        "text": "FargateはEC2起動タイプよりも必ず低コストである",
+        "correct": false
+      },
+      {
+        "text": "FargateはWindowsコンテナをサポートしない",
+        "correct": false
+      },
+      {
+        "text": "Fargateでは永続ストレージを使用できない",
+        "correct": false
+      }
+    ],
+    "explanation": "Fargateはサーバーレスコンテナエンジンであり、EC2インスタンスのプロビジョニングやパッチ適用が不要です。タスク定義でvCPUとメモリを指定するだけで実行できます。EC2起動タイプはGPUインスタンスやスポットインスタンスの活用、特定ネットワーク要件に適しています。",
+    "reference": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/launch_types.html"
+  },
+  {
+    "id": "ecs-002",
+    "phase": 2,
+    "service": "ECS",
+    "question": "ECSのタスク定義（Task Definition）で定義する内容として正しくないものはどれですか？",
+    "choices": [
+      {
+        "text": "Auto Scalingポリシーの設定",
+        "correct": true
+      },
+      {
+        "text": "使用するDockerイメージ",
+        "correct": false
+      },
+      {
+        "text": "コンテナに割り当てるCPU・メモリ",
+        "correct": false
+      },
+      {
+        "text": "コンテナのポートマッピング",
+        "correct": false
+      }
+    ],
+    "explanation": "タスク定義はコンテナイメージ、CPU/メモリ、ポートマッピング、環境変数、IAMロール、ログ設定、マウントポイントなどを定義します。Auto ScalingはECSサービスのApplication Auto Scalingで設定するものであり、タスク定義には含まれません。",
+    "reference": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definitions.html"
+  },
+  {
+    "id": "ecs-003",
+    "phase": 2,
+    "service": "ECS",
+    "question": "ECSサービスでコンテナにAWSリソースへのアクセス権限を付与するために使用するのはどれですか？",
+    "choices": [
+      {
+        "text": "タスクIAMロール（Task Role）",
+        "correct": true
+      },
+      {
+        "text": "タスク実行ロール（Task Execution Role）",
+        "correct": false
+      },
+      {
+        "text": "EC2インスタンスプロファイル",
+        "correct": false
+      },
+      {
+        "text": "ECSサービスロール",
+        "correct": false
+      }
+    ],
+    "explanation": "タスクIAMロールはコンテナ内のアプリケーションがAWSサービス（S3、DynamoDBなど）にアクセスするための権限を付与します。タスク実行ロールはECSエージェントがECRからイメージをプルしたり、CloudWatch Logsにログを送信したりするためのロールです。両者は目的が異なります。",
+    "reference": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-iam-roles.html"
+  },
+  {
+    "id": "ecs-004",
+    "phase": 2,
+    "service": "ECS",
+    "question": "ECSサービスのデプロイ戦略のうち、新バージョンのタスクを起動してから旧バージョンを停止するローリングアップデート方式はどれですか？",
+    "choices": [
+      {
+        "text": "ローリングアップデート（Rolling Update）",
+        "correct": true
+      },
+      {
+        "text": "ブルーグリーンデプロイメント（CodeDeployを使用）",
+        "correct": false
+      },
+      {
+        "text": "カナリアデプロイメント",
+        "correct": false
+      },
+      {
+        "text": "イン・プレース・デプロイメント",
+        "correct": false
+      }
+    ],
+    "explanation": "ローリングアップデートはECSサービスのデフォルトデプロイ方式で、最小健全パーセントと最大パーセントで同時に停止・起動するタスク数を制御します。ブルーグリーンデプロイはAWS CodeDeployと統合してトラフィックを段階的に切り替える方式で、ダウンタイムなしのデプロイやロールバックが容易です。",
+    "reference": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-types.html"
+  },
+  {
+    "id": "ecs-005",
+    "phase": 2,
+    "service": "ECS",
+    "question": "ECSのサービスディスカバリーで、コンテナのIPアドレスとポートをDNSを使って他のサービスから解決するために使用するAWSサービスはどれですか？",
+    "choices": [
+      {
+        "text": "AWS Cloud Map",
+        "correct": true
+      },
+      {
+        "text": "Amazon Route 53 Resolver",
+        "correct": false
+      },
+      {
+        "text": "AWS App Mesh",
+        "correct": false
+      },
+      {
+        "text": "Elastic Load Balancing",
+        "correct": false
+      }
+    ],
+    "explanation": "ECSのサービスディスカバリーはAWS Cloud Mapと統合されており、タスクのIPアドレスとポートをDNS名（例: myservice.myapp.local）で解決できます。App MeshはサービスメッシュでEnvoyプロキシを使った高度なトラフィック制御を提供しますが、基本的なサービスディスカバリーにはCloud Mapが使われます。",
+    "reference": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/service-discovery.html"
+  },
+  {
+    "id": "ecs-006",
+    "phase": 2,
+    "service": "ECS",
+    "question": "ECSのタスクが同じEC2インスタンス上でポートコンフリクトなく複数起動できる理由として正しいものはどれですか？",
+    "choices": [
+      {
+        "text": "awsvpcネットワークモードでは各タスクが独自のENIとIPアドレスを持つ",
+        "correct": true
+      },
+      {
+        "text": "ECSが自動的にダイナミックポートマッピングを行う",
+        "correct": false
+      },
+      {
+        "text": "Dockerのオーバーレイネットワークで隔離される",
+        "correct": false
+      },
+      {
+        "text": "各タスクが独自のネットワーク名前空間を持つのはFargateのみ",
+        "correct": false
+      }
+    ],
+    "explanation": "awsvpcネットワークモードでは各ECSタスクが専用のENI（Elastic Network Interface）とプライベートIPアドレスを取得します。これにより同一EC2インスタンス上で同じポートを使うタスクも独立して動作できます。bridgeモードではダイナミックポートマッピングで対応します。Fargateは常にawsvpcモードを使用します。",
+    "reference": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-networking.html"
+  },
+  {
+    "id": "ecs-007",
+    "phase": 2,
+    "service": "ECS",
+    "question": "ECSタスクで機密情報（データベースパスワードなど）を安全に環境変数として渡すために推奨される方法はどれですか？",
+    "choices": [
+      {
+        "text": "AWS Secrets ManagerまたはSSMパラメータストアを使い、タスク定義のSecrets設定で参照する",
+        "correct": true
+      },
+      {
+        "text": "タスク定義の環境変数にプレーンテキストで記述する",
+        "correct": false
+      },
+      {
+        "text": "Dockerfileにハードコードして使用する",
+        "correct": false
+      },
+      {
+        "text": "S3バケットに置き、コンテナ起動時にダウンロードする",
+        "correct": false
+      }
+    ],
+    "explanation": "ECSタスク定義のSecrets設定を使用すると、AWS Secrets ManagerやSSMパラメータストアの値をコンテナ起動時に自動的に取得して環境変数として注入できます。機密情報をタスク定義やコードにハードコードする必要がなく、ローテーションにも対応しやすくなります。",
+    "reference": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/specifying-sensitive-data.html"
+  },
+  {
+    "id": "ecs-008",
+    "phase": 2,
+    "service": "ECS",
+    "question": "Amazon ECSのCapacity Providersを使用してFargateスポットとFargateの比率を制御する目的はどれですか？",
+    "choices": [
+      {
+        "text": "コスト削減と可用性のバランスを取りながらFargateスポットの中断リスクを管理するため",
+        "correct": true
+      },
+      {
+        "text": "Fargateのvモードとgpuモードを切り替えるため",
+        "correct": false
+      },
+      {
+        "text": "ECSクラスターのリージョンを分散するため",
+        "correct": false
+      },
+      {
+        "text": "コンテナのCPU上限を設定するため",
+        "correct": false
+      }
+    ],
+    "explanation": "Fargateスポットはオンデマンドより最大70%安価ですが、AWSが容量を必要とする場合は2分前警告後に中断されます。Capacity Providersで重み付けを設定することで、例えばFargateスポット70%・Fargate30%のような割合でコストを抑えつつ可用性を維持できます。",
+    "reference": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cluster-capacity-providers.html"
+  },
+  {
+    "id": "ecs-009",
+    "phase": 2,
+    "service": "ECS",
+    "question": "ECSサービスのタスク数をリクエスト数に応じて自動でスケールさせるために使用するサービスはどれですか？",
+    "choices": [
+      {
+        "text": "Application Auto Scaling",
+        "correct": true
+      },
+      {
+        "text": "EC2 Auto Scaling",
+        "correct": false
+      },
+      {
+        "text": "AWS Lambda Auto Scaling",
+        "correct": false
+      },
+      {
+        "text": "ECSサービスに自動スケーリング機能はない",
+        "correct": false
+      }
+    ],
+    "explanation": "ECSサービスはApplication Auto Scalingと統合されており、ALBリクエスト数・CPU使用率・メモリ使用率などに基づいてタスク数を自動増減できます。ターゲット追跡スケーリングポリシーを使うとALBTargetGroupRequestCountPerTargetを目標値に設定してリクエスト数に比例したスケーリングが可能です。Fargateでもタスク数のスケーリングは同様に設定できます。",
+    "reference": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/service-auto-scaling.html"
+  },
+  {
+    "id": "ecs-010",
+    "phase": 2,
+    "service": "ECS",
+    "question": "ECSでコンテナのログをCloudWatch Logsに送信するために使用するログドライバーはどれですか？",
+    "choices": [
+      {
+        "text": "awslogs",
+        "correct": true
+      },
+      {
+        "text": "fluentd",
+        "correct": false
+      },
+      {
+        "text": "json-file",
+        "correct": false
+      },
+      {
+        "text": "syslog",
+        "correct": false
+      }
+    ],
+    "explanation": "awslogsログドライバーはECSタスク定義で設定し、コンテナのstdout/stderrをCloudWatch Logsに直接送信します。Fargateではawslogsとawsfirelensのみがサポートされています。EC2起動タイプではFluentd/Fluent Bitなども使用できます。",
+    "reference": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/using_awslogs.html"
+  },
+  {
+    "id": "ecs-011",
+    "phase": 2,
+    "service": "ECS",
+    "question": "ECSタスクでAmazon ECRのプライベートリポジトリからコンテナイメージをプルするために必要な設定はどれですか？",
+    "choices": [
+      {
+        "text": "タスク実行ロールにECRのプル権限（ecr:GetAuthorizationToken等）を付与する",
+        "correct": true
+      },
+      {
+        "text": "タスクIAMロールにECRのプル権限を付与する",
+        "correct": false
+      },
+      {
+        "text": "ECRリポジトリをパブリックに設定する",
+        "correct": false
+      },
+      {
+        "text": "ECSクラスターにECRへのVPCエンドポイントを設定する",
+        "correct": false
+      }
+    ],
+    "explanation": "ECRからのイメージプルはECSコントロールプレーン側の処理であり、タスク実行ロール（Task Execution Role）にecr:GetAuthorizationToken、ecr:BatchGetImage、ecr:GetDownloadUrlForLayerの権限が必要です。タスクIAMロールはコンテナ内アプリのAWSアクセス用であり、ECRプルには使われません。AWSマネージドポリシー「AmazonECSTaskExecutionRolePolicy」に必要な権限が含まれています。",
+    "reference": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_execution_IAM_role.html"
+  }
+]

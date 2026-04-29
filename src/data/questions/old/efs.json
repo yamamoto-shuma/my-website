@@ -1,0 +1,288 @@
+[
+  {
+    "id": "efs-001",
+    "phase": 4,
+    "service": "EFS",
+    "question": "複数のEC2インスタンスから同時に読み書きできる共有ファイルシステムが必要な場合、EBSとEFSのどちらを選択すべきですか？",
+    "choices": [
+      {
+        "text": "EFS（複数インスタンスからの同時マウントが可能なNFSベースの共有ファイルシステム）",
+        "correct": true
+      },
+      {
+        "text": "EBS（マルチアタッチを使えば複数インスタンスから同時アクセスできる）",
+        "correct": false
+      },
+      {
+        "text": "どちらも複数インスタンスからの同時アクセスをサポートする",
+        "correct": false
+      },
+      {
+        "text": "S3（ファイルシステムとして使用できる）",
+        "correct": false
+      }
+    ],
+    "explanation": "EFSはNFSv4ベースの共有ファイルシステムで、複数のEC2インスタンス（異なるAZも可）から同時にマウントして読み書きできます。EBSのマルチアタッチはio1/io2ボリュームのみで、クラスタ対応ファイルシステムが必要です。一般的なWebアプリのコンテンツ共有・CI/CDのビルドキャッシュ・機械学習の学習データ共有などに使われます。",
+    "reference": "https://docs.aws.amazon.com/efs/latest/ug/whatisefs.html"
+  },
+  {
+    "id": "efs-002",
+    "phase": 4,
+    "service": "EFS",
+    "question": "EFSのパフォーマンスモード「汎用（General Purpose）」と「最大I/O（Max I/O）」の使い分けとして正しいものはどれですか？",
+    "choices": [
+      {
+        "text": "汎用はレイテンシーが低くほとんどのユースケースに適し、最大I/Oはスループットよりもレイテンシーのトレードオフが必要な数千クライアントからの並列アクセスに適する",
+        "correct": true
+      },
+      {
+        "text": "最大I/OはすべてのユースケースでGPより高性能なため、常に最大I/Oを選択すべき",
+        "correct": false
+      },
+      {
+        "text": "汎用モードはバースト型スループットのみをサポートし、最大I/Oはプロビジョンドスループットをサポートする",
+        "correct": false
+      },
+      {
+        "text": "最大I/OはEFSのElasticスループットモードでのみ選択できる",
+        "correct": false
+      }
+    ],
+    "explanation": "汎用（General Purpose）モードはレイテンシーが低く、ほとんどのユースケース（Webサービス・CMS・データ分析）に適しています。最大I/Oは汎用よりもレイテンシーがわずかに高くなる代わりに、数千クライアントからの高並列アクセスに対応します（大規模なビッグデータ処理など）。現在はElasticスループットモードと汎用の組み合わせが多くのケースで最適です。",
+    "reference": "https://docs.aws.amazon.com/efs/latest/ug/performance.html#performancemodes"
+  },
+  {
+    "id": "efs-003",
+    "phase": 4,
+    "service": "EFS",
+    "question": "EFSのスループットモード「バースト」「プロビジョンド」「エラスティック」のうち、ファイルシステムサイズに関係なく常に安定した高スループットが必要な場合はどれが適切ですか？",
+    "choices": [
+      {
+        "text": "プロビジョンドスループット（必要なスループット量を明示的に指定できる）",
+        "correct": true
+      },
+      {
+        "text": "バーストスループット（常に最大スループットを維持できる）",
+        "correct": false
+      },
+      {
+        "text": "エラスティックスループット（スパイクには対応できるが常時高スループットは保証されない）",
+        "correct": false
+      },
+      {
+        "text": "EFSのスループットはファイルシステムサイズによって自動的に決まり変更できない",
+        "correct": false
+      }
+    ],
+    "explanation": "バーストスループットはファイルシステムのサイズに比例してベースラインスループットが決まり、クレジットを使ってバーストします。ファイルシステムが小さいとベースラインが低くなります。プロビジョンドスループットはサイズに依存せず必要なMB/sを明示的に指定できます。エラスティックスループット（推奨）は必要に応じて自動的にスケールし、使用量に基づく課金です。アクセスパターンが予測困難な場合はエラスティックが最適です。",
+    "reference": "https://docs.aws.amazon.com/efs/latest/ug/performance.html#throughput-modes"
+  },
+  {
+    "id": "efs-004",
+    "phase": 4,
+    "service": "EFS",
+    "question": "EFSファイルシステムをEC2インスタンスからマウントするために必要な設定はどれですか？",
+    "choices": [
+      {
+        "text": "EC2と同じVPCにEFSのマウントターゲットを作成し、EC2のセキュリティグループからマウントターゲットのポート2049（NFS）を許可する",
+        "correct": true
+      },
+      {
+        "text": "EFSはグローバルサービスなのでVPCの設定不要でどのEC2からでも直接マウントできる",
+        "correct": false
+      },
+      {
+        "text": "EFSマウントターゲットは1つのVPCにつき1つしか作成できない",
+        "correct": false
+      },
+      {
+        "text": "EFSはS3と同様にHTTPSで接続するためセキュリティグループの設定は不要",
+        "correct": false
+      }
+    ],
+    "explanation": "EFSマウントターゲットはAZごとにプライベートIPアドレスとセキュリティグループを持つエンドポイントです。EC2インスタンスのセキュリティグループからマウントターゲットのセキュリティグループへのNFSポート（2049）のインバウンドを許可する必要があります。EFS Mount HelperまたはNFSクライアントでマウントします。マルチAZ構成では各AZのサブネットにマウントターゲットを作成し、AZ間のデータ転送コストを避けます。",
+    "reference": "https://docs.aws.amazon.com/efs/latest/ug/accessing-fs.html"
+  },
+  {
+    "id": "efs-005",
+    "phase": 4,
+    "service": "EFS",
+    "question": "EFSのライフサイクル管理機能を使用する目的として正しいものはどれですか？",
+    "choices": [
+      {
+        "text": "一定期間アクセスされていないファイルをEFS Standard-IAへ自動移行してコストを削減する",
+        "correct": true
+      },
+      {
+        "text": "古いファイルを自動的に削除してストレージを解放する",
+        "correct": false
+      },
+      {
+        "text": "ファイルをS3にアーカイブしてEFSから削除する",
+        "correct": false
+      },
+      {
+        "text": "EFSのライフサイクル管理はバックアップのスケジュールを設定する機能",
+        "correct": false
+      }
+    ],
+    "explanation": "EFSライフサイクル管理は設定した日数（7/14/30/60/90日）以内にアクセスされなかったファイルをEFS Standard-IA（低頻度アクセス）ストレージクラスに自動移行します。Standard-IAはStandardより保存コストが大幅に安く（最大92%削減）、アクセス時に取得料金が発生します。ファイルへのアクセスはIA移行後も透過的に行えます。EFS Intelligent-Tieringを使うとアクセスパターンに基づき自動でStandardとIAを移動します。",
+    "reference": "https://docs.aws.amazon.com/efs/latest/ug/lifecycle-management-efs.html"
+  },
+  {
+    "id": "efs-006",
+    "phase": 4,
+    "service": "EFS",
+    "question": "AWS LambdaからEFSをマウントして使用する主なユースケースとして最も適切なものはどれですか？",
+    "choices": [
+      {
+        "text": "Lambdaの250MBデプロイパッケージ制限を超える大きなMLモデルや共有ライブラリを複数のLambda関数間で共有する",
+        "correct": true
+      },
+      {
+        "text": "LambdaからEFSをマウントすることはサポートされていない",
+        "correct": false
+      },
+      {
+        "text": "EFSをマウントするとLambdaのコールドスタート時間が短縮され関数の実行効率が上がる",
+        "correct": false
+      },
+      {
+        "text": "EFSマウントによりLambdaのコールドスタート時間が自動的に短縮される",
+        "correct": false
+      }
+    ],
+    "explanation": "LambdaはVPC設定を有効にしてEFSアクセスポイント経由でEFSをマウントできます。主なユースケースは、複数のLambda関数間での大きなファイル共有（MLモデル・NLP辞書・設定ファイル）や、Lambdaのデプロイパッケージ250MB制限を超えるライブラリのマウントです。/tmpの最大エフェメラルストレージは現在10GBまで拡張されているため、大容量の一時ファイルはEFSではなく/tmpが使えるケースも増えています。",
+    "reference": "https://docs.aws.amazon.com/lambda/latest/dg/configuration-filesystem.html"
+  },
+  {
+    "id": "efs-007",
+    "phase": 4,
+    "service": "EFS",
+    "question": "Windowsファイルサーバーの共有フォルダをAWSに移行してSMBプロトコルで引き続き使用したい場合、EFSとAmazon FSxのどちらが適切ですか？",
+    "choices": [
+      {
+        "text": "Amazon FSx for Windows File Server（SMBプロトコルとActive Directory統合に対応）",
+        "correct": true
+      },
+      {
+        "text": "EFS（SMBプロトコルに対応している）",
+        "correct": false
+      },
+      {
+        "text": "EFSはWindowsでもLinuxでも同様に使用できる",
+        "correct": false
+      },
+      {
+        "text": "S3をWindowsのドライブとしてマウントする",
+        "correct": false
+      }
+    ],
+    "explanation": "EFSはNFSv4ベースのLinux/Unix向けファイルシステムです。WindowsのSMBプロトコルや Active Directory統合が必要な場合はAmazon FSx for Windows File Serverが適しています。FSx for Windowsは完全マネージドなWindowsファイルサーバーでDFS名前空間・Active Directory認証・シャドウコピーをサポートします。高性能なHPCワークロード向けにはFSx for Lustreも選択肢です。",
+    "reference": "https://docs.aws.amazon.com/fsx/latest/WindowsGuide/what-is.html"
+  },
+  {
+    "id": "efs-008",
+    "phase": 4,
+    "service": "EFS",
+    "question": "EFSファイルシステムの暗号化に関する正しい説明はどれですか？",
+    "choices": [
+      {
+        "text": "保存時の暗号化はファイルシステム作成時にのみ設定でき、転送時の暗号化はTLSマウントオプションで設定する",
+        "correct": true
+      },
+      {
+        "text": "EFSは暗号化を自動的に有効にするため、ユーザーの設定は不要",
+        "correct": false
+      },
+      {
+        "text": "保存時の暗号化は後から有効化できる",
+        "correct": false
+      },
+      {
+        "text": "EFSはデフォルトで転送時の暗号化（TLS）が有効になっている",
+        "correct": false
+      }
+    ],
+    "explanation": "EFSの保存時暗号化（at-rest encryption）はKMSを使用し、ファイルシステム作成時に設定します（後から変更不可）。転送時の暗号化（in-transit encryption）はEFS Mount Helperのマウントオプション（tls）またはstunnel経由で設定します。IAMポリシーやSCPで暗号化なしのEFS作成を禁止することも可能です。",
+    "reference": "https://docs.aws.amazon.com/efs/latest/ug/encryption.html"
+  },
+  {
+    "id": "efs-009",
+    "phase": 4,
+    "service": "EFS",
+    "question": "EFSアクセスポイント（Access Point）を使用する主な目的はどれですか？",
+    "choices": [
+      {
+        "text": "特定のディレクトリをルートとして設定し、UID/GIDを強制することでアプリケーション間のファイルシステムアクセスを分離する",
+        "correct": true
+      },
+      {
+        "text": "EFSへのネットワーク接続のエンドポイントを管理する",
+        "correct": false
+      },
+      {
+        "text": "EFSのスループットを向上させるためのキャッシュポイントとして機能する",
+        "correct": false
+      },
+      {
+        "text": "アクセスポイントはEFSの別リージョンへのレプリケーション設定に使用される",
+        "correct": false
+      }
+    ],
+    "explanation": "EFSアクセスポイントは特定のディレクトリ（例: /app1, /app2）をルートとして公開し、マウントしたクライアントがそのディレクトリ以外にアクセスできないよう制限します。またUID/GIDを強制的に設定でき、コンテナ化されたアプリケーション間でのファイルシステム分離に使われます。LambdaからEFSをマウントする際もアクセスポイントが必要です。",
+    "reference": "https://docs.aws.amazon.com/efs/latest/ug/efs-access-points.html"
+  },
+  {
+    "id": "efs-010",
+    "phase": 4,
+    "service": "EFS",
+    "question": "EFSの自動バックアップを有効にした場合、バックアップデータはどこに保存されますか？",
+    "choices": [
+      {
+        "text": "AWS Backupのバックアップボルト（Backup Vault）に保存される",
+        "correct": true
+      },
+      {
+        "text": "同じEFSファイルシステム内に自動的に保存される",
+        "correct": false
+      },
+      {
+        "text": "S3バケットに自動的にエクスポートされる",
+        "correct": false
+      },
+      {
+        "text": "EFSはバックアップを自動的に別リージョンに複製する",
+        "correct": false
+      }
+    ],
+    "explanation": "EFSの自動バックアップはAWS Backupと統合されており、デイリーバックアップがAWS Backupのバックアップボルトに保存されます。保持期間はデフォルト35日です。特定の時点のファイルシステム状態に復元でき、別のEFSファイルシステムとしてリストアできます。EFSファイルシステム作成時に「Enable automatic backups」を選択するだけで有効になります。",
+    "reference": "https://docs.aws.amazon.com/efs/latest/ug/efs-backup-solutions.html"
+  },
+  {
+    "id": "efs-011",
+    "phase": 4,
+    "service": "EFS",
+    "question": "オンプレミスのLinuxサーバーからEFSにアクセスしてファイル共有を行いたい場合の接続方法として正しいものはどれですか？",
+    "choices": [
+      {
+        "text": "Direct ConnectまたはAWS VPN経由でVPCに接続し、EFSマウントターゲットのIPアドレスにNFSマウントする",
+        "correct": true
+      },
+      {
+        "text": "EFSはインターネット経由で直接マウントできる",
+        "correct": false
+      },
+      {
+        "text": "オンプレミスからEFSへの接続はサポートされていない",
+        "correct": false
+      },
+      {
+        "text": "AWS Storage GatewayのFile Gatewayを使う必要がある",
+        "correct": false
+      }
+    ],
+    "explanation": "EFSはVPC内のプライベートリソースなので、オンプレミスからアクセスするにはDirect ConnectまたはSite-to-Site VPN経由でVPCに接続し、EFSマウントターゲットのIPアドレスまたはDNS名にNFSマウントします。EFS Mount Helperを使うとTLS暗号化や自動マウントが容易になります。インターネット経由の直接マウントはサポートされていません。",
+    "reference": "https://docs.aws.amazon.com/efs/latest/ug/mounting-fs-mount-helper.html"
+  }
+]
