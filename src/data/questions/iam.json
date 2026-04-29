@@ -32,7 +32,7 @@
     "question": "IAMユーザーとIAMロールの主な違いとして正しいものはどれですか？",
     "choices": [
       {
-        "text": "IAMユーザーは永続的な認証情報（パスワード・アクセスキー）を持ち、IAMロールは一時的な認証情報を引き受けて使用するアイデンティティ",
+        "text": "IAMユーザーは長期的な認証情報（パスワード・アクセスキー）を持ち、IAMロールは一時的な認証情報を引き受けて使用するアイデンティティ",
         "correct": true
       },
       {
@@ -40,7 +40,7 @@
         "correct": false
       },
       {
-        "text": "IAMロールはIAMユーザーと同様に永続的なアクセスキーを持つ",
+        "text": "IAMロールはIAMユーザーと同様に長期的なアクセスキーを持つ",
         "correct": false
       },
       {
@@ -282,7 +282,7 @@
         "correct": false
       }
     ],
-    "explanation": "IAMポリシーのアクションはアクセスレベルで5つに分類されます。「リスト」はリソースの一覧取得、「読み取り」はリソースの詳細情報の取得、「書き込み」はリソースの作成・変更・削除、「許可の管理」はIAMポリシーの変更など権限に関する操作、「タグ付け」はタグの追加・変更・削除です。最小権限の原則に基づいてアクセスレベルを絞り込むことが推奨されます。",
+    "explanation": "IAMポリシーのアクションはアクセスレベルで5つに分類されます。「リスト」はリソースの一覧取得、「読み取り」はリソースの詳細情報の取得、「書き込み」はリソースの作成・変更・削除、「タグ付け」はタグの追加・変更・削除です。「許可の管理」は他のユーザーやロールへのアクセス権限を付与・変更できるアクション（例: IAMポリシーのアタッチ、S3バケットポリシーの書き換え）で、このカテゴリを許可すると実質的に任意の権限を自分に付与できてしまうため、特に厳しく制限すべきです。",
     "reference": "https://docs.aws.amazon.com/iam/latest/userguide/access_policies_understand-policy-summary-access-level-summaries.html"
   },
   {
@@ -336,5 +336,57 @@
     ],
     "explanation": "IAMポリシーのVersionフィールドはポリシー言語のバージョンを指定します。現在の推奨値は \"2012-10-17\" で、ポリシー変数（${aws:username}など）のサポートが含まれています。古い値として \"2008-10-17\" もありますが、ポリシー変数が使えないため非推奨です。このフィールドはポリシーの作成日や更新日ではなく、ポリシー言語の仕様バージョンを示します。",
     "reference": "https://docs.aws.amazon.com/iam/latest/userguide/reference_policies_elements_version.html"
+  },
+  {
+    "id": "iam-014",
+    "phase": 1,
+    "service": "IAM",
+    "question": "IAMロール作成時の「信頼されたエンティティタイプ」で「AWSアカウント」を選択する場面として正しいものはどれですか？",
+    "choices": [
+      {
+        "text": "別のAWSアカウント（または同一アカウント）のユーザーやロールが、このロールを引き受けてアクションを実行する場合",
+        "correct": true
+      },
+      {
+        "text": "EC2やLambdaなどのAWSサービス自身がロールを引き受ける場合",
+        "correct": false
+      },
+      {
+        "text": "社内のActive DirectoryユーザーがSAMLでAWSにサインインする場合",
+        "correct": false
+      },
+      {
+        "text": "CognitoやGoogleで認証されたユーザーがAWSにアクセスする場合",
+        "correct": false
+      }
+    ],
+    "explanation": "「AWSアカウント」エンティティは、クロスアカウントアクセス（別のAWSアカウントからこのアカウントのリソースにアクセスする）や、同一アカウント内で特定のユーザー・ロールにロールの引き受けを許可する場合に選択します。例えば「開発アカウントのEC2が本番アカウントのS3を読む」といったマルチアカウント構成でよく使われます。AWSのサービスにはAWSのサービスエンティティを、外部IDPにはウェブアイデンティティまたはSAML 2.0を使います。",
+    "reference": "https://docs.aws.amazon.com/iam/latest/userguide/id_roles_create_for-user.html"
+  },
+  {
+    "id": "iam-015",
+    "phase": 1,
+    "service": "IAM",
+    "question": "IAMロール作成時の「信頼されたエンティティタイプ」で「ウェブアイデンティティ」を選択する場面として正しいものはどれですか？",
+    "choices": [
+      {
+        "text": "CognitoやGoogleなどのOIDCプロバイダで認証されたユーザー（主にモバイル・Webアプリのエンドユーザー）がAWSリソースにアクセスする場合",
+        "correct": true
+      },
+      {
+        "text": "EC2やLambdaなどのAWSサービスがロールを引き受ける場合",
+        "correct": false
+      },
+      {
+        "text": "社内のActive DirectoryユーザーがSAMLでAWSにサインインする場合",
+        "correct": false
+      },
+      {
+        "text": "別のAWSアカウントのユーザーがこのアカウントのリソースにアクセスする場合",
+        "correct": false
+      }
+    ],
+    "explanation": "「ウェブアイデンティティ」エンティティは、Amazon Cognito・Google・Facebook・その他のOIDC（OpenID Connect）対応プロバイダで認証されたユーザーがロールを引き受ける場合に使います。OIDCはOAuth 2.0を拡張した認証の標準規格です。主にモバイルアプリやWebアプリのエンドユーザーが一時的にAWSリソース（S3への画像アップロードなど）にアクセスする際のパターンで使われます。企業の社員向けSSOにはSAML 2.0フェデレーションを使います。",
+    "reference": "https://docs.aws.amazon.com/iam/latest/userguide/id_roles_providers_oidc.html"
   }
 ]
