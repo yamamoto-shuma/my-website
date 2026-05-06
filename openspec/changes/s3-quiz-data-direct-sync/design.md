@@ -35,20 +35,20 @@ S3バケット（`yamamoto-shuma-my-website-prod`）はすでにVersioning有効
 - ReactはCloudFrontドメインの相対パスでfetch → CORS不要
 - 代替案: 別バケットでPublic公開 → 却下（セキュリティ複雑化）
 
-### 2. データロード: サービス別fetch（ファイル分割維持）
+### 3. データロード: サービス別fetch（ファイル分割維持）
 
-現在の24ファイル構成を維持。`/data/questions/{service}.json` でサービス毎にfetch。
+現在のファイル構成を維持。`/data/questions/{service}.json` でサービス毎にfetch。
 - 代替案: 全結合JSONを1ファイルで配信 → 却下（初回ロード遅延・部分更新困難）
 - 代替案: manifest.jsonで動的解決 → 却下（今回のスコープ外・過剰設計）
 
-### 3. ローカルデータ置き場: `public/data/questions/`
+### 4. ローカルデータ置き場: `public/data/questions/`
 
 Viteは `public/` をビルド成果物にコピーするが、GitignoreでGit管理外にする。
 - S3同期先はS3の `data/questions/` プレフィックス
 - Reactはビルド時import不要。`fetch('/data/questions/{service}.json')` で取得
 - 現在の `src/data/questions/` は削除（ビルドから除外）
 
-### 4. S3 Versioning: 追加設定不要
+### 5. S3 Versioning: 追加設定不要
 
 既存 `s3.tf` で `versioning_configuration { status = "Enabled" }` 設定済み。Terraform変更なし。
 

@@ -5,7 +5,7 @@
 
 #### Scenario: S3にクイズデータが存在する
 - **WHEN** S3バケットの `data/questions/` プレフィックスを確認する
-- **THEN** 24個のサービス別JSONファイルが存在する
+- **THEN** 各サービスのJSONファイルが存在する
 
 #### Scenario: GitリポジトリにクイズJSONが含まれない
 - **WHEN** `git ls-files src/data/questions/ public/data/` を実行する

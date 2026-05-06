@@ -1,7 +1,9 @@
-## 1. CI/CDワークフロー修正（先に実施）
+## 1. CI/CDワークフロー修正（前提条件: 別PRとして先にマージすること）
+
+> このグループのタスクは本PRとは独立した別PRで実施し、mainにマージされてから以降の作業に進むこと。
 
 - [ ] 1.1 GitHub Actionsデプロイワークフローの `aws s3 sync` コマンドに `--exclude "data/questions/*"` を追加
-- [ ] 1.2 修正をmainにマージしてデプロイが正常動作することを確認
+- [ ] 1.2 PRをマージ後、手動デプロイを実行してS3の `data/questions/` が削除されないことを確認
 
 ## 2. データ移行準備
 
@@ -13,7 +15,7 @@
 
 - [ ] 3.1 `package.json` に `quiz:pull` スクリプト追加 (`aws s3 sync s3://yamamoto-shuma-my-website-prod/data/questions/ ./public/data/questions/`)
 - [ ] 3.2 `package.json` に `quiz:push` スクリプト追加 (`aws s3 sync ./public/data/questions/ s3://yamamoto-shuma-my-website-prod/data/questions/ --delete`)
-- [ ] 3.3 `package.json` に `quiz:invalidate` スクリプト追加 (CloudFrontインバリデーションコマンド)
+- [ ] 3.3 `package.json` に `quiz:invalidate` スクリプト追加（`aws cloudfront create-invalidation --distribution-id <ID> --paths "/data/questions/*"`）。Distribution IDは `terraform/prod/outputs.tf` に `cloudfront_distribution_id` を追加して `terraform output` で取得するか、AWS Consoleから確認する
 
 ## 4. React コード変更
 
