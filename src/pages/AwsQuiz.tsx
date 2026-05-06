@@ -57,6 +57,7 @@ async function fetchQuestions(services: string[]): Promise<Question[]> {
   const results = await Promise.all(
     services.map(async (service) => {
       const file = SERVICE_FILE_MAP[service];
+      if (!file) throw new Error(`SERVICE_FILE_MAP にサービス "${service}" の定義がありません`);
       const res = await fetch(`/data/questions/${file}.json`);
       if (!res.ok) throw new Error(`Failed to fetch ${file}.json: ${res.status}`);
       return res.json() as Promise<Question[]>;

@@ -30,3 +30,5 @@ npm run quiz:pull
    export CLOUDFRONT_DISTRIBUTION_ID=E3LINM8ORJKA3Z
    npm run quiz:invalidate
    ```
+
+> 誤って削除・上書きした場合はS3 Versioningで復元できます。
