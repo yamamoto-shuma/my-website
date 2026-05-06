@@ -3,7 +3,7 @@
 > このグループのタスクは本PRとは独立した別PRで実施し、mainにマージされてから以降の作業に進むこと。
 
 - [x] 1.1 GitHub Actionsデプロイワークフローの `aws s3 sync` コマンドに `--exclude "data/questions/*"` を追加
-- [ ] 1.2 PRをマージ後、手動デプロイを実行してS3の `data/questions/` が削除されないことを確認
+- [x] 1.2 PRをマージ後、手動デプロイを実行してS3の `data/questions/` が削除されないことを確認
 
 ## 2. npm scripts追加
 
@@ -36,8 +36,8 @@
 
 ## 7. 動作確認
 
-- [ ] 7.1 ローカル開発環境でクイズが正常に表示されることを確認（`npm run dev`）
+- [x] 7.1 ローカル開発環境でクイズが正常に表示されることを確認（`npm run dev`）
 - [x] 7.2 ビルド成果物にJSONが含まれないことを確認（`npm run build` 後に `dist/` を確認）
-- [ ] 7.3 デプロイ後にCloudFront経由でクイズデータが取得できることを確認
-- [ ] 7.4 デプロイ後にS3の `data/questions/` が削除されていないことを確認
+- [x] 7.3 デプロイ後にCloudFront経由でクイズデータが取得できることを確認
+- [x] 7.4 デプロイ後にS3の `data/questions/` が削除されていないことを確認
 - [x] 7.5 S3 Versioningの確認（Terraformで既設定のため確認のみ）
