@@ -13,7 +13,7 @@ S3バケット（`yamamoto-shuma-my-website-prod`）はすでにVersioning有効
 - 誤削除/誤上書き時のS3 Versioning復元
 
 **Non-Goals:**
-- 認証・アクセス制御（CloudFront経由で公開URL）
+- 認証・アクセス制御（クイズデータはCloudFront経由で公開配信するためアクセス制御不要）
 - CI/CDによる自動同期
 - データ編集UIの実装
 - 新規S3バケットの作成（既存バケットを流用）
@@ -73,15 +73,16 @@ GitHub Actionsのデプロイワークフロー（`aws s3 sync ... --delete`）�
 ## Migration Plan
 
 1. GitHub Actionsワークフローの S3 sync に `--exclude "data/questions/*"` を追加（先にCI/CDを修正しないとデータが消える）
-2. `public/data/questions/` ディレクトリ作成
-3. `src/data/questions/` の全JSONを `public/data/questions/` にコピー
-4. S3にデータをpush（`npm run quiz:push`）
-5. CloudFrontインバリデーション実行
-6. Reactコードをランタイムfetchへリファクタ
-7. `.gitignore` に `public/data/` 追加
-8. `git rm --cached` で既存追跡ファイルを除外
-9. `src/data/questions/` 削除
-10. デプロイ・動作確認（CI/CDが `--exclude` 付きで動作することを確認）
+2. `package.json` に `quiz:push` / `quiz:pull` / `quiz:invalidate` スクリプトを追加
+3. `public/data/questions/` ディレクトリ作成
+4. `src/data/questions/` の全JSONを `public/data/questions/` にコピー
+5. S3にデータをpush（`npm run quiz:push`）
+6. CloudFrontインバリデーション実行（`npm run quiz:invalidate`）
+7. Reactコードをランタイムfetchへリファクタ
+8. `.gitignore` に `public/data/` 追加
+9. `git rm --cached` で既存追跡ファイルを除外
+10. `src/data/questions/` 削除
+11. デプロイ・動作確認（CI/CDが `--exclude` 付きで動作することを確認）
 
 **ロールバック**: `git revert` + S3データはVersioningで復元可能
 
