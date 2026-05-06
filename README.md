@@ -33,6 +33,6 @@ npm run quiz:pull
    export CLOUDFRONT_DISTRIBUTION_ID=<Distribution ID>
    npm run quiz:invalidate
    ```
-   Distribution IDは `cd terraform/prod && terraform output cloudfront_distribution_id` で確認できます。
+   Distribution IDは `E3LINM8ORJKA3Z`（または `cd terraform/prod && terraform apply` 後に `terraform output cloudfront_distribution_id` で確認）。
 
 > `public/data/` は `.gitignore` に追加済みです。`git add .` しても誤ってコミットされることはありません。
