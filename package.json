@@ -6,7 +6,10 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "quiz:pull": "aws s3 sync s3://yamamoto-shuma-my-website-prod/data/questions/ ./public/data/questions/",
+    "quiz:push": "aws s3 sync ./public/data/questions/ s3://yamamoto-shuma-my-website-prod/data/questions/ --delete",
+    "quiz:invalidate": "aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --paths \"/data/questions/*\""
   },
   "dependencies": {
     "react": "^19.0.0",

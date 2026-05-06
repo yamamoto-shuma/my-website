@@ -9,11 +9,10 @@ interface ServiceSelectorProps {
   selected: string[];
   onChange: (selected: string[]) => void;
   onStart: () => void;
-  questionCount: number;
-  questionCountByService: Record<string, number>;
+  error?: string | null;
 }
 
-function ServiceSelector({ phaseGroups, selected, onChange, onStart, questionCount, questionCountByService }: ServiceSelectorProps) {
+function ServiceSelector({ phaseGroups, selected, onChange, onStart, error }: ServiceSelectorProps) {
   const allServices = phaseGroups.flatMap((g) => g.services);
 
   const toggle = (service: string) => {
@@ -37,6 +36,8 @@ function ServiceSelector({ phaseGroups, selected, onChange, onStart, questionCou
     }
   };
 
+  const canStart = selected.length > 0;
+
   return (
     <div>
       {/* Header */}
@@ -56,6 +57,12 @@ function ServiceSelector({ phaseGroups, selected, onChange, onStart, questionCou
 
           {/* Card body */}
           <div style={{ padding: 28 }}>
+            {error && (
+              <div style={{ background: '#FEE', border: '1px solid #F66', borderRadius: 8, padding: '12px 16px', marginBottom: 20, color: '#C00', fontSize: 14 }}>
+                {error}
+              </div>
+            )}
+
             <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 20 }}>
               <button
                 onClick={toggleAll}
@@ -118,9 +125,6 @@ function ServiceSelector({ phaseGroups, selected, onChange, onStart, questionCou
                               style={{ width: 16, height: 16, accentColor: '#FF9900' }}
                             />
                             <span style={{ fontWeight: 600, fontSize: 15, color: '#16191F', flex: 1 }}>{service}</span>
-                            <span style={{ fontSize: 12, color: checked ? '#B06000' : '#9BA7B4', fontWeight: 500 }}>
-                              {questionCountByService[service] ?? 0}問
-                            </span>
                           </label>
                         );
                       })}
@@ -131,30 +135,30 @@ function ServiceSelector({ phaseGroups, selected, onChange, onStart, questionCou
             </div>
 
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
-              <span style={{ color: '#5F6B7A', fontSize: 14 }}>選択中の問題数</span>
+              <span style={{ color: '#5F6B7A', fontSize: 14 }}>選択中のサービス数</span>
               <span style={{ color: '#5F6B7A', fontSize: 14, fontWeight: 500 }}>
-                {questionCount} 問
+                {selected.length} / {allServices.length}
               </span>
             </div>
 
             <button
               onClick={onStart}
-              disabled={questionCount === 0}
+              disabled={!canStart}
               className="aws-btn"
               style={{
                 width: '100%',
                 padding: '12px 0',
                 fontSize: 15,
                 fontWeight: 700,
-                background: questionCount === 0 ? '#D5DBDB' : '#FF9900',
-                color: questionCount === 0 ? '#9BA7B4' : '#16191F',
+                background: !canStart ? '#D5DBDB' : '#FF9900',
+                color: !canStart ? '#9BA7B4' : '#16191F',
                 border: 'none',
                 borderRadius: 8,
-                cursor: questionCount === 0 ? 'not-allowed' : 'pointer',
+                cursor: !canStart ? 'not-allowed' : 'pointer',
                 fontFamily: 'inherit',
               }}
             >
-              クイズを開始する（{questionCount}問）
+              クイズを開始する
             </button>
           </div>
         </div>
