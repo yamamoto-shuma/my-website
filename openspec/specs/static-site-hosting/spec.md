@@ -12,7 +12,7 @@
 - **THEN** `AccessDenied` エラーが返される
 
 ### Requirement: CloudFront DistributionがOACでS3をオリジンとして配信する
-CloudFront DistributionがS3をオリジンとし、OAC（Origin Access Control）経由でSigV4署名付きリクエストでアクセスする設定でなければならない（SHALL）。PriceClassは `PriceClass_200` でなければならない（SHALL）。HTTPSのみを許可し（HTTP→HTTPSリダイレクト）、デフォルトルートオブジェクトは `index.html` でなければならない（SHALL）。
+CloudFront DistributionがS3をオリジンとし、OAC（Origin Access Control）経由でSigV4署名付きリクエストでアクセスする設定でなければならない（SHALL）。PriceClassは `PriceClass_200` でなければならない（SHALL）。HTTPSのみを許可し（HTTP→HTTPSリダイレクト）、デフォルトルートオブジェクトは `index.html` でなければならない（SHALL）。クイズデータ（`/data/questions/*.json`）もCloudFront経由で配信されなければならない（SHALL）。
 
 #### Scenario: CloudFront経由でindex.htmlが配信される
 - **WHEN** CloudFrontのドメインに対してHTTPSリクエストを送る
@@ -25,6 +25,10 @@ CloudFront DistributionがS3をオリジンとし、OAC（Origin Access Control�
 #### Scenario: PriceClassがPriceClass_200である
 - **WHEN** CloudFront Distributionの設定を確認する
 - **THEN** `price_class = "PriceClass_200"` が設定されている
+
+#### Scenario: クイズデータがCloudFront経由で取得できる
+- **WHEN** `https://{cloudfront-domain}/data/questions/iam.json` にGETリクエストを送る
+- **THEN** IAMのクイズJSON（200 OK）が返される
 
 ### Requirement: ガイドライン準拠のTerraformコードである
 `terraform/GUIDELINE.md` に定められたコーディング規約に従ったコードでなければならない（SHALL）。
