@@ -4,11 +4,10 @@
 
 ## What Changes
 
-- クイズJSONデータをS3バケットへ移行し、S3をSingle Source of Truthとする
-- S3バケットでVersioningを有効化（誤上書き・誤削除からの復元を可能に）
+- クイズJSONデータを既存S3バケット（`yamamoto-shuma-my-website-prod`）の `data/questions/` パスへ移行し、S3をSingle Source of Truthとする
 - `public/data/` を `.gitignore` に追加し、データのGitHub流出を防止
-- Makefile または npm scripts にS3同期コマンドを追加（ローカル編集ワークフロー用）
-- Terraform (`s3.tf`) にVersioning設定を追加
+- npm scripts にS3同期コマンドを追加（ローカル編集ワークフロー用）
+- CI/CDデプロイワークフローの S3 sync に `--exclude "data/questions/*"` を追加（デプロイによるクイズデータ削除防止）
 
 ## Capabilities
 
@@ -19,11 +18,12 @@
 ### Modified Capabilities
 
 - `static-site-hosting`: CloudFront/S3ホスティング構成において、クイズデータ取得元がGitリポジトリからS3バケットに変わる
+- `cicd-deploy`: デプロイワークフローのS3 syncコマンドが `data/questions/*` を除外する必要がある
 
 ## Impact
 
-- **Terraform**: `s3.tf` にVersioning設定追加
-- **React**: データ取得元をS3 URLに変更（ビルド時にバンドルするのではなく、ランタイムでfetch）
+- **React**: データ取得元をS3/CloudFront URLに変更（ビルド時バンドルからランタイムfetchへ）
 - **Git**: `public/data/` を `.gitignore` に追加、既存JSONファイルをGit管理から除外
+- **CI/CD**: GitHub Actionsのデプロイワークフローに `--exclude "data/questions/*"` 追加
 - **ローカル開発**: 編集前後にAWS CLIでS3同期が必要（手動ワークフロー）
 - **依存関係**: AWS CLI（開発環境に必須）

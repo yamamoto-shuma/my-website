@@ -20,7 +20,15 @@ S3バケット（`yamamoto-shuma-my-website-prod`）はすでにVersioning有効
 
 ## Decisions
 
-### 1. データ配信: CloudFront経由（直接S3アクセスなし）
+### 1. クイズデータ置き場: 既存バケットのパス分離（別バケット新設なし）
+
+既存バケット `yamamoto-shuma-my-website-prod` の `data/questions/` プレフィックスにクイズJSONを格納。
+- 既存バケットはすでにVersioning有効・CloudFront OAC設定済み → 追加インフラ不要
+- CloudFront設定変更不要（同一オリジン・同一ドメインで `/data/questions/*` が通る）
+- 代替案: 別バケット新設 → 却下（OAC追加・CloudFrontオリジン追加・Terraform増加のコストに対してメリット薄）
+- トレードオフ: CI/CDの `aws s3 sync --delete` がクイズデータを削除するリスク → Decision 6で対処
+
+### 2. データ配信: CloudFront経由（直接S3アクセスなし）
 
 既存CloudFront Distributionの同一ドメイン（`/data/questions/*.json`）で配信。
 - S3バケットはプライベート。OAC経由のみ許可（既設定）
@@ -44,12 +52,19 @@ Viteは `public/` をビルド成果物にコピーするが、GitignoreでGit�
 
 既存 `s3.tf` で `versioning_configuration { status = "Enabled" }` 設定済み。Terraform変更なし。
 
-### 5. 同期ツール: npm scripts
+### 6. CI/CDデプロイワークフローのクイズデータ除外
+
+GitHub Actionsのデプロイワークフロー（`aws s3 sync ... --delete`）に `--exclude "data/questions/*"` を追加。
+- これがないとデプロイのたびにS3の `data/questions/` 以下が全削除される
+- S3 Versioningで復元は可能だが手動作業が発生するため、除外設定で防止する
+
+### 7. 同期ツール: npm scripts
 
 `package.json` に `quiz:pull` / `quiz:push` を追加。Makefileより依存関係が少なく、開発者全員がnode環境を持つ前提が成立。
 
 ## Risks / Trade-offs
 
+- **CI/CDによるデータ削除** → `aws s3 sync --delete` がクイズJSONを消す。`--exclude "data/questions/*"` で対処（Decision 6）
 - **ネットワーク依存** → ローカル開発時はS3から取得不要（`public/data/` にファイルがあればVite dev serverが配信）。開発時はS3からpullしてから作業する手順で対応
 - **CloudFrontキャッシュ** → 更新後にキャッシュが残る可能性。S3 push後にCloudFrontインバリデーション手順を追加（npm scriptに含める）
 - **gitignore漏れ** → `.gitignore` 追加後、既存追跡ファイルを `git rm --cached` で除外が必要
@@ -57,15 +72,16 @@ Viteは `public/` をビルド成果物にコピーするが、GitignoreでGit�
 
 ## Migration Plan
 
-1. `public/data/questions/` ディレクトリ作成
-2. `src/data/questions/` の全JSONを `public/data/questions/` にコピー
-3. S3にデータをpush（`npm run quiz:push`）
-4. CloudFrontインバリデーション実行
-5. Reactコードをランタイムfetchへリファクタ
-6. `.gitignore` に `public/data/` 追加
-7. `git rm --cached` で既存追跡ファイルを除外
-8. `src/data/questions/` 削除
-9. デプロイ・動作確認
+1. GitHub Actionsワークフローの S3 sync に `--exclude "data/questions/*"` を追加（先にCI/CDを修正しないとデータが消える）
+2. `public/data/questions/` ディレクトリ作成
+3. `src/data/questions/` の全JSONを `public/data/questions/` にコピー
+4. S3にデータをpush（`npm run quiz:push`）
+5. CloudFrontインバリデーション実行
+6. Reactコードをランタイムfetchへリファクタ
+7. `.gitignore` に `public/data/` 追加
+8. `git rm --cached` で既存追跡ファイルを除外
+9. `src/data/questions/` 削除
+10. デプロイ・動作確認（CI/CDが `--exclude` 付きで動作することを確認）
 
 **ロールバック**: `git revert` + S3データはVersioningで復元可能
 
