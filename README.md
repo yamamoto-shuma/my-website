@@ -10,9 +10,6 @@
 npm run quiz:pull
 ```
 
-これで `public/data/questions/` にJSONファイルがダウンロードされます。
-ローカル開発（`npm run dev`）はこのファイルを参照します。
-
 ### クイズデータの編集ワークフロー
 
 1. **データ取得**（編集前に必ず実行）
@@ -30,9 +27,6 @@ npm run quiz:pull
 
 4. **CloudFrontキャッシュをクリア**
    ```bash
-   export CLOUDFRONT_DISTRIBUTION_ID=<Distribution ID>
+   export CLOUDFRONT_DISTRIBUTION_ID=E3LINM8ORJKA3Z
    npm run quiz:invalidate
    ```
-   Distribution IDは `E3LINM8ORJKA3Z`（または `cd terraform/prod && terraform apply` 後に `terraform output cloudfront_distribution_id` で確認）。
-
-> `public/data/` は `.gitignore` に追加済みです。`git add .` しても誤ってコミットされることはありません。
