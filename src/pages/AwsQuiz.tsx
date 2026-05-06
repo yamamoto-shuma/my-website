@@ -4,31 +4,6 @@ import ServiceSelector from '../components/ServiceSelector';
 import QuizCard from '../components/QuizCard';
 import Result from '../components/Result';
 
-import vpcQuestions from '../data/questions/vpc.json';
-import iamQuestions from '../data/questions/iam.json';
-import kmsQuestions from '../data/questions/kms.json';
-import ec2Questions from '../data/questions/ec2.json';
-import autoscalingQuestions from '../data/questions/autoscaling.json';
-import ebsQuestions from '../data/questions/ebs.json';
-import ecsQuestions from '../data/questions/ecs.json';
-import lambdaQuestions from '../data/questions/lambda.json';
-import albNlbQuestions from '../data/questions/alb-nlb.json';
-import route53Questions from '../data/questions/route53.json';
-import cloudfrontQuestions from '../data/questions/cloudfront.json';
-import apiGatewayQuestions from '../data/questions/api-gateway.json';
-import s3Questions from '../data/questions/s3.json';
-import efsQuestions from '../data/questions/efs.json';
-import auroraQuestions from '../data/questions/aurora.json';
-import dynamodbQuestions from '../data/questions/dynamodb.json';
-import wafQuestions from '../data/questions/waf.json';
-import secretsManagerQuestions from '../data/questions/secrets-manager.json';
-import cloudwatchQuestions from '../data/questions/cloudwatch.json';
-import cloudtrailQuestions from '../data/questions/cloudtrail.json';
-import sqsQuestions from '../data/questions/sqs.json';
-import snsQuestions from '../data/questions/sns.json';
-import eventbridgeQuestions from '../data/questions/eventbridge.json';
-import stepFunctionsQuestions from '../data/questions/step-functions.json';
-
 const PHASE_GROUPS = [
   { phase: 1, label: 'Phase 1 — セキュリティ・ネットワーク基礎', services: ['VPC', 'IAM', 'KMS'] },
   { phase: 2, label: 'Phase 2 — コンピューティング', services: ['EC2', 'Auto Scaling', 'EBS', 'ECS', 'Lambda'] },
@@ -38,41 +13,36 @@ const PHASE_GROUPS = [
   { phase: 6, label: 'Phase 6 — メッセージング・統合', services: ['SQS', 'SNS', 'EventBridge', 'Step Functions'] },
 ];
 
-const ALL_QUESTIONS: Question[] = [
-  ...(vpcQuestions as Question[]),
-  ...(iamQuestions as Question[]),
-  ...(kmsQuestions as Question[]),
-  ...(ec2Questions as Question[]),
-  ...(autoscalingQuestions as Question[]),
-  ...(ebsQuestions as Question[]),
-  ...(ecsQuestions as Question[]),
-  ...(lambdaQuestions as Question[]),
-  ...(albNlbQuestions as Question[]),
-  ...(route53Questions as Question[]),
-  ...(cloudfrontQuestions as Question[]),
-  ...(apiGatewayQuestions as Question[]),
-  ...(s3Questions as Question[]),
-  ...(efsQuestions as Question[]),
-  ...(auroraQuestions as Question[]),
-  ...(dynamodbQuestions as Question[]),
-  ...(wafQuestions as Question[]),
-  ...(secretsManagerQuestions as Question[]),
-  ...(cloudwatchQuestions as Question[]),
-  ...(cloudtrailQuestions as Question[]),
-  ...(sqsQuestions as Question[]),
-  ...(snsQuestions as Question[]),
-  ...(eventbridgeQuestions as Question[]),
-  ...(stepFunctionsQuestions as Question[]),
-];
+const SERVICE_FILE_MAP: Record<string, string> = {
+  'VPC': 'vpc',
+  'IAM': 'iam',
+  'KMS': 'kms',
+  'EC2': 'ec2',
+  'Auto Scaling': 'autoscaling',
+  'EBS': 'ebs',
+  'ECS': 'ecs',
+  'Lambda': 'lambda',
+  'ALB/NLB': 'alb-nlb',
+  'Route 53': 'route53',
+  'CloudFront': 'cloudfront',
+  'API Gateway': 'api-gateway',
+  'S3': 's3',
+  'EFS': 'efs',
+  'Aurora': 'aurora',
+  'DynamoDB': 'dynamodb',
+  'WAF': 'waf',
+  'Secrets Manager': 'secrets-manager',
+  'CloudWatch': 'cloudwatch',
+  'CloudTrail': 'cloudtrail',
+  'SQS': 'sqs',
+  'SNS': 'sns',
+  'EventBridge': 'eventbridge',
+  'Step Functions': 'step-functions',
+};
 
 const ALL_SERVICES = PHASE_GROUPS.flatMap((g) => g.services);
 
-const QUESTION_COUNT_BY_SERVICE: Record<string, number> = ALL_QUESTIONS.reduce(
-  (acc, q) => ({ ...acc, [q.service]: (acc[q.service] ?? 0) + 1 }),
-  {} as Record<string, number>
-);
-
-type Phase = 'selecting' | 'quizzing' | 'result';
+type Phase = 'selecting' | 'loading' | 'quizzing' | 'result';
 
 function shuffle<T>(arr: T[]): T[] {
   const copy = [...arr];
@@ -83,21 +53,39 @@ function shuffle<T>(arr: T[]): T[] {
   return copy;
 }
 
+async function fetchQuestions(services: string[]): Promise<Question[]> {
+  const results = await Promise.all(
+    services.map(async (service) => {
+      const file = SERVICE_FILE_MAP[service];
+      const res = await fetch(`/data/questions/${file}.json`);
+      if (!res.ok) throw new Error(`Failed to fetch ${file}.json: ${res.status}`);
+      return res.json() as Promise<Question[]>;
+    })
+  );
+  return results.flat();
+}
+
 function AwsQuiz() {
   const [phase, setPhase] = useState<Phase>('selecting');
   const [selectedServices, setSelectedServices] = useState<string[]>(ALL_SERVICES);
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [results, setResults] = useState<ResultItem[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
-  const filteredCount = ALL_QUESTIONS.filter((q) => selectedServices.includes(q.service)).length;
-
-  const startQuiz = useCallback(() => {
-    const pool = ALL_QUESTIONS.filter((q) => selectedServices.includes(q.service));
-    setQuestions(shuffle(pool));
-    setCurrentIndex(0);
-    setResults([]);
-    setPhase('quizzing');
+  const startQuiz = useCallback(async () => {
+    setError(null);
+    setPhase('loading');
+    try {
+      const fetched = await fetchQuestions(selectedServices);
+      setQuestions(shuffle(fetched));
+      setCurrentIndex(0);
+      setResults([]);
+      setPhase('quizzing');
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'データ取得に失敗しました');
+      setPhase('selecting');
+    }
   }, [selectedServices]);
 
   const handleNext = (correct: boolean) => {
@@ -121,6 +109,14 @@ function AwsQuiz() {
     setPhase('selecting');
   };
 
+  if (phase === 'loading') {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', flexDirection: 'column', gap: 16 }}>
+        <div style={{ fontSize: 18, color: '#5F6B7A' }}>問題を読み込み中...</div>
+      </div>
+    );
+  }
+
   if (phase === 'selecting') {
     return (
       <ServiceSelector
@@ -128,8 +124,7 @@ function AwsQuiz() {
         selected={selectedServices}
         onChange={setSelectedServices}
         onStart={startQuiz}
-        questionCount={filteredCount}
-        questionCountByService={QUESTION_COUNT_BY_SERVICE}
+        error={error}
       />
     );
   }
