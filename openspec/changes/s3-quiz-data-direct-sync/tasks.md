@@ -5,17 +5,17 @@
 - [ ] 1.1 GitHub Actionsデプロイワークフローの `aws s3 sync` コマンドに `--exclude "data/questions/*"` を追加
 - [ ] 1.2 PRをマージ後、手動デプロイを実行してS3の `data/questions/` が削除されないことを確認
 
-## 2. データ移行準備
+## 2. npm scripts追加
 
-- [ ] 2.1 `public/data/questions/` ディレクトリを作成し、`src/data/questions/` の全JSONをコピー
-- [ ] 2.2 S3に全JSONをアップロード (`aws s3 sync ./public/data/questions/ s3://yamamoto-shuma-my-website-prod/data/questions/`)
-- [ ] 2.3 CloudFrontインバリデーション実行 (`/data/questions/*`)
+- [ ] 2.1 `package.json` に `quiz:pull` スクリプト追加 (`aws s3 sync s3://yamamoto-shuma-my-website-prod/data/questions/ ./public/data/questions/`)
+- [ ] 2.2 `package.json` に `quiz:push` スクリプト追加 (`aws s3 sync ./public/data/questions/ s3://yamamoto-shuma-my-website-prod/data/questions/ --delete`)
+- [ ] 2.3 `package.json` に `quiz:invalidate` スクリプト追加（`aws cloudfront create-invalidation --distribution-id <ID> --paths "/data/questions/*"`）。Distribution IDは `terraform/prod/outputs.tf` に `cloudfront_distribution_id` を追加して `terraform output` で取得するか、AWS Consoleから確認する
 
-## 3. npm scripts追加
+## 3. データ移行準備
 
-- [ ] 3.1 `package.json` に `quiz:pull` スクリプト追加 (`aws s3 sync s3://yamamoto-shuma-my-website-prod/data/questions/ ./public/data/questions/`)
-- [ ] 3.2 `package.json` に `quiz:push` スクリプト追加 (`aws s3 sync ./public/data/questions/ s3://yamamoto-shuma-my-website-prod/data/questions/ --delete`)
-- [ ] 3.3 `package.json` に `quiz:invalidate` スクリプト追加（`aws cloudfront create-invalidation --distribution-id <ID> --paths "/data/questions/*"`）。Distribution IDは `terraform/prod/outputs.tf` に `cloudfront_distribution_id` を追加して `terraform output` で取得するか、AWS Consoleから確認する
+- [ ] 3.1 `public/data/questions/` ディレクトリを作成し、`src/data/questions/` の全JSONをコピー
+- [ ] 3.2 `npm run quiz:push` でS3に全JSONをアップロード
+- [ ] 3.3 `npm run quiz:invalidate` でCloudFrontインバリデーション実行
 
 ## 4. React コード変更
 

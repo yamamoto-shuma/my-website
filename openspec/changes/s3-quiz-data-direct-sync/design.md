@@ -1,6 +1,6 @@
 ## Context
 
-現在、クイズデータ（24個のJSON）が `src/data/questions/` にあり、ビルド時に静的importでバンドルされる。これによりGitHubパブリックリポジトリに問題内容が全公開されている。
+現在、クイズデータ（各サービスのJSON）が `src/data/questions/` にあり、ビルド時に静的importでバンドルされる。これによりGitHubパブリックリポジトリに問題内容が全公開されている。
 
 S3バケット（`yamamoto-shuma-my-website-prod`）はすでにVersioning有効・CloudFront OAC配信済み。追加インフラ不要。
 
@@ -85,7 +85,7 @@ GitHub Actionsのデプロイワークフロー（`aws s3 sync ... --delete`）�
 
 **ロールバック**: `git revert` + S3データはVersioningで復元可能
 
-## Open Questions
+## Resolved Questions
 
-- CloudFrontインバリデーションを毎回手動で行うか、npm scriptに含めるか（→ 含める方針で実装。AWS CLIでインバリデーション可能）
-- `public/data/` をgitignoreした場合、ローカルに `public/data/` が存在しない新規クローン時の開発フローを整備するか（→ READMEに `npm run quiz:pull` 手順を記載する方針）
+- CloudFrontインバリデーションを毎回手動で行うか、npm scriptに含めるか → **npm scriptに含める**（`quiz:invalidate` として追加。Decision 7参照）
+- `public/data/` をgitignoreした場合、新規クローン後の開発フローをどうするか → **READMEに記載する**（`npm run quiz:pull` 手順を追記。tasks.md 6.1参照）
