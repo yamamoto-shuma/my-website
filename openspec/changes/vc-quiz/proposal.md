@@ -13,6 +13,7 @@
   - `voice_actors.json`：声優マスタ
   - `titles.json`：作品・キャラクターデータ
 - npm scriptsに声優クイズ用S3同期コマンドを追加
+- AWS QuizのS3プレフィックスを `data/questions/` から `data/aws-quiz/` に変更（命名規則を `data/{quiz-type}/` 形式に統一）
 
 ## Capabilities
 
@@ -22,7 +23,7 @@
 
 ### Modified Capabilities
 
-- `quiz-data-s3-management`: 声優クイズデータ（voice_actors.json / titles.json）のS3管理ルールを追加
+- `quiz-data-s3-management`: 声優データ（voice_actors.json）・作品データ（titles.json）のS3管理ルールを追加、AWS QuizのS3プレフィックス変更
 
 ## Impact
 
@@ -32,4 +33,5 @@
 - `src/components/Navigation.tsx`（またはヘッダー）に声優クイズリンクを追加
 - `package.json` に `vc-quiz:pull` / `vc-quiz:push` スクリプトを追加
 - S3バケット `yamamoto-shuma-my-website-prod` の `data/vc-quiz/` プレフィックスを使用
-- CI/CDの `--exclude` に `data/vc-quiz/*` を追加
+- CI/CDの `--exclude` を `data/aws-quiz/*`（変更）・`data/vc-quiz/*`（追加）に更新
+- `src/pages/AwsQuiz.tsx` のfetch URLを `data/aws-quiz/` に更新
