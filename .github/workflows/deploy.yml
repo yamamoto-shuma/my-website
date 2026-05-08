@@ -36,7 +36,7 @@ jobs:
           aws-region: ap-northeast-1
 
       - name: Sync to S3
-        run: aws s3 sync ./dist ${{ vars.S3_BUCKET_URI }} --delete --exclude "data/questions/*"
+        run: aws s3 sync ./dist ${{ vars.S3_BUCKET_URI }} --delete --exclude "data/aws-quiz/*" --exclude "data/vc-quiz/*"
 
       - name: Invalidate CloudFront cache
         run: aws cloudfront create-invalidation --distribution-id ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
