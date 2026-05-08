@@ -116,7 +116,6 @@ function VcQuizPage({ question, current, total, onNext, onBack }: VcQuizPageProp
               <p style={{ margin: '0 0 4px' }}>
                 <span style={{ fontWeight: 600, color: '#1A1A1A' }}>{question.correctVa.name}</span>
               </p>
-              <p style={{ margin: '0 0 2px', color: '#5F6B7A' }}>事務所：{question.correctVa.office}</p>
               <p style={{ margin: '0 0 8px', color: '#5F6B7A' }}>デビュー：{question.correctVa.debut_year}年</p>
               {question.correctVa.wiki_url && (
                 <a
