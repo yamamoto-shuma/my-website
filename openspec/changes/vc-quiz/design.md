@@ -1,6 +1,6 @@
 ## Context
 
-AWS Quizで確立したS3管理・ランタイムfetchパターン（MWS-018）を踏襲して声優クイズを実装する。クイズデータ（voice_actors.json / titles.json）はS3バケットの `data/vc-quiz/` プレフィックスに格納し、ReactがビルドバンドルからJSONを除外した上でランタイムにCloudFront経由でfetchする。
+AWS Quizで確立したS3管理・ランタイムfetchパターン（MWS-018）を踏襲して声優クイズを実装する。声優データ（voice_actors.json）と作品データ（titles.json）はS3バケットの `data/vc-quiz/` プレフィックスに格納し、ReactがビルドバンドルからJSONを除外した上でランタイムにCloudFront経由でfetchする。
 
 ## Goals / Non-Goals
 
@@ -66,6 +66,7 @@ CSS変数でVcQuiz専用テーマを定義し、AWS Quizのテーマ（青系）
 
 - **初回fetch遅延**: ページ遷移時にvoice_actors.jsonとtitles.jsonを並列fetchするため、データ量が増えるとロード時間が増加する → Loading状態をUIで明示し、将来的にはデータ分割も可能
 - **データ整合性**: `va_id` 参照の整合性はJSONの手動管理に依存。typoでキャラクターが孤立してもランタイムまで検知できない → 将来的にJSONバリデーションスクリプトを検討
+- **S3移行中の一時的な404**: `data/questions/` → `data/aws-quiz/` のデータ移動とコードデプロイのタイミングがずれると、AWS Quizが一瞬404になる → コード変更より先にS3データをコピーし（旧パスも残したまま）、コードデプロイ後に旧パスを削除することで回避可能
 
 ## Open Questions
 

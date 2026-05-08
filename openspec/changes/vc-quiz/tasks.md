@@ -1,6 +1,6 @@
 ## 1. AWS Quiz S3プレフィックス変更（data/questions/ → data/aws-quiz/）
 
-- [ ] 1.1 `package.json` の `quiz:pull`・`quiz:push` スクリプトのS3パスを `data/aws-quiz/` に更新
+- [ ] 1.1 `package.json` の `quiz:pull`・`quiz:push` スクリプトのS3パスと `quiz:invalidate` の `--paths` を `data/aws-quiz/` に更新
 - [ ] 1.2 `.github/workflows/deploy.yml` の `--exclude "data/questions/*"` を `--exclude "data/aws-quiz/*"` に更新
 - [ ] 1.3 `src/pages/AwsQuiz.tsx` のfetch URLを `/data/questions/` から `/data/aws-quiz/` に更新
 - [ ] 1.4 S3バケットのデータを `data/questions/` から `data/aws-quiz/` に移動（`aws s3 sync`）

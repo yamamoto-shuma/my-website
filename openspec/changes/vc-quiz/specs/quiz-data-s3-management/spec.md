@@ -41,7 +41,7 @@ AWSクイズデータ（各サービスのJSON）はS3バケット（`yamamoto-s
 - **THEN** 各サービスのJSONファイルが存在する
 
 #### Scenario: GitリポジトリにクイズJSONが含まれない
-- **WHEN** `git ls-files src/data/questions/ public/data/` を実行する
+- **WHEN** `git ls-files public/data/aws-quiz/` を実行する
 - **THEN** 出力が空である（追跡ファイルなし）
 
 ### Requirement: npm scriptsでS3同期コマンドを提供する
