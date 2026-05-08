@@ -1,6 +1,7 @@
 export interface VoiceActor {
   id: string;
   name: string;
+  reading: string;
   gender: 'male' | 'female';
   debut_year: number;
   wiki_url: string;

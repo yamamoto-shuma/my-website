@@ -113,8 +113,9 @@ function VcQuizPage({ question, current, total, onNext, onBack }: VcQuizPageProp
               {isCorrect ? '✓ 正解！' : '✗ 不正解'}
             </p>
             <div style={{ fontSize: 14, color: '#3D4149', lineHeight: 1.8 }}>
-              <p style={{ margin: '0 0 4px' }}>
+              <p style={{ margin: '0 0 2px' }}>
                 <span style={{ fontWeight: 600, color: '#1A1A1A' }}>{question.correctVa.name}</span>
+                <span style={{ marginLeft: 8, fontSize: 12, color: '#8A9199' }}>({question.correctVa.reading})</span>
               </p>
               <p style={{ margin: '0 0 8px', color: '#5F6B7A' }}>デビュー：{question.correctVa.debut_year}年</p>
               {question.correctVa.wiki_url && (

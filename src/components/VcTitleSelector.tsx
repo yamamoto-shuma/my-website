@@ -20,6 +20,9 @@ function VcTitleSelector({
   error,
 }: VcTitleSelectorProps) {
   const allSelected = selectedIds.length === titles.length;
+  const maxQuestions = titles
+    .filter((t) => selectedIds.includes(t.id))
+    .reduce((sum, t) => sum + t.characters.length, 0);
 
   const toggle = (id: string) => {
     if (selectedIds.includes(id)) {
@@ -96,6 +99,7 @@ function VcTitleSelector({
                     />
                     <span style={{ fontWeight: 600, fontSize: 15, color: '#1A1A1A', flex: 1 }}>{title.title}</span>
                     <span style={{ fontSize: 12, color: '#8A9199', flexShrink: 0 }}>{title.broadcast_year}</span>
+                    <span style={{ fontSize: 12, color: checked ? 'var(--vc-primary)' : '#8A9199', flexShrink: 0, minWidth: 44, textAlign: 'right' }}>全{title.characters.length}問</span>
                   </label>
                 );
               })}
@@ -103,13 +107,16 @@ function VcTitleSelector({
 
             {/* 問題数設定 */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24, padding: '16px', background: '#F8F9FA', borderRadius: 8 }}>
-              <label style={{ fontSize: 14, color: '#3D4149', fontWeight: 500, flex: 1 }}>問題数</label>
+              <label style={{ fontSize: 14, color: '#3D4149', fontWeight: 500, flex: 1 }}>
+                問題数
+                <span style={{ marginLeft: 8, fontSize: 12, color: '#8A9199', fontWeight: 400 }}>（全 {maxQuestions} 問）</span>
+              </label>
               <input
                 type="number"
                 min={1}
                 max={50}
                 value={questionCount}
-                onChange={(e) => onChangeCount(Math.max(1, Math.min(50, Number(e.target.value))))}
+                onChange={(e) => onChangeCount(Math.max(1, Math.min(maxQuestions || 50, Number(e.target.value))))}
                 style={{
                   width: 64,
                   padding: '6px 10px',
