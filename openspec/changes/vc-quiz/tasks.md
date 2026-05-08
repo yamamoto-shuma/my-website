@@ -3,7 +3,7 @@
 - [x] 1.1 `package.json` の `quiz:pull`・`quiz:push` スクリプトのS3パスと `quiz:invalidate` の `--paths` を `data/aws-quiz/` に更新
 - [x] 1.2 `.github/workflows/deploy.yml` の `--exclude "data/questions/*"` を `--exclude "data/aws-quiz/*"` に更新
 - [x] 1.3 `src/pages/AwsQuiz.tsx` のfetch URLを `/data/questions/` から `/data/aws-quiz/` に更新
-- [ ] 1.4 S3バケットのデータを `data/questions/` から `data/aws-quiz/` に移動（`aws s3 sync`）
+- [x] 1.4 S3バケットのデータを `data/questions/` から `data/aws-quiz/` に移動（`aws s3 sync`）
 - [x] 1.5 `README.md` のAWS Quizデータ管理手順のS3パスを更新
 
 ## 2. VcQuiz 設定・インフラ
@@ -43,7 +43,7 @@
 
 - [x] 8.1 `public/data/vc-quiz/voice_actors.json` にサンプル声優データを5〜10件作成
 - [x] 8.2 `public/data/vc-quiz/titles.json` にサンプル作品データを3〜5件作成（各2〜4キャラ）
-- [ ] 8.3 `npm run vc-quiz:push` で S3 にアップロード
+- [x] 8.3 `npm run vc-quiz:push` で S3 にアップロード
 
 ## 9. 動作確認
 

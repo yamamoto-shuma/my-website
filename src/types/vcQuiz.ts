@@ -10,6 +10,7 @@ export interface VoiceActor {
 export interface Character {
   char_name: string;
   va_id: string;
+  gender: 'male' | 'female';
 }
 
 export interface Title {
@@ -25,6 +26,7 @@ export interface VcQuestion {
   choices: string[];
   correctAnswer: string;
   correctVa: VoiceActor;
+  charName: string;
 }
 
 export interface VcResultItem {

@@ -1,4 +1,4 @@
-import type { VoiceActor, Title, VcQuestion } from '../types/vcQuiz';
+import type { VoiceActor, Title, Character, VcQuestion } from '../types/vcQuiz';
 
 function shuffle<T>(arr: T[]): T[] {
   const copy = [...arr];
@@ -24,7 +24,7 @@ function pickWrongVas(
 
 function buildForwardQuestion(
   titleName: string,
-  charName: string,
+  char: Character,
   correctVa: VoiceActor,
   allVas: VoiceActor[]
 ): VcQuestion | null {
@@ -33,32 +33,35 @@ function buildForwardQuestion(
   const choices = shuffle([correctVa.name, ...wrongVas.map((va) => va.name)]);
   return {
     type: 'forward',
-    questionText: `「${titleName}」に登場する${charName}を演じているのは？`,
+    questionText: `「${titleName}」に登場する${char.char_name}を演じているのは？`,
     choices,
     correctAnswer: correctVa.name,
     correctVa,
+    charName: char.char_name,
   };
 }
 
 function buildReverseQuestion(
-  charName: string,
+  char: Character,
   titleName: string,
   correctVa: VoiceActor,
   selectedTitles: Title[]
 ): VcQuestion | null {
+  // 誤答: 正解キャラと同性 かつ 正解VAと異なるVAのキャラ
   const wrongChars = selectedTitles
-    .flatMap((t) => t.characters.map((c) => ({ charName: c.char_name, vaId: c.va_id })))
-    .filter((c) => c.vaId !== correctVa.id && c.charName !== charName);
+    .flatMap((t) => t.characters)
+    .filter((c) => c.va_id !== correctVa.id && c.char_name !== char.char_name && c.gender === char.gender);
 
   if (wrongChars.length < 3) return null;
-  const sampled = shuffle(wrongChars).slice(0, 3).map((c) => c.charName);
-  const choices = shuffle([charName, ...sampled]);
+  const sampled = shuffle(wrongChars).slice(0, 3).map((c) => c.char_name);
+  const choices = shuffle([char.char_name, ...sampled]);
   return {
     type: 'reverse',
     questionText: `以下のうち${correctVa.name}が演じているのは？（${titleName}）`,
     choices,
-    correctAnswer: charName,
+    correctAnswer: char.char_name,
     correctVa,
+    charName: char.char_name,
   };
 }
 
@@ -78,13 +81,24 @@ export function generateQuestions(
       const va = vaMap.get(char.va_id);
       if (!va) continue;
 
-      const fwd = buildForwardQuestion(title.title, char.char_name, va, voiceActors);
+      const fwd = buildForwardQuestion(title.title, char, va, voiceActors);
       if (fwd) candidates.push(fwd);
 
-      const rev = buildReverseQuestion(char.char_name, title.title, va, selectedTitles);
+      const rev = buildReverseQuestion(char, title.title, va, selectedTitles);
       if (rev) candidates.push(rev);
     }
   }
 
-  return shuffle(candidates).slice(0, count);
+  // 同一 (VA, キャラ) ペアの正引き・逆引きは片方のみ出題
+  const usedPairKeys = new Set<string>();
+  const result: VcQuestion[] = [];
+  for (const q of shuffle(candidates)) {
+    const key = `${q.correctVa.id}:${q.charName}`;
+    if (usedPairKeys.has(key)) continue;
+    usedPairKeys.add(key);
+    result.push(q);
+    if (result.length >= count) break;
+  }
+
+  return result;
 }
