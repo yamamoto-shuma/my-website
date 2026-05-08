@@ -43,21 +43,20 @@ function buildForwardQuestion(
 
 function buildReverseQuestion(
   char: Character,
-  titleName: string,
+  title: Title,
   correctVa: VoiceActor,
-  selectedTitles: Title[]
 ): VcQuestion | null {
-  // 誤答: 正解キャラと同性 かつ 正解VAと異なるVAのキャラ
-  const wrongChars = selectedTitles
-    .flatMap((t) => t.characters)
-    .filter((c) => c.va_id !== correctVa.id && c.char_name !== char.char_name && c.gender === char.gender);
+  // 誤答: 同じ作品内の、正解キャラと同性 かつ 正解VAと異なるキャラ
+  const wrongChars = title.characters.filter(
+    (c) => c.va_id !== correctVa.id && c.char_name !== char.char_name && c.gender === char.gender
+  );
 
   if (wrongChars.length < 3) return null;
   const sampled = shuffle(wrongChars).slice(0, 3).map((c) => c.char_name);
   const choices = shuffle([char.char_name, ...sampled]);
   return {
     type: 'reverse',
-    questionText: `以下のうち${correctVa.name}が演じているのは？（${titleName}）`,
+    questionText: `「${title.title}」に登場するキャラのうち、${correctVa.name}が演じているのは？`,
     choices,
     correctAnswer: char.char_name,
     correctVa,
@@ -84,7 +83,7 @@ export function generateQuestions(
       const fwd = buildForwardQuestion(title.title, char, va, voiceActors);
       if (fwd) candidates.push(fwd);
 
-      const rev = buildReverseQuestion(char, title.title, va, selectedTitles);
+      const rev = buildReverseQuestion(char, title, va);
       if (rev) candidates.push(rev);
     }
   }
