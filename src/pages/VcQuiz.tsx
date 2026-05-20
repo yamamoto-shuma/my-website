@@ -56,7 +56,7 @@ function VcQuiz() {
           name: r.name,
           reading: r.reading,
           gender: r.gender as 'male' | 'female',
-          debut_year: Number(r.debut_year),
+          birthday: r.birthday,
           wiki_url: r.wiki_url,
         }));
 

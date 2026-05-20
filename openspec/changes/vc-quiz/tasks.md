@@ -53,6 +53,14 @@
 - [ ] 10.3 旧JSONファイル（voice_actors.json / titles.json）をS3から削除
 - [ ] 10.4 S3に新CSVファイルをアップロード（`npm run vc-quiz:push`）
 
+## 11. birthday対応・年齢表示
+
+- [x] 11.1 `src/types/vcQuiz.ts` の `VoiceActor.debut_year: number` を `birthday: string` に変更
+- [x] 11.2 `src/pages/VcQuiz.tsx` のCSVパースを `birthday: r.birthday` に更新
+- [x] 11.3 `src/lib/vcQuizLogic.ts` の誤答アルゴリズムを `birthday` の生年ベースに更新（生年不明はスキップ）
+- [x] 11.4 `src/components/VcQuizPage.tsx` に `formatAge` 関数を実装（`{age}歳（{date}）` / `年齢非公表（{date}）` / `年齢非公表`）
+- [x] 11.5 `voice_actors.csv` の `debut_year` 列を `birthday`（`yyyy/mm/dd`形式）に変更
+
 ## 9. 動作確認
 
 - [ ] 9.1 `npm run dev` でローカル起動し、作品選択→出題→結果の全フローを確認

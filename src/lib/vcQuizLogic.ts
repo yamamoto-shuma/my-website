@@ -9,14 +9,24 @@ function shuffle<T>(arr: T[]): T[] {
   return copy;
 }
 
+function birthYear(birthday: string): number | null {
+  const y = birthday.split('/')[0];
+  return y === 'yyyy' ? null : Number(y);
+}
+
 function pickWrongVas(
   correctVa: VoiceActor,
   allVas: VoiceActor[],
   count: number
 ): VoiceActor[] {
   const pool = allVas.filter((va) => va.id !== correctVa.id && va.gender === correctVa.gender);
+  const correctYear = birthYear(correctVa.birthday);
   const near = pool
-    .filter((va) => Math.abs(va.debut_year - correctVa.debut_year) <= 3)
+    .filter((va) => {
+      if (correctYear === null) return false;
+      const y = birthYear(va.birthday);
+      return y !== null && Math.abs(y - correctYear) <= 3;
+    })
     .sort(() => Math.random() - 0.5);
   const others = pool.filter((va) => !near.includes(va)).sort(() => Math.random() - 0.5);
   return [...near, ...others].slice(0, count);

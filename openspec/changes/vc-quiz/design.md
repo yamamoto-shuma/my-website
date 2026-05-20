@@ -1,6 +1,6 @@
 ## Context
 
-AWS Quizで確立したS3管理・ランタイムfetchパターン（MWS-018）を踏襲して声優クイズを実装する。声優データ（voice_actors.json）と作品データ（titles.json）はS3バケットの `data/vc-quiz/` プレフィックスに格納し、ReactがビルドバンドルからJSONを除外した上でランタイムにCloudFront経由でfetchする。
+AWS Quizで確立したS3管理・ランタイムfetchパターン（MWS-018）を踏襲して声優クイズを実装する。声優データ・作品データはS3バケットの `data/vc-quiz/` プレフィックスにCSVで格納し、ReactがビルドバンドルからCSVを除外した上でランタイムにCloudFront経由でfetchする。
 
 ## Goals / Non-Goals
 
@@ -26,7 +26,8 @@ AWS Quizで確立したS3管理・ランタイムfetchパターン（MWS-018）�
 **理由**: 手動編集しやすさを優先。Numbers/Modern CSV等のスプレッドシートで行追加のみで声優・作品・キャスト追加が完結する。JSONは階層構造のためネストを意識した編集が必要だが、CSVは1行1レコードで直感的。正規化によりtitle情報の重複も排除される。
 
 **CSVフォーマット**:
-- `voice_actors.csv`: `id,name,reading,gender,debut_year,wiki_url`
+- `voice_actors.csv`: `id,name,reading,gender,birthday,wiki_url`
+  - `birthday`: `yyyy/mm/dd` 形式。年不明は `yyyy/mm/dd`、年のみ不明は `yyyy/04/13` のように記述
 - `titles.csv`: `id,title,broadcast_year`
 - `characters.csv`: `title_id,char_name,va_id,char_gender`（中間テーブル）
 
@@ -42,7 +43,7 @@ AWS Quizで確立したS3管理・ランタイムfetchパターン（MWS-018）�
 
 **正引き（キャラ → 声優）**:
 1. 絶対条件：正解声優と同性の声優を候補プールとする
-2. 努力条件：`debut_year` が ±3年以内の声優を優先
+2. 努力条件：`birthday` の生年が ±3年以内の声優を優先（生年不明の声優はスキップ）
 3. 不足分は同性からランダムで補完（3人確保）
 
 **逆引き（声優 → キャラ）**:
@@ -50,7 +51,7 @@ AWS Quizで確立したS3管理・ランタイムfetchパターン（MWS-018）�
 2. 同一声優が演じるキャラは誤答候補から除外
 3. 誤答候補が3未満の場合は問題を生成しない（スキップ）
 
-**決定理由**: 性別一致は最低限の難易度保証。デビュー年近接は「同世代声優」として区別困難な選択肢を生成し学習効果を高める。
+**決定理由**: 性別一致は最低限の難易度保証。生年近接は「同世代声優」として区別困難な選択肢を生成し学習効果を高める。
 
 ### 4. コンポーネント設計
 
@@ -72,7 +73,7 @@ CSS変数でVcQuiz専用テーマを定義し、AWS Quizのテーマ（青系）
 
 ## Risks / Trade-offs
 
-- **初回fetch遅延**: ページ遷移時にvoice_actors.jsonとtitles.jsonを並列fetchするため、データ量が増えるとロード時間が増加する → Loading状態をUIで明示し、将来的にはデータ分割も可能
+- **初回fetch遅延**: ページ遷移時に3つのCSVを並列fetchするため、データ量が増えるとロード時間が増加する → Loading状態をUIで明示し、将来的にはデータ分割も可能
 - **データ整合性**: `va_id` / `title_id` 参照の整合性はCSVの手動管理に依存。typoでキャラクターが孤立してもランタイムまで検知できない → 将来的にバリデーションスクリプトを検討
 - **S3移行中の一時的な404**: `data/questions/` → `data/aws-quiz/` のデータ移動とコードデプロイのタイミングがずれると、AWS Quizが一瞬404になる → コード変更より先にS3データをコピーし（旧パスも残したまま）、コードデプロイ後に旧パスを削除することで回避可能
 

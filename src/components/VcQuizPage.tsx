@@ -1,6 +1,27 @@
 import { useState } from 'react';
 import type { VcQuestion } from '../types/vcQuiz';
 
+function formatAge(birthday: string): string {
+  const [y, m, d] = birthday.split('/');
+  const yearUnknown = y === 'yyyy';
+  const monthUnknown = m === 'mm';
+
+  const dateStr = yearUnknown
+    ? monthUnknown ? '非公開' : `${parseInt(m)}月${parseInt(d)}日`
+    : monthUnknown ? `${y}年` : `${y}年${parseInt(m)}月${parseInt(d)}日`;
+
+  if (yearUnknown) return monthUnknown ? '年齢非公表' : `年齢非公表（${parseInt(m)}月${parseInt(d)}日）`;
+
+  const today = new Date();
+  const birthYear = Number(y);
+  const birthMonth = monthUnknown ? 0 : Number(m) - 1;
+  const birthDay = monthUnknown ? 1 : Number(d);
+  const hasBirthday = today >= new Date(today.getFullYear(), birthMonth, birthDay);
+  const age = today.getFullYear() - birthYear - (hasBirthday ? 0 : 1);
+
+  return `${age}歳（${dateStr}）`;
+}
+
 interface VcQuizPageProps {
   question: VcQuestion;
   current: number;
@@ -117,7 +138,7 @@ function VcQuizPage({ question, current, total, onNext, onBack }: VcQuizPageProp
                 <span style={{ fontWeight: 600, color: '#1A1A1A' }}>{question.correctVa.name}</span>
                 <span style={{ marginLeft: 8, fontSize: 12, color: '#8A9199' }}>({question.correctVa.reading})</span>
               </p>
-              <p style={{ margin: '0 0 8px', color: '#5F6B7A' }}>デビュー：{question.correctVa.debut_year}年</p>
+              <p style={{ margin: '0 0 8px', color: '#5F6B7A' }}>{formatAge(question.correctVa.birthday)}</p>
               {question.correctVa.wiki_url && (
                 <a
                   href={question.correctVa.wiki_url}
