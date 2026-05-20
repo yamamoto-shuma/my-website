@@ -10,7 +10,7 @@ function formatAge(birthday: string): string {
     ? monthUnknown ? '非公開' : `${parseInt(m)}月${parseInt(d)}日`
     : monthUnknown ? `${y}年` : `${y}年${parseInt(m)}月${parseInt(d)}日`;
 
-  if (yearUnknown) return monthUnknown ? '年齢非公表' : `年齢非公表（${parseInt(m)}月${parseInt(d)}日）`;
+  if (yearUnknown) return monthUnknown ? '年齢非公表' : `年齢非公表（${dateStr}）`;
 
   const today = new Date();
   const birthYear = Number(y);
@@ -33,7 +33,7 @@ interface VcQuizPageProps {
 function VcQuizPage({ question, current, total, onNext, onBack }: VcQuizPageProps) {
   const [selected, setSelected] = useState<string | null>(null);
 
-  const [shuffledChoices] = useState(() => [...question.choices]);
+  const [choices] = useState(() => [...question.choices]);
 
   const handleSelect = (choice: string) => {
     if (selected !== null) return;
@@ -103,7 +103,7 @@ function VcQuizPage({ question, current, total, onNext, onBack }: VcQuizPageProp
           </p>
 
           <div>
-            {shuffledChoices.map((choice, index) => (
+            {choices.map((choice, index) => (
               <button
                 key={choice}
                 onClick={() => handleSelect(choice)}

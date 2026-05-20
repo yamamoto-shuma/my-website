@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
-import type { VoiceActor, Title, VcResultItem } from '../types/vcQuiz';
+import type { VoiceActor, Title, VcResultItem, VcQuestion } from '../types/vcQuiz';
 import { generateQuestions } from '../lib/vcQuizLogic';
 import VcTitleSelector from '../components/VcTitleSelector';
 import VcQuizPage from '../components/VcQuizPage';
@@ -7,12 +7,25 @@ import VcResultPage from '../components/VcResultPage';
 
 type Phase = 'loading' | 'selecting' | 'quizzing' | 'result';
 
+function parseCSVLine(line: string): string[] {
+  const result: string[] = [];
+  let current = '';
+  let inQuote = false;
+  for (const ch of line) {
+    if (ch === '"') { inQuote = !inQuote; continue; }
+    if (ch === ',' && !inQuote) { result.push(current.trim()); current = ''; continue; }
+    current += ch;
+  }
+  result.push(current.trim());
+  return result;
+}
+
 function parseCSV(text: string): Record<string, string>[] {
   const lines = text.trim().split('\n');
-  const headers = lines[0].split(',').map((h) => h.trim());
+  const headers = parseCSVLine(lines[0]);
   return lines.slice(1).filter((l) => l.trim()).map((line) => {
-    const values = line.split(',');
-    return Object.fromEntries(headers.map((h, i) => [h, (values[i] ?? '').trim()]));
+    const values = parseCSVLine(line);
+    return Object.fromEntries(headers.map((h, i) => [h, values[i] ?? '']));
   });
 }
 
@@ -22,7 +35,7 @@ function VcQuiz() {
   const [voiceActors, setVoiceActors] = useState<VoiceActor[]>([]);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [questionCount, setQuestionCount] = useState(10);
-  const [questions, setQuestions] = useState(generateQuestions([], [], [], 0));
+  const [questions, setQuestions] = useState<VcQuestion[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [results, setResults] = useState<VcResultItem[]>([]);
   const [error, setError] = useState<string | null>(null);
