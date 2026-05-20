@@ -7,6 +7,15 @@ import VcResultPage from '../components/VcResultPage';
 
 type Phase = 'loading' | 'selecting' | 'quizzing' | 'result';
 
+function parseCSV(text: string): Record<string, string>[] {
+  const lines = text.trim().split('\n');
+  const headers = lines[0].split(',').map((h) => h.trim());
+  return lines.slice(1).filter((l) => l.trim()).map((line) => {
+    const values = line.split(',');
+    return Object.fromEntries(headers.map((h, i) => [h, (values[i] ?? '').trim()]));
+  });
+}
+
 function VcQuiz() {
   const [phase, setPhase] = useState<Phase>('loading');
   const [titles, setTitles] = useState<Title[]>([]);
@@ -25,13 +34,45 @@ function VcQuiz() {
 
     (async () => {
       try {
-        const [vasRes, titlesRes] = await Promise.all([
-          fetch('/data/vc-quiz/voice_actors.json'),
-          fetch('/data/vc-quiz/titles.json'),
+        const [vasRes, titlesRes, charsRes] = await Promise.all([
+          fetch('/data/vc-quiz/voice_actors.csv'),
+          fetch('/data/vc-quiz/titles.csv'),
+          fetch('/data/vc-quiz/characters.csv'),
         ]);
-        if (!vasRes.ok) throw new Error(`voice_actors.json の取得に失敗しました（${vasRes.status}）`);
-        if (!titlesRes.ok) throw new Error(`titles.json の取得に失敗しました（${titlesRes.status}）`);
-        const [vas, ts] = await Promise.all([vasRes.json(), titlesRes.json()]) as [VoiceActor[], Title[]];
+        if (!vasRes.ok) throw new Error(`voice_actors.csv の取得に失敗しました（${vasRes.status}）`);
+        if (!titlesRes.ok) throw new Error(`titles.csv の取得に失敗しました（${titlesRes.status}）`);
+        if (!charsRes.ok) throw new Error(`characters.csv の取得に失敗しました（${charsRes.status}）`);
+
+        const [vasText, titlesText, charsText] = await Promise.all([
+          vasRes.text(), titlesRes.text(), charsRes.text(),
+        ]);
+
+        const vasRows = parseCSV(vasText);
+        const titlesRows = parseCSV(titlesText);
+        const charsRows = parseCSV(charsText);
+
+        const vas: VoiceActor[] = vasRows.map((r) => ({
+          id: r.id,
+          name: r.name,
+          reading: r.reading,
+          gender: r.gender as 'male' | 'female',
+          debut_year: Number(r.debut_year),
+          wiki_url: r.wiki_url,
+        }));
+
+        const ts: Title[] = titlesRows.map((r) => ({
+          id: r.id,
+          title: r.title,
+          broadcast_year: Number(r.broadcast_year),
+          characters: charsRows
+            .filter((c) => c.title_id === r.id)
+            .map((c) => ({
+              char_name: c.char_name,
+              va_id: c.va_id,
+              gender: c.char_gender as 'male' | 'female',
+            })),
+        }));
+
         setVoiceActors(vas);
         setTitles(ts);
         setSelectedIds(ts.map((t) => t.id));

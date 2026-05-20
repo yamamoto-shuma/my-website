@@ -1,27 +1,27 @@
 ## ADDED Requirements
 
-### Requirement: 声優データと作品データをS3バケットで管理する
-声優データ（`voice_actors.json`）と作品データ（`titles.json`）はS3バケット（`yamamoto-shuma-my-website-prod`）の `data/vc-quiz/` プレフィックス以下にのみ存在しなければならない（SHALL）。GitHubリポジトリにはこれらのJSONを含めてはならない（SHALL NOT）。
+### Requirement: 声優データと作品データをS3バケットでCSV管理する
+声優データ（`voice_actors.csv`）・作品データ（`titles.csv`）・中間テーブル（`characters.csv`）はS3バケット（`yamamoto-shuma-my-website-prod`）の `data/vc-quiz/` プレフィックス以下にのみ存在しなければならない（SHALL）。GitHubリポジトリにはこれらのCSVを含めてはならない（SHALL NOT）。
 
-#### Scenario: S3に声優データと作品データが存在する
+#### Scenario: S3に3つのCSVファイルが存在する
 - **WHEN** S3バケットの `data/vc-quiz/` プレフィックスを確認する
-- **THEN** `voice_actors.json` と `titles.json` が存在する
+- **THEN** `voice_actors.csv`・`titles.csv`・`characters.csv` が存在する
 
 #### Scenario: Gitリポジトリにvc-quizデータが含まれない
-- **WHEN** `git ls-files public/data/vc-quiz/` を実行する
+- **WHEN** `git ls-files static/data/vc-quiz/` を実行する
 - **THEN** 出力が空である（追跡ファイルなし）
 
 ### Requirement: npm scriptsで声優データ・作品データのS3同期コマンドを提供する
 `package.json` に以下のスクリプトを追加しなければならない（SHALL）。
-- `vc-quiz:pull`: S3から `public/data/vc-quiz/` にデータを取得
-- `vc-quiz:push`: `public/data/vc-quiz/` からS3にデータをアップロード
+- `vc-quiz:pull`: S3から `static/data/vc-quiz/` にデータを取得
+- `vc-quiz:push`: `static/data/vc-quiz/` からS3にデータをアップロード
 
 #### Scenario: vc-quiz:pullでデータ取得できる
 - **WHEN** `npm run vc-quiz:pull` を実行する
-- **THEN** `public/data/vc-quiz/` に `voice_actors.json` と `titles.json` がダウンロードされる
+- **THEN** `static/data/vc-quiz/` に `voice_actors.csv`・`titles.csv`・`characters.csv` がダウンロードされる
 
 #### Scenario: vc-quiz:pushでデータ更新できる
-- **WHEN** ローカルでJSONを編集後 `npm run vc-quiz:push` を実行する
+- **WHEN** ローカルでCSVを編集後 `npm run vc-quiz:push` を実行する
 - **THEN** 変更がS3の `data/vc-quiz/` プレフィックスに反映される
 
 ### Requirement: デプロイ時に声優データ・作品データが削除されない

@@ -39,11 +39,19 @@
 - [x] 7.2 各コンポーネントにカラーテーマを適用（VcTitleSelector・VcQuizPage・VcResultPage）
 - [x] 7.3 モバイルレスポンシブ対応（375px以上で選択肢縦並び・タップ可能サイズ確認）
 
-## 8. サンプルデータ作成・S3アップロード
+## 8. データ作成・S3アップロード
 
-- [x] 8.1 `public/data/vc-quiz/voice_actors.json` にサンプル声優データを5〜10件作成
-- [x] 8.2 `public/data/vc-quiz/titles.json` にサンプル作品データを3〜5件作成（各2〜4キャラ）
-- [x] 8.3 `npm run vc-quiz:push` で S3 にアップロード
+- [x] 8.1 `static/data/vc-quiz/voice_actors.csv` に声優データを作成（22件）
+- [x] 8.2 `static/data/vc-quiz/titles.csv` に作品データを作成（進撃の巨人のみ）
+- [x] 8.3 `static/data/vc-quiz/characters.csv` に中間テーブルを作成（進撃の巨人15キャラ）
+- [x] 8.4 `npm run vc-quiz:push` で S3 にアップロード
+
+## 10. CSVへのデータ形式移行
+
+- [x] 10.1 JSONからCSV3ファイル正規化構成に変更（voice_actors.csv / titles.csv / characters.csv）
+- [x] 10.2 `src/pages/VcQuiz.tsx` のfetch処理をCSVパース対応に更新（`parseCSV` 関数 + 3ファイルfetch + JOIN処理）
+- [ ] 10.3 旧JSONファイル（voice_actors.json / titles.json）をS3から削除
+- [ ] 10.4 S3に新CSVファイルをアップロード（`npm run vc-quiz:push`）
 
 ## 9. 動作確認
 
