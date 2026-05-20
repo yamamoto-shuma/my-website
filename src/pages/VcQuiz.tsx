@@ -21,7 +21,7 @@ function parseCSVLine(line: string): string[] {
 }
 
 function parseCSV(text: string): Record<string, string>[] {
-  const lines = text.trim().split('\n');
+  const lines = text.trim().split(/\r?\n/);
   const headers = parseCSVLine(lines[0]);
   return lines.slice(1).filter((l) => l.trim()).map((line) => {
     const values = parseCSVLine(line);
@@ -138,7 +138,11 @@ function VcQuiz() {
         titles={titles}
         selectedIds={selectedIds}
         questionCount={questionCount}
-        onChangeSelected={setSelectedIds}
+        onChangeSelected={(ids) => {
+          setSelectedIds(ids);
+          const max = titles.filter((t) => ids.includes(t.id)).reduce((s, t) => s + t.characters.length, 0);
+          if (max > 0) setQuestionCount((prev) => Math.min(prev, max));
+        }}
         onChangeCount={setQuestionCount}
         onStart={startQuiz}
         error={error}
