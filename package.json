@@ -11,7 +11,8 @@
     "quiz:push": "aws s3 sync ./static/data/aws-quiz/ s3://yamamoto-shuma-my-website-prod/data/aws-quiz/ --delete",
     "quiz:invalidate": "aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --paths \"/data/aws-quiz/*\"",
     "vc-quiz:pull": "aws s3 sync s3://yamamoto-shuma-my-website-prod/data/vc-quiz/ ./static/data/vc-quiz/",
-    "vc-quiz:push": "aws s3 sync ./static/data/vc-quiz/ s3://yamamoto-shuma-my-website-prod/data/vc-quiz/ --delete"
+    "vc-quiz:push": "aws s3 sync ./static/data/vc-quiz/ s3://yamamoto-shuma-my-website-prod/data/vc-quiz/ --delete",
+    "vc-quiz:invalidate": "aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --paths \"/data/vc-quiz/*\""
   },
   "dependencies": {
     "react": "^19.0.0",
