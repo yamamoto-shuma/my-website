@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap');
 
+:root {
+  --vc-primary: #E60012;
+  --vc-accent: #FFD700;
+  --vc-surface: #FFF0F0;
+}
+
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -41,4 +47,37 @@ body, #root {
   background: #F2F3F3;
   font-family: 'Noto Sans JP', 'Helvetica Neue', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
+}
+
+.vc-btn {
+  transition: filter 0.15s;
+}
+.vc-btn:hover:not(:disabled) {
+  filter: brightness(0.88);
+}
+.vc-btn:active:not(:disabled) {
+  filter: brightness(0.78);
+}
+
+.vc-choice-btn {
+  transition: border-color 0.15s, background 0.15s;
+}
+.vc-choice-btn--interactive:hover {
+  border-color: var(--vc-primary) !important;
+  background: var(--vc-surface) !important;
+}
+
+.vc-label {
+  transition: border-color 0.15s, background 0.15s;
+}
+.vc-label--unchecked:hover {
+  border-color: #8A9199 !important;
+  background: #F0F1F2 !important;
+}
+
+@media (max-width: 480px) {
+  .vc-choice-btn {
+    padding: 14px 12px !important;
+    font-size: 13px !important;
+  }
 }

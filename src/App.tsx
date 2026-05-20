@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
 import AwsQuiz from './pages/AwsQuiz'
+import VcQuiz from './pages/VcQuiz'
 
 function App() {
   return (
@@ -8,6 +9,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/aws-quiz" element={<AwsQuiz />} />
+        <Route path="/vc-quiz" element={<VcQuiz />} />
       </Routes>
     </BrowserRouter>
   )

@@ -5,6 +5,7 @@ function Home() {
     <>
       <h1>my-website</h1>
       <Link to="/aws-quiz">AWS Quiz</Link>
+      <Link to="/vc-quiz">声優クイズ</Link>
     </>
   )
 }
