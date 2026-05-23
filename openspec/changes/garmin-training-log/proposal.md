@@ -18,6 +18,7 @@
 
 ### New Capabilities
 
+- `garmin-design-system`: Garmin Connect 公式アプリの配色・雰囲気をベースにしたデザインシステム（カラーパレット・タイポグラフィ・コンポーネント仕様）
 - `garmin-calendar`: カレンダー画面でトレーニング履歴を月次で可視化する
 - `garmin-daily-log`: 日付ページでアクティビティ表示・ノート記録・AI 分析を行う
 - `garmin-auth`: Cognito による認証（Protected Route、ログイン / ログアウト）

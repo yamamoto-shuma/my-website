@@ -1,3 +1,10 @@
+## 0. デザインシステム基盤
+
+- [ ] 0.1 `src/styles/garmin-tokens.css` を作成し、カラートークン（`--color-bg`, `--color-surface`, `--color-surface-elevated`, `--color-primary`, `--color-activity-run`, `--color-activity-swim`, `--color-activity-bike`, `--color-text-primary`, `--color-text-secondary`, `--color-divider`, `--color-tag-border`）を定義する
+- [ ] 0.2 `src/index.css` で `garmin-tokens.css` を import する
+- [ ] 0.3 アクティビティカードの共通コンポーネント（`ActivityCard`）を作成する（種別ごとのアクセントカラー・48px メトリクス値・2 列グリッド・区切り線レイアウト）
+- [ ] 0.4 プライマリボタン・アウトラインボタンの共通スタイルを定義する（Garmin Blue ベース）
+
 ## 1. インフラ構築（Terraform）
 
 - [ ] 1.1 DynamoDB テーブル 4 本（activities / notes / ai_analysis / profiles）を Terraform で作成する

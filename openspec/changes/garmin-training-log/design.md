@@ -101,6 +101,90 @@ React Router v7 の `<Route path="/garmin/:date" />` で実装。
 
 ロールバック：Terraform destroy で新設リソースのみ削除可能。既存の静的サイトに影響なし。
 
+## UI デザインシステム
+
+Garmin Connect 公式アプリのスクリーンショットを参照し、同等の配色・雰囲気を採用する。
+
+### カラーパレット
+
+| トークン名 | 値 | 用途 |
+|-----------|-----|------|
+| `--color-bg` | `#000000` | ページ背景（純黒） |
+| `--color-surface` | `#1A1A1A` | カード・セクション背景 |
+| `--color-surface-elevated` | `#2C2C2E` | 入力フィールド・モーダル |
+| `--color-primary` | `#2B9DF5` | アイコン・ボタン・アクティブ状態（Garmin Blue） |
+| `--color-activity-run` | `#E8921A` | ランアクティビティカード（オレンジ） |
+| `--color-activity-run-end` | `#F5A623` | ランカードグラデーション終端 |
+| `--color-activity-swim` | `#2B9DF5` | スイムアクティビティカード（ブルー） |
+| `--color-activity-bike` | `#FF8C00` | バイクアクティビティカード（アンバー） |
+| `--color-text-primary` | `#FFFFFF` | 主要テキスト |
+| `--color-text-secondary` | `#9E9E9E` | ラベル・補足テキスト |
+| `--color-divider` | `#2C2C2E` | 区切り線 |
+| `--color-tag-border` | `#4A4A4E` | タグ・チップの枠線 |
+
+### タイポグラフィ
+
+| 用途 | サイズ | ウェイト | 備考 |
+|------|--------|---------|------|
+| メトリクス値（大） | 48px | Bold | 距離・心拍・ペースなどの主要数値 |
+| メトリクス単位 | 16px | Regular | 数値の右に添える（mi, bpm, /km） |
+| メトリクスラベル | 12px | Regular | 数値下のラベル（`--color-text-secondary`） |
+| ページタイトル | 22px | Bold | アクティビティ名・セクション見出し |
+| セクションヘッダー | 18px | Medium | good / problem / others 等 |
+| ボディテキスト | 14px | Regular | ノート本文・AI 分析テキスト |
+| キャプション | 12px | Regular | 補足情報 |
+
+### コンポーネントパターン
+
+#### アクティビティカード
+
+- 背景: `--color-surface`、角丸 `12px`
+- 上部アクセント: アクティビティ種別カラーの左ボーダー（4px）またはグラデーションヘッダー
+  - ラン: `linear-gradient(135deg, #E8921A, #F5A623)`
+  - スイム: `--color-activity-swim`
+  - バイク: `--color-activity-bike`
+- 主要メトリクス: 左半分に距離（48px Bold）、右半分に補助指標（2列グリッド）
+- 区切り線: `--color-divider`（1px solid）
+
+#### メトリクスセル（2列グリッド）
+
+```
+[値 + 単位]    [値 + 単位]
+[ラベル  ]    [ラベル  ]
+─────────────────────────
+[値 + 単位]    [値 + 単位]
+[ラベル  ]    [ラベル  ]
+```
+
+#### タグ / チップ
+
+- ボーダー: 1px solid `--color-tag-border`
+- 角丸: `4px`
+- テキスト: 12px、uppercase、`--color-text-secondary`
+- 背景: 透明
+
+#### ボタン
+
+- プライマリ: 背景 `--color-primary`、白テキスト、角丸 `6px`
+- アウトライン: ボーダー `--color-primary`、`--color-primary` テキスト、背景透明
+- 危険操作: ボーダー `#FF3B30`、`#FF3B30` テキスト
+
+#### リストアイテム（アイコン付き）
+
+- アイコン: `--color-primary` 背景の円（36px）+ 白アイコン
+- タイトル: 16px、`--color-text-primary`
+- サブタイトル: 12px、`--color-text-secondary`
+- 右端: シェブロン（`>`）、`--color-text-secondary`
+
+### D6: CSS 変数と Tailwind の方針
+
+| 選択肢 | 理由 |
+|--------|------|
+| **CSS カスタムプロパティ（CSS 変数）+ Tailwind 任意値** ✅ | 既存プロジェクトに Tailwind がなく導入コストが高い。CSS 変数で十分なスコープを管理できる |
+| Tailwind CSS v4 のフル導入 | デザイントークン管理は便利だが、既存コードベースへの影響が大きい |
+
+`src/styles/garmin-tokens.css` にカスタムプロパティを定義し、`src/index.css` で import する。
+
 ## Open Questions
 
 - （なし。設計レビュー済み）
