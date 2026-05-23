@@ -34,6 +34,17 @@ activities / notes / ai_analysis / profiles の 4 テーブルを作成する。
 - **WHEN** profiles テーブルが作成される
 - **THEN** パーティションキーは `userId`（String）である
 
+### Requirement: Secrets Manager シークレットを Terraform で管理する
+Garmin garth OAuth2 トークン用と Gemini API キー用の Secrets Manager シークレットを Terraform で作成する。シークレットの値（実際のトークン・APIキー）は Terraform 管理外とし、手動で設定する。
+
+#### Scenario: Secrets Manager リソースの作成
+- **WHEN** Terraform apply を実行する
+- **THEN** garmin-token シークレットと gemini-api-key シークレットが Secrets Manager に作成される（値は空または placeholder）
+
+#### Scenario: シークレット値の設定
+- **WHEN** Terraform apply 後に手動でシークレット値を設定する
+- **THEN** Lambda 関数が実行時に Secrets Manager から正しい値を取得できる
+
 ### Requirement: Lambda 関数を Terraform で管理する
 Python ランタイムの Lambda 関数として各 API ハンドラーを管理する。Garmin トークンと Gemini API キーは Secrets Manager から取得する。
 

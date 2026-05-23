@@ -54,6 +54,8 @@ MFA は Email ベース（SMS は SNS 追加料金が発生するため）。
 
 Garmin 非公式 API は python-garminconnect ライブラリ（Lambda の Python ランタイム）で呼び出す。
 
+DynamoDB テーブルのキー設計：activities / notes / ai_analysis は `userId`（PK, String）+ `date`（SK, String, yyyy-mm-dd）の複合キー。profiles は `userId`（PK, String）のみ。
+
 キャッシュ TTL 設計：
 
 | 日付種別 | TTL | 理由 |
@@ -83,6 +85,13 @@ SPA 内状態遷移ではなく独立 URL を採用。
 | SPA 内 state 遷移 | URL が変わらずブックマークや共有が不可能 |
 
 React Router v7 の `<Route path="/garmin/:date" />` で実装。
+
+### D6: フロントエンド Cognito クライアントライブラリ — amazon-cognito-identity-js
+
+| 選択肢 | 理由 |
+|--------|------|
+| **amazon-cognito-identity-js** ✅ | Cognito 専用の軽量ライブラリ。必要な機能（ログイン・MFA・トークンリフレッシュ）を過不足なく提供する |
+| AWS Amplify Auth | Cognito 操作は可能だが、Amplify 全体の依存（数 MB）を引き込むため本プロジェクトには過剰 |
 
 ## Risks / Trade-offs
 
@@ -176,7 +185,7 @@ Garmin Connect 公式アプリのスクリーンショットを参照し、同�
 - サブタイトル: 12px、`--color-text-secondary`
 - 右端: シェブロン（`>`）、`--color-text-secondary`
 
-### D6: CSS 変数と Tailwind の方針
+### D7: CSS 変数と Tailwind の方針
 
 | 選択肢 | 理由 |
 |--------|------|

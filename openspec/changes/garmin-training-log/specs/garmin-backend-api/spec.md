@@ -1,7 +1,7 @@
 ## ADDED Requirements
 
 ### Requirement: アクティビティ取得 API はキャッシュを優先して返す
-`GET /garmin/activities?date=yyyy-mm-dd` はまず DynamoDB キャッシュを確認し、存在する場合はキャッシュを返す。存在しない場合は Garmin 非公式 API から取得して DynamoDB に保存してから返す。
+`GET /garmin/activities/:date` はまず DynamoDB キャッシュを確認し、存在する場合はキャッシュを返す。存在しない場合は Garmin 非公式 API から取得して DynamoDB に保存してから返す。
 
 #### Scenario: キャッシュヒット
 - **WHEN** DynamoDB に対象日付のキャッシュが存在する

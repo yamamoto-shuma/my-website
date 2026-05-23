@@ -15,8 +15,8 @@ Accepted
 
 現在のサイト構成（React + Vite + TypeScript の静的サイト、S3/CloudFront ホスティング）にはバックエンドが存在しないため、以下の理由から新たなバックエンド基盤が必要となる。
 
-- Garmin 非公式 API はブラウザから直接呼び出すと CORS エラーが発生する
-- 認証情報（Garminのトークン、Gemini API キー）をフロントエンドに置くことは不可
+- Garmin 公式 API（Health API）は企業向け申請が必要なため個人利用は不可。非公式ライブラリ（python-garminconnect）を使用するが、ブラウザから直接呼び出すと CORS エラーが発生するためサーバーサイドでの実行が必要
+- 認証情報（Garmin のトークン、Gemini API キー）をフロントエンドに置くことは不可
 - ノート（good / problem / others）の永続化先が存在しない
 
 ## 決定
@@ -25,7 +25,7 @@ Accepted
 
 既存の AWS + Terraform 基盤に統合する形で、サーバーレスバックエンドを構築する。
 
-- **Lambda**: Garmin API 呼び出し・ノート CRUD・Gemini API 呼び出しをそれぞれ関数として実装
+- **Lambda**: 単一の Python Lambda 関数（garmin-api）として実装する。python-garminconnect は Python ライブラリのため Python ランタイムを採用。Garmin API 呼び出し・ノート CRUD・Gemini API 呼び出し・プロフィール管理をすべてこの関数で処理する。Garmin の garth OAuth2 トークン（python-garminconnect の SSO 認証で取得）と Gemini API キーは AWS Secrets Manager から実行時に取得する
 - **API Gateway (HTTP API)**: Lambda のエンドポイントを公開。REST API ではなく HTTP API を採用しコストを抑える（$1.00 / 100 万コール vs REST API の $3.50）
 - **DynamoDB**: ノート・Garmin データキャッシュ・AI 分析結果・プロフィールを格納
 
@@ -37,7 +37,7 @@ Accepted
 
 ### 3. URL ルーティング：`/garmin/:date`（yyyy-mm-dd 形式）
 
-- SPA 内の状態遷移ではなく個別 URL（例: `/garmin/2024-01-15`）を採用
+- SPA 内の状態遷移ではなく個別 URL（例: `/garmin/2026-05-23`）を採用
 - ブックマーク・ブラウザ履歴・直リンクが正常に機能する
 - React Router v7 で `<Route path="/garmin/:date" />` として実装
 
@@ -52,6 +52,7 @@ Accepted
 ### 5. AI 分析：Gemini API、手動トリガー・結果保存
 
 - AI 分析は画面上の「分析を生成」ボタンで手動起動（自動生成は API コスト管理が困難なため）
+- モデルは Gemini 2.0 Flash を採用する（Gemini 1.5 Pro 比でコスト効率が高く、個人利用のトレーニングアドバイス生成には十分な品質）
 - 分析結果は DynamoDB に保存し、毎回 Gemini API を呼び出さない
 - ユーザーはノート更新後に必要と判断した場合のみ再分析できる
 - Gemini はトライアスロンのトレーナーとしての役割を担い、以下を含むアドバイスを生成する
@@ -63,6 +64,7 @@ Accepted
 
 ## その他の選択肢にしなかった理由
 
+- **Garmin 公式 API（Health API）**: 企業・スタートアップ向けの申請が必要であり、個人の開発者が利用することはできない。そのため Garmin 非公式ライブラリ（python-garminconnect）を採用した
 - **Supabase（BaaS）**: DB + Auth + Edge Functions が即日揃う利点はあるが、既存の AWS + Terraform 管理基盤と分散してしまう。マルチクラウド化による運用コストの増加を避け、AWS に統一する
 - **Amazon Cognito（Plus プラン）**: 脅威保護・リスクベース認証などの高度な機能を持つが、個人サイト規模では不要かつ追加コストが発生する
 - **AI 分析の自動生成（ページ表示時）**: ユーザーが日付ページを開くたびに Gemini API を呼び出すとコストが制御できない。手動トリガーを採用する
@@ -78,5 +80,5 @@ Accepted
 
 **ネガティブ:**
 - Garmin 非公式 API を使用するため、Garmin 側の認証フロー変更により突然動作しなくなるリスクがある
-- フロントエンドのみだった構成にバックエンドが加わり、Terraform 管理対象が増加する
+- フロントエンドのみだった構成にバックエンドが加わり、Terraform 管理対象が増加する（DynamoDB 4 テーブル・Cognito User Pool・Lambda 関数・API Gateway・IAM ロール・Secrets Manager）
 - Lambda コールドスタートによるレイテンシが発生する可能性がある（Provisioned Concurrency で対応可能だがコスト増）

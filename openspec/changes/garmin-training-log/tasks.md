@@ -1,6 +1,6 @@
 ## 0. デザインシステム基盤
 
-- [ ] 0.1 `src/styles/garmin-tokens.css` を作成し、カラートークン（`--color-bg`, `--color-surface`, `--color-surface-elevated`, `--color-primary`, `--color-activity-run`, `--color-activity-swim`, `--color-activity-bike`, `--color-text-primary`, `--color-text-secondary`, `--color-divider`, `--color-tag-border`）を定義する
+- [ ] 0.1 `src/styles/garmin-tokens.css` を作成し、カラートークン（`--color-bg`, `--color-surface`, `--color-surface-elevated`, `--color-primary`, `--color-activity-run`, `--color-activity-run-end`, `--color-activity-swim`, `--color-activity-bike`, `--color-text-primary`, `--color-text-secondary`, `--color-divider`, `--color-tag-border`）を定義する
 - [ ] 0.2 `src/index.css` で `garmin-tokens.css` を import する
 - [ ] 0.3 アクティビティカードの共通コンポーネント（`ActivityCard`）を作成する（種別ごとのアクセントカラー・48px メトリクス値・2 列グリッド・区切り線レイアウト）
 - [ ] 0.4 プライマリボタン・アウトラインボタンの共通スタイルを定義する（Garmin Blue ベース）
@@ -9,7 +9,7 @@
 
 - [ ] 1.1 DynamoDB テーブル 4 本（activities / notes / ai_analysis / profiles）を Terraform で作成する
 - [ ] 1.2 Cognito User Pool と User Pool Client（Essentials プラン、Email MFA 有効）を Terraform で作成する
-- [ ] 1.3 Garmin トークンと Gemini API キーを AWS Secrets Manager に登録する
+- [ ] 1.3 Secrets Manager シークレットリソースを Terraform で作成する（garmin-token・gemini-api-key の 2 エントリ。値は空で作成し、Terraform apply 後に AWS CLI または コンソールで手動設定する）
 - [ ] 1.4 Lambda 実行ロール（DynamoDB 読み書き権限 + Secrets Manager 読み取り権限）を Terraform で作成する
 - [ ] 1.5 Lambda 関数（Python ランタイム）を Terraform で作成する
 - [ ] 1.6 API Gateway HTTP API と Lambda 統合を Terraform で作成する
@@ -19,16 +19,16 @@
 ## 2. バックエンド Lambda 実装
 
 - [ ] 2.1 python-garminconnect でアクティビティを取得する共通処理を実装する（Secrets Manager からトークン取得含む）
-- [ ] 2.2 `GET /garmin/activities` ハンドラーを実装する（DynamoDB キャッシュ優先、キャッシュミス時は Garmin API 呼び出し、TTL ロジック含む）
+- [ ] 2.2 `GET /garmin/activities/:date` ハンドラーを実装する（DynamoDB キャッシュ優先、キャッシュミス時は Garmin API 呼び出し、TTL ロジック含む）
 - [ ] 2.3 `GET /garmin/notes/:date` / `PUT /garmin/notes/:date` ハンドラーを実装する
 - [ ] 2.4 `GET /garmin/analysis/:date` / `POST /garmin/analysis/:date` ハンドラーを実装する（Gemini API 呼び出し・DynamoDB 保存含む）
 - [ ] 2.5 `GET /garmin/profile` / `PUT /garmin/profile` ハンドラーを実装する
-- [ ] 2.6 Cognito JWT 検証ミドルウェアを実装する（全エンドポイントに適用）
+- [ ] 2.6 Lambda ハンドラーで userId を取得する処理を実装する（API Gateway の Cognito オーソライザーが検証済みのため、`event.requestContext.authorizer.jwt.claims.sub` から取得するのみ）
 - [ ] 2.7 Gemini プロンプトを実装する（トライアスロントレーナーとしての role、アクティビティ・ノート・プロフィールを文脈として使用）
 
 ## 3. フロントエンド：認証
 
-- [ ] 3.1 Cognito SDK（amazon-cognito-identity-js または AWS Amplify Auth）を追加する
+- [ ] 3.1 `amazon-cognito-identity-js` を追加する（AWS Amplify Auth は依存が重いため不採用）
 - [ ] 3.2 `/garmin/login` ログインページを実装する（メール + パスワード入力、Email MFA 対応）
 - [ ] 3.3 React Router の Protected Route を実装する（未認証時は `/garmin/login` にリダイレクト）
 - [ ] 3.4 ログアウト機能を実装する（トークン破棄 + `/garmin/login` リダイレクト）
