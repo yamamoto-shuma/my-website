@@ -15,6 +15,7 @@
     "vc-quiz:invalidate": "aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --paths \"/data/vc-quiz/*\""
   },
   "dependencies": {
+    "amazon-cognito-identity-js": "^6.3.16",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.1.0"

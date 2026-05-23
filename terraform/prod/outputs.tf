@@ -12,3 +12,15 @@ output "route53_name_servers" {
   description = "Route53 Hosted Zone name servers (set these in your domain registrar)"
   value       = aws_route53_zone.my_website.name_servers
 }
+
+output "garmin_api_url" {
+  value = aws_apigatewayv2_api.garmin.api_endpoint
+}
+
+output "garmin_cognito_user_pool_id" {
+  value = aws_cognito_user_pool.garmin.id
+}
+
+output "garmin_cognito_client_id" {
+  value = aws_cognito_user_pool_client.garmin.id
+}
