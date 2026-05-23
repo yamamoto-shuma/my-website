@@ -14,7 +14,7 @@
 ## Goals / Non-Goals
 
 **Goals:**
-- Garmin アクティビティデータの取得・表示（プールスイム / バイク / ラン）
+- Garmin アクティビティデータの取得・表示（スイム / バイク / ラン）
 - 日次ノート（good / problem / others）の記録と閲覧
 - Gemini API による AI トレーニングアドバイスの生成・保存
 - カレンダー UI での月次トレーニング履歴の可視化
@@ -111,8 +111,6 @@ React Router v7 の `<Route path="/garmin/:date" />` で実装。
 ロールバック：Terraform destroy で新設リソースのみ削除可能。既存の静的サイトに影響なし。
 
 ## UI デザインシステム
-
-Garmin Connect 公式アプリのスクリーンショットを参照し、同等の配色・雰囲気を採用する。
 
 ### カラーパレット
 
